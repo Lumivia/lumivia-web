@@ -1,1 +1,37 @@
+---
+// Aquí es donde Astro maneja la lógica. Por ahora lo dejamos limpio.
+interface Props {
+	title: string;
+}
 
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Lumivia - Las mejores ofertas de vuelos para nómadas y viajeros." />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		
+		</head>
+	<body>
+		<slot />
+		
+		<style is:global>
+			/* Aquí pegaremos tu CSS actual para que toda la web lo herede */
+			:root {
+				--accent: 136, 58, 234;
+			}
+			html {
+				font-family: system-ui, sans-serif;
+				background: #13151a;
+			}
+		</style>
+	</body>
+</html>
