@@ -3,8 +3,8 @@ import Layout from '../../layouts/Layout.astro';
 ---
 
 <Layout 
-    title="Vuelos Baratos desde México | Lumivia" 
-    description="Encuentra las mejores ofertas de vuelos y viajes desde México. Lumivia rastrea tarifas ocultas diariamente para que viajes más pagando menos."
+    title="Vuelos Baratos desde Chile | Lumivia" 
+    description="Encuentra las mejores ofertas de vuelos y viajes desde Chile. Lumivia rastrea tarifas ocultas diariamente para que viajes más pagando menos."
 >
     <div class="bg-gray-50 text-lumiDark antialiased selection:bg-lumiCyan selection:text-white relative overflow-x-hidden">
         
@@ -226,11 +226,11 @@ import Layout from '../../layouts/Layout.astro';
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-semibold text-gray-400 mb-1">Origen</label>
-                                <input type="text" id="lead-origen" placeholder="Ej. CDMX" required class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-lumiCyan transition">
+                                <input type="text" id="lead-origen" placeholder="Ej. Santiago" required class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-lumiCyan transition">
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-gray-400 mb-1">Destino</label>
-                                <input type="text" id="lead-destino" placeholder="Ej. París" required class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-lumiCyan transition">
+                                <input type="text" id="lead-destino" placeholder="Ej. Madrid" required class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-lumiCyan transition">
                             </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -278,9 +278,10 @@ import Layout from '../../layouts/Layout.astro';
             
             window.ofertasGlobales = [];
 
-            let paisActual = 'MX'; 
-            let monedaActual = 'MXN';
-            let banderaActual = 'https://flagcdn.com/w20/mx.png';
+            // CONFIGURACIÓN NATIVA CHILE
+            let paisActual = 'CL'; 
+            let monedaActual = 'CLP';
+            let banderaActual = 'https://flagcdn.com/w20/cl.png';
 
             const destinosNacionales = {
                 'MX': ['CUN', 'MID', 'SJD', 'PVR', 'PXM', 'OAX', 'TRC', 'CUU', 'MEX', 'GDL', 'MTY', 'TIJ'],
@@ -380,6 +381,22 @@ import Layout from '../../layouts/Layout.astro';
                 });
             }
 
+            function formatearFechaCorta(fechaCadena) {
+                if (!fechaCadena) return '';
+                if (!fechaCadena.includes('-')) return fechaCadena;
+                const partes = fechaCadena.split('-');
+                if (partes.length !== 3) return fechaCadena;
+                
+                const año = parseInt(partes[0]);
+                const mes = parseInt(partes[1]) - 1;
+                const dia = parseInt(partes[2]);
+                const fechaObj = new Date(año, mes, dia);
+                
+                const opciones = { day: 'numeric', month: 'short' };
+                let formateada = fechaObj.toLocaleDateString('es-ES', opciones);
+                return formateada.replace('.', ''); 
+            }
+
             function corregirAño(fechaCadena) {
                 if (!fechaCadena || !fechaCadena.includes('-')) return fechaCadena;
                 let [y, m, d] = fechaCadena.split('-');
@@ -418,7 +435,6 @@ import Layout from '../../layouts/Layout.astro';
 
             function curarOfertas(data, pais) {
                 const nacionales = destinosNacionales[pais] || [];
-                
                 const dataLimpia = data.filter(deal => {
                     const esInternacional = !nacionales.includes(deal.destino);
                     if (!esInternacional && deal.fecha_salida && deal.fecha_regreso) {
@@ -508,65 +524,39 @@ import Layout from '../../layouts/Layout.astro';
                 let esInternacional = !nacionales.includes(deal.destino);
 
                 const diccionarioDestinos = {
-                    'NRT': { airalo: 'japan', tour: 'tokio' },
-                    'ICN': { airalo: 'south-korea', tour: 'seul' },
-                    'BKK': { airalo: 'thailand', tour: 'bangkok' },
-                    'DPS': { airalo: 'indonesia', tour: 'bali' },
-                    'SYD': { airalo: 'australia', tour: 'sidney' },
-                    'LIS': { airalo: 'portugal', tour: 'lisboa' },
-                    'MAD': { airalo: 'spain', tour: 'madrid' },
-                    'BCN': { airalo: 'spain', tour: 'barcelona' },
-                    'CDG': { airalo: 'france', tour: 'paris' },
-                    'AMS': { airalo: 'netherlands', tour: 'amsterdam' },
-                    'FRA': { airalo: 'germany', tour: 'frankfurt' },
-                    'MUC': { airalo: 'germany', tour: 'munich' },
-                    'LHR': { airalo: 'united-kingdom', tour: 'londres' },
-                    'DUB': { airalo: 'ireland', tour: 'dublin' },
-                    'MXP': { airalo: 'italy', tour: 'milan' },
-                    'MIA': { airalo: 'united-states', tour: 'miami' },
-                    'MCO': { airalo: 'united-states', tour: 'orlando' },
-                    'JFK': { airalo: 'united-states', tour: 'nueva-york' },
-                    'LAX': { airalo: 'united-states', tour: 'los-angeles' },
-                    'LAS': { airalo: 'united-states', tour: 'las-vegas' },
-                    'YYZ': { airalo: 'canada', tour: 'toronto' },
-                    'YVR': { airalo: 'canada', tour: 'vancouver' },
-                    'PUJ': { airalo: 'dominican-republic', tour: 'punta-cana' },
-                    'PTY': { airalo: 'panama', tour: 'ciudad-panama' },
-                    'LIM': { airalo: 'peru', tour: 'lima' },
-                    'SCL': { airalo: 'chile', tour: 'santiago-chile' },
-                    'EZE': { airalo: 'argentina', tour: 'buenos-aires' },
-                    'GRU': { airalo: 'brazil', tour: 'sao-paulo' },
-                    'UIO': { airalo: 'ecuador', tour: 'quito' },
-                    'CUN': { airalo: 'mexico', tour: 'cancun' },
-                    'MID': { airalo: 'mexico', tour: 'merida' },
-                    'SJD': { airalo: 'mexico', tour: 'los-cabos' },
-                    'PVR': { airalo: 'mexico', tour: 'puerto-vallarta' },
-                    'MEX': { airalo: 'mexico', tour: 'ciudad-de-mexico' },
-                    'GDL': { airalo: 'mexico', tour: 'guadalajara' },
-                    'MTY': { airalo: 'mexico', tour: 'monterrey' },
-                    'TIJ': { airalo: 'mexico', tour: 'tijuana' },
-                    'TRC': { airalo: 'mexico', tour: 'torreon' },
-                    'BOG': { airalo: 'colombia', tour: 'bogota' },
-                    'MDE': { airalo: 'colombia', tour: 'medellin' },
-                    'CTG': { airalo: 'colombia', tour: 'cartagena-indias' },
-                    'SMR': { airalo: 'colombia', tour: 'santa-marta' },
-                    'ADZ': { airalo: 'colombia', tour: 'san-andres' },
-                    'CJC': { airalo: 'chile', tour: 'san-pedro-de-atacama' },
-                    'PUQ': { airalo: 'chile', tour: 'punta-arenas' },
-                    'PMC': { airalo: 'chile', tour: 'puerto-montt' },
-                    'IQQ': { airalo: 'chile', tour: 'iquique' },
-                    'LIR': { airalo: 'costa-rica', tour: 'guanacaste' },
+                    'NRT': { airalo: 'japan', tour: 'tokio' }, 'ICN': { airalo: 'south-korea', tour: 'seul' },
+                    'BKK': { airalo: 'thailand', tour: 'bangkok' }, 'DPS': { airalo: 'indonesia', tour: 'bali' },
+                    'SYD': { airalo: 'australia', tour: 'sidney' }, 'LIS': { airalo: 'portugal', tour: 'lisboa' },
+                    'MAD': { airalo: 'spain', tour: 'madrid' }, 'BCN': { airalo: 'spain', tour: 'barcelona' },
+                    'CDG': { airalo: 'france', tour: 'paris' }, 'AMS': { airalo: 'netherlands', tour: 'amsterdam' },
+                    'FRA': { airalo: 'germany', tour: 'frankfurt' }, 'MUC': { airalo: 'germany', tour: 'munich' },
+                    'LHR': { airalo: 'united-kingdom', tour: 'londres' }, 'DUB': { airalo: 'ireland', tour: 'dublin' },
+                    'MXP': { airalo: 'italy', tour: 'milan' }, 'MIA': { airalo: 'united-states', tour: 'miami' },
+                    'MCO': { airalo: 'united-states', tour: 'orlando' }, 'JFK': { airalo: 'united-states', tour: 'nueva-york' },
+                    'LAX': { airalo: 'united-states', tour: 'los-angeles' }, 'LAS': { airalo: 'united-states', tour: 'las-vegas' },
+                    'YYZ': { airalo: 'canada', tour: 'toronto' }, 'YVR': { airalo: 'canada', tour: 'vancouver' },
+                    'PUJ': { airalo: 'dominican-republic', tour: 'punta-cana' }, 'PTY': { airalo: 'panama', tour: 'ciudad-panama' },
+                    'LIM': { airalo: 'peru', tour: 'lima' }, 'SCL': { airalo: 'chile', tour: 'santiago-chile' },
+                    'EZE': { airalo: 'argentina', tour: 'buenos-aires' }, 'GRU': { airalo: 'brazil', tour: 'sao-paulo' },
+                    'UIO': { airalo: 'ecuador', tour: 'quito' }, 'CUN': { airalo: 'mexico', tour: 'cancun' },
+                    'MID': { airalo: 'mexico', tour: 'merida' }, 'SJD': { airalo: 'mexico', tour: 'los-cabos' },
+                    'PVR': { airalo: 'mexico', tour: 'puerto-vallarta' }, 'MEX': { airalo: 'mexico', tour: 'ciudad-de-mexico' },
+                    'GDL': { airalo: 'mexico', tour: 'guadalajara' }, 'MTY': { airalo: 'mexico', tour: 'monterrey' },
+                    'TIJ': { airalo: 'mexico', tour: 'tijuana' }, 'TRC': { airalo: 'mexico', tour: 'torreon' },
+                    'BOG': { airalo: 'colombia', tour: 'bogota' }, 'MDE': { airalo: 'colombia', tour: 'medellin' },
+                    'CTG': { airalo: 'colombia', tour: 'cartagena-indias' }, 'SMR': { airalo: 'colombia', tour: 'santa-marta' },
+                    'ADZ': { airalo: 'colombia', tour: 'san-andres' }, 'CJC': { airalo: 'chile', tour: 'san-pedro-de-atacama' },
+                    'PUQ': { airalo: 'chile', tour: 'punta-arenas' }, 'PMC': { airalo: 'chile', tour: 'puerto-montt' },
+                    'IQQ': { airalo: 'chile', tour: 'iquique' }, 'LIR': { airalo: 'costa-rica', tour: 'guanacaste' },
                     'SJO': { airalo: 'costa-rica', tour: 'san-jose' }
                 };
 
-              const dataDestino = diccionarioDestinos[deal.destino] || { airalo: 'global', tour: 'global' };
-                
+                const dataDestino = diccionarioDestinos[deal.destino] || { airalo: 'global', tour: 'global' };
                 const urlBaseAiralo = "https://airalo.pxf.io/xJykMv";
-                
                 const urlDestinoAiralo = dataDestino.airalo === 'global' 
-                    ? `${urlBaseAiralo}?u=${encodeURIComponent('https://www.airalo.com/es/')}`
+                    ? `${urlBaseAiralo}?u=${encodeURIComponent('https://www.airalo.com/es/')}` 
                     : `${urlBaseAiralo}?u=${encodeURIComponent('https://www.airalo.com/es/' + dataDestino.airalo + '-esim')}`;
-
+                
                 const urlDestinoTour = dataDestino.tour === 'global' 
                     ? "https://www.civitatis.com/es/" 
                     : `https://www.civitatis.com/es/${dataDestino.tour}/?fromDate=${deal.fecha_salida}&toDate=${deal.fecha_regreso}`;
@@ -622,9 +612,6 @@ import Layout from '../../layouts/Layout.astro';
                                 </div>
                             </div>
                         </a>
-                    `;
-
-                    htmlExtras += `
                         <a href="https://ektatraveling.tpo.li/5ArJqp2u" target="_blank" class="relative overflow-hidden rounded-2xl h-[72px] group block shadow-sm border border-gray-100">
                             <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20"></div>
@@ -717,7 +704,8 @@ import Layout from '../../layouts/Layout.astro';
                                     <div class="col-span-full text-center py-20 flex flex-col items-center">
                                         <p class="text-gray-400 font-medium mb-4">Esa oferta ya no está disponible o el enlace caducó.</p>
                                         <a href="/" class="bg-lumiDark text-white hover:bg-black px-6 py-2.5 rounded-full font-bold transition-all shadow-md">Ver Radar Actual</a>
-                                    </div>`;
+                                    </div>
+                                `;
                             } else {
                                 container.innerHTML = `<div class="col-span-full text-center text-gray-400 py-10 font-medium" id="loader">Aún no hay ofertas publicadas en este mercado. Vuelve pronto.</div>`;
                             }
@@ -760,8 +748,8 @@ import Layout from '../../layouts/Layout.astro';
             function renderHookDeals(deals) {
                 const container = document.getElementById('hook-deals');
                 if(!container) return;
-                container.innerHTML = ''; 
                 
+                container.innerHTML = ''; 
                 let schemaOffers = [];
 
                 deals.forEach(deal => {
@@ -776,24 +764,43 @@ import Layout from '../../layouts/Layout.astro';
                     
                     const esVip = deal.tipo_vuelo === 'directo';
                     const badgeVip = esVip 
-                        ? `<div class="absolute top-4 right-4 badge-vip-glass text-white text-[10px] font-black px-3 py-1.5 rounded-full z-10 flex items-center gap-1.5 uppercase tracking-widest shadow-lg">
+                        ? `
+                            <div class="absolute top-4 right-4 badge-vip-glass text-white text-[10px] font-black px-3 py-1.5 rounded-full z-10 flex items-center gap-1.5 uppercase tracking-widest shadow-lg">
                                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
                                Directo
-                           </div>` 
+                           </div>
+                          ` 
                         : '';
 
                     const etiquetaHot = (deal.calidad_oferta >= 9)
-                        ? `<span class="text-red-500 font-extrabold flex items-center gap-1 text-[10px] uppercase tracking-wider"><svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path></svg> HOT</span>`
+                        ? `
+                            <span class="text-red-500 font-extrabold flex items-center gap-1 text-[10px] uppercase tracking-wider">
+                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path></svg> 
+                                HOT
+                            </span>
+                          `
                         : '';
 
                     const monedaDeal = (deal.moneda || deal.currency || monedaActual).toUpperCase();
 
                     const amenidadesLinea = `
                         <div class="flex items-center flex-wrap gap-2 text-[10px] font-semibold text-gray-500 mb-6 uppercase tracking-widest">
-                            <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg> Hospedaje</span>
+                            <span class="flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg> 
+                                Hospedaje
+                            </span>
                             <span class="text-gray-300">•</span>
-                            <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.5 21a2.5 2.5 0 005-5V5a2 2 0 00-2-2h-3.5M10 21H5a2 2 0 01-2-2V5a2 2 0 012-2h5m4 18h-4"></path></svg> Tours</span>
-                            ${esInternacional ? `<span class="text-gray-300">•</span><span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 117.778 0M12 20h.01m-7.08-7.071a10 10 0 1114.142 0"></path></svg> eSIM</span>` : ''}
+                            <span class="flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.5 21a2.5 2.5 0 005-5V5a2 2 0 00-2-2h-3.5M10 21H5a2 2 0 01-2-2V5a2 2 0 012-2h5m4 18h-4"></path></svg> 
+                                Tours
+                            </span>
+                            ${esInternacional ? `
+                                <span class="text-gray-300">•</span>
+                                <span class="flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 117.778 0M12 20h.01m-7.08-7.071a10 10 0 1114.142 0"></path></svg> 
+                                    eSIM
+                                </span>
+                            ` : ''}
                         </div>
                     `;
 
@@ -901,6 +908,7 @@ import Layout from '../../layouts/Layout.astro';
                     container.innerHTML = '<li class="p-6 text-gray-400 text-center">No hay más destinos por ahora.</li>';
                     return;
                 }
+                
                 container.innerHTML = '';
 
                 deals.forEach(deal => {
@@ -908,10 +916,14 @@ import Layout from '../../layouts/Layout.astro';
                     const img = deal.url_imagen || "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=150&q=80";
                     const precio = deal.precio || "0";
                     const destino = deal.destino || "Mundo";
-                    const origenHtml = deal.origen ? `<span class="font-bold text-gray-400">${deal.origen}</span> <span class="mx-1 text-gray-300">➔</span> ` : '';
+                    const origenHtml = deal.origen 
+                        ? `<span class="font-bold text-gray-400">${deal.origen}</span> <span class="mx-1 text-gray-300">➔</span>` 
+                        : '';
                     
                     const monedaDeal = (deal.moneda || deal.currency || monedaActual).toUpperCase();
-                    const hotBadge = (deal.calidad_oferta >= 9) ? `<span class="text-red-500 font-bold ml-1" title="Alta Demanda">🔥</span>` : '';
+                    const hotBadge = (deal.calidad_oferta >= 9) 
+                        ? `<span class="text-red-500 font-bold ml-1" title="Alta Demanda">🔥</span>` 
+                        : '';
 
                     const li = document.createElement('li');
                     li.className = "p-3 sm:px-6 sm:py-4 hover:bg-gray-50/80 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer";
@@ -940,7 +952,10 @@ import Layout from '../../layouts/Layout.astro';
                         
                         <div class="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto mt-2 sm:mt-0">
                             <div class="text-left sm:text-right mr-2">
-                                <p class="text-lg font-extrabold text-lumiDark">$${Number(precio).toLocaleString('en-US')} <span class="text-xs font-normal text-gray-400">${monedaDeal}</span></p>
+                                <p class="text-lg font-extrabold text-lumiDark">
+                                    $${Number(precio).toLocaleString('en-US')} 
+                                    <span class="text-xs font-normal text-gray-400">${monedaDeal}</span>
+                                </p>
                             </div>
                             
                             <button onclick="copiarUrlUnica('${deal.id}')" title="Copiar enlace" class="bg-gray-50 hover:bg-gray-200 text-gray-500 p-2 rounded-lg transition-colors shadow-sm">
@@ -1017,24 +1032,10 @@ import Layout from '../../layouts/Layout.astro';
             });
 
             document.addEventListener('DOMContentLoaded', async () => {
-                
-                // --- INICIO DE ZONA SEO / AEO ---
-                // Forzamos el país directamente sin usar la IP. 
-                // Esto permite indexación directa por mercado.
-                paisActual = 'MX'; // <-- MANTENER COMO 'MX' PARA ESTE ARCHIVO
-                // --------------------------------
-
-                const configMercado = {
-                    'MX': { moneda: 'MXN', bandera: 'https://flagcdn.com/w20/mx.png' },
-                    'CO': { moneda: 'COP', bandera: 'https://flagcdn.com/w20/co.png' },
-                    'CL': { moneda: 'CLP', bandera: 'https://flagcdn.com/w20/cl.png' },
-                    'CR': { moneda: 'USD', bandera: 'https://flagcdn.com/w20/cr.png' }
-                };
-
-                const conf = configMercado[paisActual];
-                monedaActual = conf.moneda;
-                banderaActual = conf.bandera;
-
+                // FORZADO SEO CHILE
+                paisActual = 'CL'; 
+                monedaActual = 'CLP';
+                banderaActual = 'https://flagcdn.com/w20/cl.png';
                 seleccionarPais(paisActual, monedaActual, banderaActual);
                 poblarMeses();
             });
