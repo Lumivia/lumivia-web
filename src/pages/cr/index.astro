@@ -10,11 +10,20 @@ import Layout from '../../layouts/Layout.astro';
         
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-58WFMR24" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
+        <div class="fixed bottom-6 right-6 z-[90] flex flex-col items-end gap-3 group">
+            <div class="bg-white/90 backdrop-blur-xl border border-gray-200/50 shadow-2xl rounded-2xl p-4 text-xs font-medium text-gray-600 opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 w-max max-w-[260px] text-right origin-bottom-right">
+                <p class="text-lumiDark font-extrabold mb-1 text-sm leading-tight">Únete a nuestro canal de Lumivia Costa Rica de WhatsApp</p>
+            </div>
+            <a href="https://whatsapp.com/channel/0029Vb7tSlb7dmefEZ6MN52v" target="_blank" class="flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-emerald-400 to-emerald-500 rounded-full shadow-[0_8px_30px_rgba(16,185,129,0.3)] hover:shadow-[0_8px_30px_rgba(16,185,129,0.5)] hover:scale-105 transition-all duration-300 relative focus:outline-none">
+                <div class="absolute inset-0 rounded-full border border-white/60 animate-ping opacity-75 duration-1000"></div>
+                <svg class="w-7 h-7 text-white relative z-10" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </a>
+        </div>
+
         <div id="modal-paquete" class="fixed inset-0 z-[100] hidden items-center justify-center p-0 md:p-6 opacity-0 transition-opacity duration-300">
             <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="cerrarModalPaquete()"></div>
             
             <div class="relative w-full h-full md:h-auto md:max-h-[90vh] max-w-4xl bg-white md:rounded-3xl shadow-2xl flex flex-col md:flex-row transform scale-95 transition-transform duration-300 overflow-y-auto md:overflow-hidden" id="modal-content">
-                
                 <div class="w-full md:w-5/12 relative h-64 md:h-auto bg-gray-100 flex-shrink-0">
                     <img id="modal-img" src="" class="w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
@@ -77,11 +86,11 @@ import Layout from '../../layouts/Layout.astro';
                 <div class="flex items-center gap-4">
                     <a href="https://vuelos.lumivia.app/" target="_blank" class="flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-lumiDark transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        Vuelos
+                        <span class="hidden sm:inline">Vuelos</span>
                     </a>
                     <a href="https://www.stay22.com/allez/roam?aid=lumivia" target="_blank" class="flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-lumiCyan transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                        Hoteles
+                        <span class="hidden sm:inline">Hoteles</span>
                     </a>
                     <div class="h-4 w-px bg-gray-200 hidden sm:block"></div>
                 
@@ -91,16 +100,16 @@ import Layout from '../../layouts/Layout.astro';
                         
                         <div id="dropdown-paises" class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50 overflow-hidden border border-gray-100">
                             <div class="py-1">
-                                <button onclick="seleccionarPais('MX', 'MXN', 'https://flagcdn.com/w20/mx.png')" class="w-full flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 font-bold gap-3 transition-colors">
+                                <button onclick="window.location.href='/mx'" class="w-full flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 font-bold gap-3 transition-colors">
                                     <img src="https://flagcdn.com/w20/mx.png" alt="MX" class="w-5 h-auto rounded-sm shadow-sm"> México (MXN)
                                 </button>
-                                <button onclick="seleccionarPais('CO', 'COP', 'https://flagcdn.com/w20/co.png')" class="w-full flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 font-bold gap-3 transition-colors">
+                                <button onclick="window.location.href='/co'" class="w-full flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 font-bold gap-3 transition-colors">
                                     <img src="https://flagcdn.com/w20/co.png" alt="CO" class="w-5 h-auto rounded-sm shadow-sm"> Colombia (COP)
                                 </button>
-                                <button onclick="seleccionarPais('CL', 'CLP', 'https://flagcdn.com/w20/cl.png')" class="w-full flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 font-bold gap-3 transition-colors">
+                                <button onclick="window.location.href='/cl'" class="w-full flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 font-bold gap-3 transition-colors">
                                     <img src="https://flagcdn.com/w20/cl.png" alt="CL" class="w-5 h-auto rounded-sm shadow-sm"> Chile (CLP)
                                 </button>
-                                <button onclick="seleccionarPais('CR', 'USD', 'https://flagcdn.com/w20/cr.png')" class="w-full flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 font-bold gap-3 transition-colors">
+                                <button onclick="window.location.href='/cr'" class="w-full flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 font-bold gap-3 transition-colors">
                                     <img src="https://flagcdn.com/w20/cr.png" alt="CR" class="w-5 h-auto rounded-sm shadow-sm"> Costa Rica (USD)
                                 </button>
                             </div>
@@ -109,11 +118,10 @@ import Layout from '../../layouts/Layout.astro';
                 </div>
             </div>
         </header>
-
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
             
             <div class="text-center max-w-3xl mx-auto mb-10 relative z-10" id="hero-section">
-                <h1 class="text-4xl md:text-5xl font-black tracking-tighter mb-4 text-lumiDark leading-tight drop-shadow-sm">
+                <h1 class="text-4xl md:text-5xl font-black tracking-tighter mb-4 text-lumiDark leading-tight drop-shadow-sm mt-4">
                     Viajes para tus recuerdos.<br>
                     <span class="bg-clip-text text-transparent bg-gradient-to-r from-lumiCyan to-blue-500">Historias para toda la vida.</span>
                 </h1>
@@ -122,8 +130,8 @@ import Layout from '../../layouts/Layout.astro';
                 </p>
             </div>
 
-            <div class="max-w-xl mx-auto mb-6 relative z-20 group" id="newsletter-section">
-                <div class="bg-white/80 backdrop-blur-xl p-1.5 rounded-full shadow-sm border border-white/40 flex flex-col sm:flex-row items-center gap-2 transform transition-all duration-500 hover:shadow-md ring-1 ring-black/5">
+            <div class="max-w-xl mx-auto mb-16 relative z-20 group" id="newsletter-section">
+                <div class="bg-white/80 backdrop-blur-xl p-1.5 rounded-full shadow-sm border border-gray-200 flex flex-col sm:flex-row items-center gap-2 transform transition-all duration-500 hover:shadow-md hover:border-gray-300">
                     <div class="pl-4 text-gray-400 hidden sm:block">
                         <svg class="w-5 h-5 text-lumiCyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                     </div>
@@ -135,24 +143,8 @@ import Layout from '../../layouts/Layout.astro';
                     </form>
                 </div>
                 <p id="nl-mensaje" class="text-center text-sm font-bold mt-3 hidden"></p>
-                <div class="flex flex-col items-center mt-4 gap-2">
-                    <div class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-gray-600 bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full border border-emerald-100/50">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        Oportunidades reales, verificadas a diario
-                    </div>
-                </div>
             </div>
 
-    <div class="flex justify-center mb-12 relative z-20 mt-[-10px]">
-         <a href="https://whatsapp.com/channel/0029Vb7tSlb7dmefEZ6MN52v" target="_blank" class="inline-flex items-center gap-3 bg-white/90 backdrop-blur-md border border-emerald-100 hover:border-emerald-300 hover:shadow-md px-2 py-2 pr-5 rounded-full transition-all group">
-            <div class="bg-emerald-500 text-white w-8 h-8 rounded-full flex items-center justify-center shadow-sm">
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            </div>
-            <span class="text-sm font-bold text-gray-700">Únete al canal de WhatsApp</span>
-            <span class="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold uppercase px-2 py-0.5 rounded ml-1 group-hover:bg-emerald-500 group-hover:text-white transition-colors">Gratis</span>
-        </a>
-    </div>
-        
             <div class="mb-6 flex items-center justify-between" id="titulo-hook">
                 <h2 class="text-2xl font-bold tracking-tight">Oportunidades Destacadas</h2>
             </div>
@@ -262,8 +254,7 @@ import Layout from '../../layouts/Layout.astro';
                 </p>
             </div>
         </footer>
-
-        <script is:inline>
+<script is:inline>
             const SUPABASE_URL = 'https://khmkpkbhlzpvowesbkgu.supabase.co';
             const SUPABASE_KEY = 'sb_publishable_uyjRiobM7d6m7IdMPUQi9Q_-RPZuIvt';
             const clienteSupabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -287,6 +278,7 @@ import Layout from '../../layouts/Layout.astro';
             }
 
             function seleccionarPais(codigoPais, codigoMoneda, urlBandera) {
+                // Esta función se mantiene para inicializar la UI
                 paisActual = codigoPais;
                 monedaActual = codigoMoneda;
                 banderaActual = urlBandera;
@@ -302,7 +294,11 @@ import Layout from '../../layouts/Layout.astro';
                 
                 const loaderContainer = document.getElementById('hook-deals');
                 if(loaderContainer) {
-                    loaderContainer.innerHTML = `<div class="col-span-full text-center text-gray-400 py-10 font-medium animate-pulse" id="loader">Conectando con el radar de ${paisActual}...</div>`;
+                    loaderContainer.innerHTML = `
+                        <div class="col-span-full text-center text-gray-400 py-10 font-medium animate-pulse" id="loader">
+                            Conectando con el radar de ${paisActual}...
+                        </div>
+                    `;
                 }
                 const radarContainer = document.getElementById('radar-deals');
                 if(radarContainer) {
@@ -425,7 +421,7 @@ import Layout from '../../layouts/Layout.astro';
                 return url;
             }
 
-function curarOfertas(data, pais) {
+            function curarOfertas(data, pais) {
                 const nacionales = destinosNacionales[pais] || [];
                 const dataLimpia = data.filter(deal => {
                     const esInternacional = !nacionales.includes(deal.destino);
@@ -442,16 +438,14 @@ function curarOfertas(data, pais) {
                 let radarDeals = [];
                 let combinacionesUsadas = new Set(); 
 
+                // Ordenamos estrictamente por fecha de creación (de más nuevas a más viejas)
                 const dataOrdenada = dataLimpia.sort((a, b) => {
-                    const calA = a.calidad_oferta || 0;
-                    const calB = b.calidad_oferta || 0;
-                    if (calB !== calA) return calB - calA;
                     return new Date(b.created_at) - new Date(a.created_at);
                 });
 
-                // 1. Llenamos las tarjetas principales (MÁXIMO 6 para que sobre para la lista)
+                // LÍMITE DE 6 TARJETAS PRINCIPALES
                 for (let i = 0; i < dataOrdenada.length; i++) {
-                    if (hookDeals.length >= 6) break; // Límite estricto de 6 tarjetas
+                    if (hookDeals.length >= 6) break;
                     const deal = dataOrdenada[i];
                     const llaveUnica = deal.destino + '-' + (deal.tipo_vuelo || 'ahorro');
 
@@ -462,7 +456,7 @@ function curarOfertas(data, pais) {
                     }
                 }
 
-                // 2. Todo lo que sobró se va a "Más Destinos"
+                // LÍMITE DE 8 EN LA LISTA INFERIOR
                 let conteoRadar = {};
                 for (let i = 0; i < dataOrdenada.length; i++) {
                     const deal = dataOrdenada[i];
@@ -475,10 +469,8 @@ function curarOfertas(data, pais) {
                     }
                 }
 
-                // Retornamos hasta 10 ofertas para la lista de abajo
-                return { hookDeals: hookDeals, radarDeals: radarDeals.slice(0, 10) };
+                return { hookDeals: hookDeals, radarDeals: radarDeals.slice(0, 8) };
             }
-
 
             function abrirModalPaquete(id) {
                 const deal = window.ofertasGlobales.find(d => d.id == id);
@@ -658,8 +650,9 @@ function curarOfertas(data, pais) {
                 try {
                     const urlParams = new URLSearchParams(window.location.search);
                     const vueloId = urlParams.get('vuelo');
-                    const hace96Horas = new Date(Date.now() - 96 * 60 * 60 * 1000).toISOString();
-
+                    
+                    // SE ELIMINÓ EL LÍMITE DE TIEMPO DE 96 HORAS (CANDADO DE TIEMPO)
+                    
                     let query = clienteSupabase
                         .from('publicaciones_lumivia')
                         .select('*')
@@ -669,9 +662,8 @@ function curarOfertas(data, pais) {
                     if (vueloId) {
                         query = query.eq('id', vueloId);
                     } else {
-                        query = query.gte('created_at', hace96Horas)
-                                     .order('calidad_oferta', { ascending: false, nullsFirst: false })
-                                     .order('created_at', { ascending: false })
+                        // ORDENAMIENTO ESTRICTAMENTE CRONOLÓGICO (MÁS NUEVOS PRIMERO)
+                        query = query.order('created_at', { ascending: false })
                                      .limit(40);
                     }
 
@@ -691,7 +683,11 @@ function curarOfertas(data, pais) {
                                     </div>
                                 `;
                             } else {
-                                container.innerHTML = `<div class="col-span-full text-center text-gray-400 py-10 font-medium" id="loader">Aún no hay ofertas publicadas en este mercado. Vuelve pronto.</div>`;
+                                container.innerHTML = `
+                                    <div class="col-span-full text-center text-gray-400 py-10 font-medium" id="loader">
+                                        Aún no hay ofertas publicadas en este mercado. Vuelve pronto.
+                                    </div>
+                                `;
                             }
                         }
                         const radarContainer = document.getElementById('radar-deals');
@@ -724,7 +720,11 @@ function curarOfertas(data, pais) {
                     console.error("Error al cargar Supabase:", err);
                     const container = document.getElementById('hook-deals');
                     if(container) {
-                        container.innerHTML = `<div class="col-span-full text-center text-red-400 py-10 font-medium" id="loader">Error de conexión. Revisa la consola.</div>`;
+                        container.innerHTML = `
+                            <div class="col-span-full text-center text-red-400 py-10 font-medium" id="loader">
+                                Error de conexión. Revisa la consola.
+                            </div>
+                        `;
                     }
                 }
             }
@@ -1020,6 +1020,7 @@ function curarOfertas(data, pais) {
                 paisActual = 'CR'; 
                 monedaActual = 'USD';
                 banderaActual = 'https://flagcdn.com/w20/cr.png';
+                
                 seleccionarPais(paisActual, monedaActual, banderaActual);
                 poblarMeses();
             });
