@@ -1,1 +1,14 @@
+# Lumivia Robots & AI Guidelines
+User-agent: *
+Allow: /
 
+# Declaración explícita para Crawlers de IA
+User-agent: GPTBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+
+# Mapas del sitio
+Sitemap: https://lumivia.app/sitemap.xml
