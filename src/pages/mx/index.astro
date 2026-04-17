@@ -10,11 +10,21 @@ import Layout from '../../layouts/Layout.astro';
         
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-58WFMR24" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
+        <div class="fixed bottom-6 right-6 z-[90] flex flex-col items-end gap-3 group">
+            <div class="bg-white/90 backdrop-blur-xl border border-gray-200/50 shadow-2xl rounded-2xl p-4 text-xs font-medium text-gray-600 opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 w-max max-w-[260px] text-right origin-bottom-right">
+                <p class="text-lumiDark font-extrabold mb-1 text-sm leading-tight">Únete a nuestro canal de Lumivia México de WhatsApp</p>
+                <span class="block mt-1">Recibe <strong class="text-emerald-600">errores de tarifa</strong> gratis antes que nadie.</span>
+            </div>
+            <a href="https://whatsapp.com/channel/0029VbCPJ4i8V0tiCieX9s01" target="_blank" class="flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-emerald-400 to-emerald-500 rounded-full shadow-[0_8px_30px_rgba(16,185,129,0.3)] hover:shadow-[0_8px_30px_rgba(16,185,129,0.5)] hover:scale-105 transition-all duration-300 relative focus:outline-none">
+                <div class="absolute inset-0 rounded-full border border-white/60 animate-ping opacity-75 duration-1000"></div>
+                <svg class="w-7 h-7 text-white relative z-10" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </a>
+        </div>
+
         <div id="modal-paquete" class="fixed inset-0 z-[100] hidden items-center justify-center p-0 md:p-6 opacity-0 transition-opacity duration-300">
             <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="cerrarModalPaquete()"></div>
             
             <div class="relative w-full h-full md:h-auto md:max-h-[90vh] max-w-4xl bg-white md:rounded-3xl shadow-2xl flex flex-col md:flex-row transform scale-95 transition-transform duration-300 overflow-y-auto md:overflow-hidden" id="modal-content">
-                
                 <div class="w-full md:w-5/12 relative h-64 md:h-auto bg-gray-100 flex-shrink-0">
                     <img id="modal-img" src="" class="w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
@@ -77,11 +87,11 @@ import Layout from '../../layouts/Layout.astro';
                 <div class="flex items-center gap-4">
                     <a href="https://vuelos.lumivia.app/" target="_blank" class="flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-lumiDark transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        Vuelos
+                        <span class="hidden sm:inline">Vuelos</span>
                     </a>
                     <a href="https://www.stay22.com/allez/roam?aid=lumivia" target="_blank" class="flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-lumiCyan transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                        Hoteles
+                        <span class="hidden sm:inline">Hoteles</span>
                     </a>
                     <div class="h-4 w-px bg-gray-200 hidden sm:block"></div>
                 
@@ -91,16 +101,16 @@ import Layout from '../../layouts/Layout.astro';
                         
                         <div id="dropdown-paises" class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50 overflow-hidden border border-gray-100">
                             <div class="py-1">
-                                <button onclick="seleccionarPais('MX', 'MXN', 'https://flagcdn.com/w20/mx.png')" class="w-full flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 font-bold gap-3 transition-colors">
+                                <button onclick="window.location.href='/mx'" class="w-full flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 font-bold gap-3 transition-colors">
                                     <img src="https://flagcdn.com/w20/mx.png" alt="MX" class="w-5 h-auto rounded-sm shadow-sm"> México (MXN)
                                 </button>
-                                <button onclick="seleccionarPais('CO', 'COP', 'https://flagcdn.com/w20/co.png')" class="w-full flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 font-bold gap-3 transition-colors">
+                                <button onclick="window.location.href='/co'" class="w-full flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 font-bold gap-3 transition-colors">
                                     <img src="https://flagcdn.com/w20/co.png" alt="CO" class="w-5 h-auto rounded-sm shadow-sm"> Colombia (COP)
                                 </button>
-                                <button onclick="seleccionarPais('CL', 'CLP', 'https://flagcdn.com/w20/cl.png')" class="w-full flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 font-bold gap-3 transition-colors">
+                                <button onclick="window.location.href='/cl'" class="w-full flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 font-bold gap-3 transition-colors">
                                     <img src="https://flagcdn.com/w20/cl.png" alt="CL" class="w-5 h-auto rounded-sm shadow-sm"> Chile (CLP)
                                 </button>
-                                <button onclick="seleccionarPais('CR', 'USD', 'https://flagcdn.com/w20/cr.png')" class="w-full flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 font-bold gap-3 transition-colors">
+                                <button onclick="window.location.href='/cr'" class="w-full flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 font-bold gap-3 transition-colors">
                                     <img src="https://flagcdn.com/w20/cr.png" alt="CR" class="w-5 h-auto rounded-sm shadow-sm"> Costa Rica (USD)
                                 </button>
                             </div>
@@ -109,11 +119,10 @@ import Layout from '../../layouts/Layout.astro';
                 </div>
             </div>
         </header>
-
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
             
             <div class="text-center max-w-3xl mx-auto mb-10 relative z-10" id="hero-section">
-                <h1 class="text-4xl md:text-5xl font-black tracking-tighter mb-4 text-lumiDark leading-tight drop-shadow-sm">
+                <h1 class="text-4xl md:text-5xl font-black tracking-tighter mb-4 text-lumiDark leading-tight drop-shadow-sm mt-4">
                     Viajes para tus recuerdos.<br>
                     <span class="bg-clip-text text-transparent bg-gradient-to-r from-lumiCyan to-blue-500">Historias para toda la vida.</span>
                 </h1>
@@ -122,8 +131,8 @@ import Layout from '../../layouts/Layout.astro';
                 </p>
             </div>
 
-            <div class="max-w-xl mx-auto mb-6 relative z-20 group" id="newsletter-section">
-                <div class="bg-white/80 backdrop-blur-xl p-1.5 rounded-full shadow-sm border border-white/40 flex flex-col sm:flex-row items-center gap-2 transform transition-all duration-500 hover:shadow-md ring-1 ring-black/5">
+            <div class="max-w-xl mx-auto mb-16 relative z-20 group" id="newsletter-section">
+                <div class="bg-white/80 backdrop-blur-xl p-1.5 rounded-full shadow-sm border border-gray-200 flex flex-col sm:flex-row items-center gap-2 transform transition-all duration-500 hover:shadow-md hover:border-gray-300">
                     <div class="pl-4 text-gray-400 hidden sm:block">
                         <svg class="w-5 h-5 text-lumiCyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                     </div>
@@ -135,30 +144,6 @@ import Layout from '../../layouts/Layout.astro';
                     </form>
                 </div>
                 <p id="nl-mensaje" class="text-center text-sm font-bold mt-3 hidden"></p>
-                <div class="flex flex-col items-center mt-4 gap-2">
-                    <div class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-gray-600 bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full border border-emerald-100/50">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        Oportunidades reales, verificadas a diario
-                    </div>
-                </div>
-            </div>
-
-            <div class="max-w-xl mx-auto mb-16 relative z-20 group">
-                <a href="https://whatsapp.com/channel/0029VbCPJ4i8V0tiCieX9s01" target="_blank" class="bg-white/80 backdrop-blur-xl p-4 md:p-5 rounded-3xl shadow-sm border border-emerald-100 flex items-center justify-between gap-4 transform transition-all duration-300 hover:shadow-md hover:border-emerald-300 ring-1 ring-black/5 hover:-translate-y-1">
-                    <div class="flex items-center gap-4">
-                        <div class="bg-gradient-to-br from-emerald-400 to-emerald-600 text-white p-3 rounded-2xl shadow-md flex-shrink-0">
-                            <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                        </div>
-                        <div>
-                            <h4 class="text-lumiDark font-extrabold text-sm md:text-base leading-tight">Únete al canal de WhatsApp</h4>
-                            <p class="text-[11px] md:text-xs text-gray-500 mt-1 font-medium">Recibe errores de tarifa antes de que las aerolíneas los corrijan.</p>
-                        </div>
-                    </div>
-                    <div class="hidden sm:flex bg-emerald-50 text-emerald-700 px-5 py-2.5 rounded-full text-xs font-bold items-center gap-1.5 border border-emerald-200/50">
-                        Unirme gratis
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                    </div>
-                </a>
             </div>
 
             <div class="mb-6 flex items-center justify-between" id="titulo-hook">
@@ -230,7 +215,7 @@ import Layout from '../../layouts/Layout.astro';
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-gray-400 mb-1">Destino</label>
-                                <input type="text" id="lead-destino" placeholder="Ej. París" required class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-lumiCyan transition">
+                                <input type="text" id="lead-destino" placeholder="Ej. Madrid" required class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-lumiCyan transition">
                             </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -270,14 +255,14 @@ import Layout from '../../layouts/Layout.astro';
                 </p>
             </div>
         </footer>
-
-        <script is:inline>
+<script is:inline>
             const SUPABASE_URL = 'https://khmkpkbhlzpvowesbkgu.supabase.co';
             const SUPABASE_KEY = 'sb_publishable_uyjRiobM7d6m7IdMPUQi9Q_-RPZuIvt';
             const clienteSupabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             
             window.ofertasGlobales = [];
 
+            // CONFIGURACIÓN NATIVA MÉXICO
             let paisActual = 'MX'; 
             let monedaActual = 'MXN';
             let banderaActual = 'https://flagcdn.com/w20/mx.png';
@@ -294,6 +279,7 @@ import Layout from '../../layouts/Layout.astro';
             }
 
             function seleccionarPais(codigoPais, codigoMoneda, urlBandera) {
+                // Esta función se mantiene para el botón principal UI, pero los enlaces del menú ahora redirigen por URL
                 paisActual = codigoPais;
                 monedaActual = codigoMoneda;
                 banderaActual = urlBandera;
@@ -309,7 +295,11 @@ import Layout from '../../layouts/Layout.astro';
                 
                 const loaderContainer = document.getElementById('hook-deals');
                 if(loaderContainer) {
-                    loaderContainer.innerHTML = `<div class="col-span-full text-center text-gray-400 py-10 font-medium animate-pulse" id="loader">Conectando con el radar de ${paisActual}...</div>`;
+                    loaderContainer.innerHTML = `
+                        <div class="col-span-full text-center text-gray-400 py-10 font-medium animate-pulse" id="loader">
+                            Conectando con el radar de ${paisActual}...
+                        </div>
+                    `;
                 }
                 const radarContainer = document.getElementById('radar-deals');
                 if(radarContainer) {
@@ -380,6 +370,22 @@ import Layout from '../../layouts/Layout.astro';
                 });
             }
 
+            function formatearFechaCorta(fechaCadena) {
+                if (!fechaCadena) return '';
+                if (!fechaCadena.includes('-')) return fechaCadena;
+                const partes = fechaCadena.split('-');
+                if (partes.length !== 3) return fechaCadena;
+                
+                const año = parseInt(partes[0]);
+                const mes = parseInt(partes[1]) - 1;
+                const dia = parseInt(partes[2]);
+                const fechaObj = new Date(año, mes, dia);
+                
+                const opciones = { day: 'numeric', month: 'short' };
+                let formateada = fechaObj.toLocaleDateString('es-ES', opciones);
+                return formateada.replace('.', ''); 
+            }
+
             function corregirAño(fechaCadena) {
                 if (!fechaCadena || !fechaCadena.includes('-')) return fechaCadena;
                 let [y, m, d] = fechaCadena.split('-');
@@ -418,7 +424,6 @@ import Layout from '../../layouts/Layout.astro';
 
             function curarOfertas(data, pais) {
                 const nacionales = destinosNacionales[pais] || [];
-                
                 const dataLimpia = data.filter(deal => {
                     const esInternacional = !nacionales.includes(deal.destino);
                     if (!esInternacional && deal.fecha_salida && deal.fecha_regreso) {
@@ -434,37 +439,25 @@ import Layout from '../../layouts/Layout.astro';
                 let radarDeals = [];
                 let combinacionesUsadas = new Set(); 
 
+                // Ordenamos estrictamente por fecha de creación (de más nuevas a más viejas)
                 const dataOrdenada = dataLimpia.sort((a, b) => {
-                    const calA = a.calidad_oferta || 0;
-                    const calB = b.calidad_oferta || 0;
-                    if (calB !== calA) return calB - calA;
                     return new Date(b.created_at) - new Date(a.created_at);
                 });
 
+                // LÍMITE DE 6 TARJETAS PRINCIPALES
                 for (let i = 0; i < dataOrdenada.length; i++) {
+                    if (hookDeals.length >= 6) break;
                     const deal = dataOrdenada[i];
-                    const esInternacional = !nacionales.includes(deal.destino);
                     const llaveUnica = deal.destino + '-' + (deal.tipo_vuelo || 'ahorro');
 
-                    if (esInternacional && !combinacionesUsadas.has(llaveUnica) && hookDeals.length < 6) {
+                    if (!combinacionesUsadas.has(llaveUnica)) {
                         hookDeals.push(deal);
                         combinacionesUsadas.add(llaveUnica);
                         deal._curado = true; 
                     }
                 }
 
-                for (let i = 0; i < dataOrdenada.length; i++) {
-                    if (hookDeals.length >= 12) break;
-                    const deal = dataOrdenada[i];
-                    const llaveUnica = deal.destino + '-' + (deal.tipo_vuelo || 'ahorro');
-
-                    if (!deal._curado && !combinacionesUsadas.has(llaveUnica)) {
-                        hookDeals.push(deal);
-                        combinacionesUsadas.add(llaveUnica);
-                        deal._curado = true;
-                    }
-                }
-
+                // LÍMITE DE 8 EN LA LISTA INFERIOR
                 let conteoRadar = {};
                 for (let i = 0; i < dataOrdenada.length; i++) {
                     const deal = dataOrdenada[i];
@@ -477,7 +470,7 @@ import Layout from '../../layouts/Layout.astro';
                     }
                 }
 
-                return { hookDeals: hookDeals, radarDeals: radarDeals.slice(0, 6) };
+                return { hookDeals: hookDeals, radarDeals: radarDeals.slice(0, 8) };
             }
 
             function abrirModalPaquete(id) {
@@ -508,65 +501,39 @@ import Layout from '../../layouts/Layout.astro';
                 let esInternacional = !nacionales.includes(deal.destino);
 
                 const diccionarioDestinos = {
-                    'NRT': { airalo: 'japan', tour: 'tokio' },
-                    'ICN': { airalo: 'south-korea', tour: 'seul' },
-                    'BKK': { airalo: 'thailand', tour: 'bangkok' },
-                    'DPS': { airalo: 'indonesia', tour: 'bali' },
-                    'SYD': { airalo: 'australia', tour: 'sidney' },
-                    'LIS': { airalo: 'portugal', tour: 'lisboa' },
-                    'MAD': { airalo: 'spain', tour: 'madrid' },
-                    'BCN': { airalo: 'spain', tour: 'barcelona' },
-                    'CDG': { airalo: 'france', tour: 'paris' },
-                    'AMS': { airalo: 'netherlands', tour: 'amsterdam' },
-                    'FRA': { airalo: 'germany', tour: 'frankfurt' },
-                    'MUC': { airalo: 'germany', tour: 'munich' },
-                    'LHR': { airalo: 'united-kingdom', tour: 'londres' },
-                    'DUB': { airalo: 'ireland', tour: 'dublin' },
-                    'MXP': { airalo: 'italy', tour: 'milan' },
-                    'MIA': { airalo: 'united-states', tour: 'miami' },
-                    'MCO': { airalo: 'united-states', tour: 'orlando' },
-                    'JFK': { airalo: 'united-states', tour: 'nueva-york' },
-                    'LAX': { airalo: 'united-states', tour: 'los-angeles' },
-                    'LAS': { airalo: 'united-states', tour: 'las-vegas' },
-                    'YYZ': { airalo: 'canada', tour: 'toronto' },
-                    'YVR': { airalo: 'canada', tour: 'vancouver' },
-                    'PUJ': { airalo: 'dominican-republic', tour: 'punta-cana' },
-                    'PTY': { airalo: 'panama', tour: 'ciudad-panama' },
-                    'LIM': { airalo: 'peru', tour: 'lima' },
-                    'SCL': { airalo: 'chile', tour: 'santiago-chile' },
-                    'EZE': { airalo: 'argentina', tour: 'buenos-aires' },
-                    'GRU': { airalo: 'brazil', tour: 'sao-paulo' },
-                    'UIO': { airalo: 'ecuador', tour: 'quito' },
-                    'CUN': { airalo: 'mexico', tour: 'cancun' },
-                    'MID': { airalo: 'mexico', tour: 'merida' },
-                    'SJD': { airalo: 'mexico', tour: 'los-cabos' },
-                    'PVR': { airalo: 'mexico', tour: 'puerto-vallarta' },
-                    'MEX': { airalo: 'mexico', tour: 'ciudad-de-mexico' },
-                    'GDL': { airalo: 'mexico', tour: 'guadalajara' },
-                    'MTY': { airalo: 'mexico', tour: 'monterrey' },
-                    'TIJ': { airalo: 'mexico', tour: 'tijuana' },
-                    'TRC': { airalo: 'mexico', tour: 'torreon' },
-                    'BOG': { airalo: 'colombia', tour: 'bogota' },
-                    'MDE': { airalo: 'colombia', tour: 'medellin' },
-                    'CTG': { airalo: 'colombia', tour: 'cartagena-indias' },
-                    'SMR': { airalo: 'colombia', tour: 'santa-marta' },
-                    'ADZ': { airalo: 'colombia', tour: 'san-andres' },
-                    'CJC': { airalo: 'chile', tour: 'san-pedro-de-atacama' },
-                    'PUQ': { airalo: 'chile', tour: 'punta-arenas' },
-                    'PMC': { airalo: 'chile', tour: 'puerto-montt' },
-                    'IQQ': { airalo: 'chile', tour: 'iquique' },
-                    'LIR': { airalo: 'costa-rica', tour: 'guanacaste' },
+                    'NRT': { airalo: 'japan', tour: 'tokio' }, 'ICN': { airalo: 'south-korea', tour: 'seul' },
+                    'BKK': { airalo: 'thailand', tour: 'bangkok' }, 'DPS': { airalo: 'indonesia', tour: 'bali' },
+                    'SYD': { airalo: 'australia', tour: 'sidney' }, 'LIS': { airalo: 'portugal', tour: 'lisboa' },
+                    'MAD': { airalo: 'spain', tour: 'madrid' }, 'BCN': { airalo: 'spain', tour: 'barcelona' },
+                    'CDG': { airalo: 'france', tour: 'paris' }, 'AMS': { airalo: 'netherlands', tour: 'amsterdam' },
+                    'FRA': { airalo: 'germany', tour: 'frankfurt' }, 'MUC': { airalo: 'germany', tour: 'munich' },
+                    'LHR': { airalo: 'united-kingdom', tour: 'londres' }, 'DUB': { airalo: 'ireland', tour: 'dublin' },
+                    'MXP': { airalo: 'italy', tour: 'milan' }, 'MIA': { airalo: 'united-states', tour: 'miami' },
+                    'MCO': { airalo: 'united-states', tour: 'orlando' }, 'JFK': { airalo: 'united-states', tour: 'nueva-york' },
+                    'LAX': { airalo: 'united-states', tour: 'los-angeles' }, 'LAS': { airalo: 'united-states', tour: 'las-vegas' },
+                    'YYZ': { airalo: 'canada', tour: 'toronto' }, 'YVR': { airalo: 'canada', tour: 'vancouver' },
+                    'PUJ': { airalo: 'dominican-republic', tour: 'punta-cana' }, 'PTY': { airalo: 'panama', tour: 'ciudad-panama' },
+                    'LIM': { airalo: 'peru', tour: 'lima' }, 'SCL': { airalo: 'chile', tour: 'santiago-chile' },
+                    'EZE': { airalo: 'argentina', tour: 'buenos-aires' }, 'GRU': { airalo: 'brazil', tour: 'sao-paulo' },
+                    'UIO': { airalo: 'ecuador', tour: 'quito' }, 'CUN': { airalo: 'mexico', tour: 'cancun' },
+                    'MID': { airalo: 'mexico', tour: 'merida' }, 'SJD': { airalo: 'mexico', tour: 'los-cabos' },
+                    'PVR': { airalo: 'mexico', tour: 'puerto-vallarta' }, 'MEX': { airalo: 'mexico', tour: 'ciudad-de-mexico' },
+                    'GDL': { airalo: 'mexico', tour: 'guadalajara' }, 'MTY': { airalo: 'mexico', tour: 'monterrey' },
+                    'TIJ': { airalo: 'mexico', tour: 'tijuana' }, 'TRC': { airalo: 'mexico', tour: 'torreon' },
+                    'BOG': { airalo: 'colombia', tour: 'bogota' }, 'MDE': { airalo: 'colombia', tour: 'medellin' },
+                    'CTG': { airalo: 'colombia', tour: 'cartagena-indias' }, 'SMR': { airalo: 'colombia', tour: 'santa-marta' },
+                    'ADZ': { airalo: 'colombia', tour: 'san-andres' }, 'CJC': { airalo: 'chile', tour: 'san-pedro-de-atacama' },
+                    'PUQ': { airalo: 'chile', tour: 'punta-arenas' }, 'PMC': { airalo: 'chile', tour: 'puerto-montt' },
+                    'IQQ': { airalo: 'chile', tour: 'iquique' }, 'LIR': { airalo: 'costa-rica', tour: 'guanacaste' },
                     'SJO': { airalo: 'costa-rica', tour: 'san-jose' }
                 };
 
-              const dataDestino = diccionarioDestinos[deal.destino] || { airalo: 'global', tour: 'global' };
-                
+                const dataDestino = diccionarioDestinos[deal.destino] || { airalo: 'global', tour: 'global' };
                 const urlBaseAiralo = "https://airalo.pxf.io/xJykMv";
-                
                 const urlDestinoAiralo = dataDestino.airalo === 'global' 
-                    ? `${urlBaseAiralo}?u=${encodeURIComponent('https://www.airalo.com/es/')}`
+                    ? `${urlBaseAiralo}?u=${encodeURIComponent('https://www.airalo.com/es/')}` 
                     : `${urlBaseAiralo}?u=${encodeURIComponent('https://www.airalo.com/es/' + dataDestino.airalo + '-esim')}`;
-
+                
                 const urlDestinoTour = dataDestino.tour === 'global' 
                     ? "https://www.civitatis.com/es/" 
                     : `https://www.civitatis.com/es/${dataDestino.tour}/?fromDate=${deal.fecha_salida}&toDate=${deal.fecha_regreso}`;
@@ -622,9 +589,6 @@ import Layout from '../../layouts/Layout.astro';
                                 </div>
                             </div>
                         </a>
-                    `;
-
-                    htmlExtras += `
                         <a href="https://ektatraveling.tpo.li/5ArJqp2u" target="_blank" class="relative overflow-hidden rounded-2xl h-[72px] group block shadow-sm border border-gray-100">
                             <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20"></div>
@@ -687,8 +651,9 @@ import Layout from '../../layouts/Layout.astro';
                 try {
                     const urlParams = new URLSearchParams(window.location.search);
                     const vueloId = urlParams.get('vuelo');
-                    const hace96Horas = new Date(Date.now() - 96 * 60 * 60 * 1000).toISOString();
-
+                    
+                    // SE ELIMINÓ EL LÍMITE DE TIEMPO DE 96 HORAS (CANDADO DE TIEMPO)
+                    
                     let query = clienteSupabase
                         .from('publicaciones_lumivia')
                         .select('*')
@@ -698,9 +663,8 @@ import Layout from '../../layouts/Layout.astro';
                     if (vueloId) {
                         query = query.eq('id', vueloId);
                     } else {
-                        query = query.gte('created_at', hace96Horas)
-                                     .order('calidad_oferta', { ascending: false, nullsFirst: false })
-                                     .order('created_at', { ascending: false })
+                        // ORDENAMIENTO ESTRICTAMENTE CRONOLÓGICO (MÁS NUEVOS PRIMERO)
+                        query = query.order('created_at', { ascending: false })
                                      .limit(40);
                     }
 
@@ -717,9 +681,14 @@ import Layout from '../../layouts/Layout.astro';
                                     <div class="col-span-full text-center py-20 flex flex-col items-center">
                                         <p class="text-gray-400 font-medium mb-4">Esa oferta ya no está disponible o el enlace caducó.</p>
                                         <a href="/" class="bg-lumiDark text-white hover:bg-black px-6 py-2.5 rounded-full font-bold transition-all shadow-md">Ver Radar Actual</a>
-                                    </div>`;
+                                    </div>
+                                `;
                             } else {
-                                container.innerHTML = `<div class="col-span-full text-center text-gray-400 py-10 font-medium" id="loader">Aún no hay ofertas publicadas en este mercado. Vuelve pronto.</div>`;
+                                container.innerHTML = `
+                                    <div class="col-span-full text-center text-gray-400 py-10 font-medium" id="loader">
+                                        Aún no hay ofertas publicadas en este mercado. Vuelve pronto.
+                                    </div>
+                                `;
                             }
                         }
                         const radarContainer = document.getElementById('radar-deals');
@@ -752,7 +721,11 @@ import Layout from '../../layouts/Layout.astro';
                     console.error("Error al cargar Supabase:", err);
                     const container = document.getElementById('hook-deals');
                     if(container) {
-                        container.innerHTML = `<div class="col-span-full text-center text-red-400 py-10 font-medium" id="loader">Error de conexión. Revisa la consola.</div>`;
+                        container.innerHTML = `
+                            <div class="col-span-full text-center text-red-400 py-10 font-medium" id="loader">
+                                Error de conexión. Revisa la consola.
+                            </div>
+                        `;
                     }
                 }
             }
@@ -760,8 +733,8 @@ import Layout from '../../layouts/Layout.astro';
             function renderHookDeals(deals) {
                 const container = document.getElementById('hook-deals');
                 if(!container) return;
-                container.innerHTML = ''; 
                 
+                container.innerHTML = ''; 
                 let schemaOffers = [];
 
                 deals.forEach(deal => {
@@ -776,24 +749,43 @@ import Layout from '../../layouts/Layout.astro';
                     
                     const esVip = deal.tipo_vuelo === 'directo';
                     const badgeVip = esVip 
-                        ? `<div class="absolute top-4 right-4 badge-vip-glass text-white text-[10px] font-black px-3 py-1.5 rounded-full z-10 flex items-center gap-1.5 uppercase tracking-widest shadow-lg">
+                        ? `
+                            <div class="absolute top-4 right-4 badge-vip-glass text-white text-[10px] font-black px-3 py-1.5 rounded-full z-10 flex items-center gap-1.5 uppercase tracking-widest shadow-lg">
                                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
                                Directo
-                           </div>` 
+                           </div>
+                          ` 
                         : '';
 
                     const etiquetaHot = (deal.calidad_oferta >= 9)
-                        ? `<span class="text-red-500 font-extrabold flex items-center gap-1 text-[10px] uppercase tracking-wider"><svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path></svg> HOT</span>`
+                        ? `
+                            <span class="text-red-500 font-extrabold flex items-center gap-1 text-[10px] uppercase tracking-wider">
+                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path></svg> 
+                                HOT
+                            </span>
+                          `
                         : '';
 
                     const monedaDeal = (deal.moneda || deal.currency || monedaActual).toUpperCase();
 
                     const amenidadesLinea = `
                         <div class="flex items-center flex-wrap gap-2 text-[10px] font-semibold text-gray-500 mb-6 uppercase tracking-widest">
-                            <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg> Hospedaje</span>
+                            <span class="flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg> 
+                                Hospedaje
+                            </span>
                             <span class="text-gray-300">•</span>
-                            <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.5 21a2.5 2.5 0 005-5V5a2 2 0 00-2-2h-3.5M10 21H5a2 2 0 01-2-2V5a2 2 0 012-2h5m4 18h-4"></path></svg> Tours</span>
-                            ${esInternacional ? `<span class="text-gray-300">•</span><span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 117.778 0M12 20h.01m-7.08-7.071a10 10 0 1114.142 0"></path></svg> eSIM</span>` : ''}
+                            <span class="flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.5 21a2.5 2.5 0 005-5V5a2 2 0 00-2-2h-3.5M10 21H5a2 2 0 01-2-2V5a2 2 0 012-2h5m4 18h-4"></path></svg> 
+                                Tours
+                            </span>
+                            ${esInternacional ? `
+                                <span class="text-gray-300">•</span>
+                                <span class="flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 117.778 0M12 20h.01m-7.08-7.071a10 10 0 1114.142 0"></path></svg> 
+                                    eSIM
+                                </span>
+                            ` : ''}
                         </div>
                     `;
 
@@ -901,6 +893,7 @@ import Layout from '../../layouts/Layout.astro';
                     container.innerHTML = '<li class="p-6 text-gray-400 text-center">No hay más destinos por ahora.</li>';
                     return;
                 }
+                
                 container.innerHTML = '';
 
                 deals.forEach(deal => {
@@ -908,10 +901,14 @@ import Layout from '../../layouts/Layout.astro';
                     const img = deal.url_imagen || "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=150&q=80";
                     const precio = deal.precio || "0";
                     const destino = deal.destino || "Mundo";
-                    const origenHtml = deal.origen ? `<span class="font-bold text-gray-400">${deal.origen}</span> <span class="mx-1 text-gray-300">➔</span> ` : '';
+                    const origenHtml = deal.origen 
+                        ? `<span class="font-bold text-gray-400">${deal.origen}</span> <span class="mx-1 text-gray-300">➔</span>` 
+                        : '';
                     
                     const monedaDeal = (deal.moneda || deal.currency || monedaActual).toUpperCase();
-                    const hotBadge = (deal.calidad_oferta >= 9) ? `<span class="text-red-500 font-bold ml-1" title="Alta Demanda">🔥</span>` : '';
+                    const hotBadge = (deal.calidad_oferta >= 9) 
+                        ? `<span class="text-red-500 font-bold ml-1" title="Alta Demanda">🔥</span>` 
+                        : '';
 
                     const li = document.createElement('li');
                     li.className = "p-3 sm:px-6 sm:py-4 hover:bg-gray-50/80 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer";
@@ -940,7 +937,10 @@ import Layout from '../../layouts/Layout.astro';
                         
                         <div class="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto mt-2 sm:mt-0">
                             <div class="text-left sm:text-right mr-2">
-                                <p class="text-lg font-extrabold text-lumiDark">$${Number(precio).toLocaleString('en-US')} <span class="text-xs font-normal text-gray-400">${monedaDeal}</span></p>
+                                <p class="text-lg font-extrabold text-lumiDark">
+                                    $${Number(precio).toLocaleString('en-US')} 
+                                    <span class="text-xs font-normal text-gray-400">${monedaDeal}</span>
+                                </p>
                             </div>
                             
                             <button onclick="copiarUrlUnica('${deal.id}')" title="Copiar enlace" class="bg-gray-50 hover:bg-gray-200 text-gray-500 p-2 rounded-lg transition-colors shadow-sm">
@@ -1017,24 +1017,11 @@ import Layout from '../../layouts/Layout.astro';
             });
 
             document.addEventListener('DOMContentLoaded', async () => {
+                // FORZADO SEO MÉXICO
+                paisActual = 'MX'; 
+                monedaActual = 'MXN';
+                banderaActual = 'https://flagcdn.com/w20/mx.png';
                 
-                // --- INICIO DE ZONA SEO / AEO ---
-                // Forzamos el país directamente sin usar la IP. 
-                // Esto permite indexación directa por mercado.
-                paisActual = 'MX'; // <-- MANTENER COMO 'MX' PARA ESTE ARCHIVO
-                // --------------------------------
-
-                const configMercado = {
-                    'MX': { moneda: 'MXN', bandera: 'https://flagcdn.com/w20/mx.png' },
-                    'CO': { moneda: 'COP', bandera: 'https://flagcdn.com/w20/co.png' },
-                    'CL': { moneda: 'CLP', bandera: 'https://flagcdn.com/w20/cl.png' },
-                    'CR': { moneda: 'USD', bandera: 'https://flagcdn.com/w20/cr.png' }
-                };
-
-                const conf = configMercado[paisActual];
-                monedaActual = conf.moneda;
-                banderaActual = conf.bandera;
-
                 seleccionarPais(paisActual, monedaActual, banderaActual);
                 poblarMeses();
             });
