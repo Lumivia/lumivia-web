@@ -1,5 +1,43 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { createClient } from '@supabase/supabase-js';
+
+const SUPABASE_URL = 'https://khmkpkbhlzpvowesbkgu.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_uyjRiobM7d6m7IdMPUQi9Q_-RPZuIvt';
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const { data: ofertas } = await supabase
+    .from('publicaciones_lumivia')
+    .select('*')
+    .eq('activo', true)
+    .eq('pais_mercado', 'MX')
+    .order('created_at', { ascending: false })
+    .limit(10);
+
+let schemaJSON = null;
+if (ofertas && ofertas.length > 0) {
+    const schemaOffers = ofertas.map((deal, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "item": {
+            "@type": "Offer",
+            "name": `Vuelo a ${deal.destino} desde ${deal.origen}`,
+            "description": deal.titulo_gancho,
+            "price": deal.precio,
+            "priceCurrency": "MXN",
+            "availability": "https://schema.org/InStock",
+            "url": `https://lumivia.app/mx?vuelo=${deal.id}`
+        }
+    }));
+
+    schemaJSON = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "Catálogo de Vuelos Lumivia - México",
+        "description": "Las mejores ofertas de vuelos detectadas por nuestro algoritmo en tiempo real.",
+        "itemListElement": schemaOffers
+    });
+}
 ---
 
 <Layout 
