@@ -18,9 +18,9 @@ import Layout from '../layouts/Layout.astro';
         <header class="bg-white/70 backdrop-blur-xl sticky top-0 z-50 border-b border-gray-200/50">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
                 <div class="flex items-center gap-4">
-                    <a href="/" class="text-gray-400 hover:text-lumiDark transition-colors bg-gray-50 p-2 rounded-full border border-gray-200" title="Volver al inicio">
+                    <button onclick="volverAlPais()" class="text-gray-400 hover:text-lumiDark transition-colors bg-gray-50 p-2 rounded-full border border-gray-200 cursor-pointer" title="Volver al inicio">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                    </a>
+                    </button>
                     <span class="text-xl font-extrabold tracking-tighter text-lumiDark">Lumivia <span class="text-lumiCyan font-light">| Legal</span></span>
                 </div>
             </div>
@@ -40,12 +40,12 @@ import Layout from '../layouts/Layout.astro';
                 
                 <div class="space-y-8 text-sm md:text-base leading-relaxed text-gray-600 font-light">
                     
-                    <div class="bg-red-50 text-red-800 p-6 rounded-2xl border-l-4 border-red-500 relative overflow-hidden">
-                        <div class="absolute -right-4 -top-4 opacity-10">
-                            <svg class="w-24 h-24 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                    <div class="bg-gray-50 text-gray-700 p-6 rounded-2xl border-l-4 border-lumiCyan relative overflow-hidden shadow-sm">
+                        <div class="absolute -right-2 -top-2 opacity-5">
+                            <svg class="w-20 h-20 text-lumiDark" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
                         </div>
-                        <p class="font-semibold relative z-10">
-                            <strong class="text-red-600">IMPORTANTE:</strong> Lumivia NO es una agencia de viajes, NO procesa pagos y NO emite boletos de avión.
+                        <p class="font-medium relative z-10">
+                            <strong class="text-lumiDark">NOTA OFICIAL:</strong> Lumivia NO es una agencia de viajes, NO procesa pagos y NO emite boletos de avión.
                         </p>
                     </div>
                     
@@ -87,10 +87,10 @@ import Layout from '../layouts/Layout.astro';
                 </div>
                 
                 <div class="mt-16 text-center border-t border-gray-100 pt-8">
-                    <a href="/" class="inline-flex items-center gap-2 bg-gray-50 hover:bg-gray-100 text-gray-600 hover:text-lumiDark px-8 py-3 rounded-full font-bold transition-all border border-gray-200">
+                    <button onclick="volverAlPais()" class="inline-flex items-center gap-2 bg-gray-50 hover:bg-gray-100 text-gray-600 hover:text-lumiDark px-8 py-3 rounded-full font-bold transition-all border border-gray-200 cursor-pointer">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                         Regresar al Buscador
-                    </a>
+                    </button>
                 </div>
             </div>
         </main>
@@ -107,6 +107,21 @@ import Layout from '../layouts/Layout.astro';
                 </p>
             </div>
         </footer>
+
+        <script is:inline>
+            function volverAlPais() {
+                // Recuperamos el país que el usuario estaba viendo antes
+                let paisGuardado = localStorage.getItem('lumivia_pais');
+                
+                // Si por alguna razón no hay país guardado, mandamos a México por defecto.
+                // Si sí lo hay, lo redirigimos a su carpeta específica (ej. /co, /cr).
+                if(paisGuardado) {
+                    window.location.href = '/' + paisGuardado.toLowerCase();
+                } else {
+                    window.location.href = '/mx';
+                }
+            }
+        </script>
 
     </div>
 </Layout>
