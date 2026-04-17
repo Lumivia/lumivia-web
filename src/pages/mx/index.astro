@@ -6,6 +6,7 @@ const SUPABASE_URL = 'https://khmkpkbhlzpvowesbkgu.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_uyjRiobM7d6m7IdMPUQi9Q_-RPZuIvt';
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// 1. OBTENEMOS LAS OFERTAS DE MÉXICO
 const { data: ofertas } = await supabase
     .from('publicaciones_lumivia')
     .select('*')
@@ -14,6 +15,23 @@ const { data: ofertas } = await supabase
     .order('created_at', { ascending: false })
     .limit(10);
 
+// 2. NUEVO: DESCARGAMOS EL CEREBRO VISUAL (Diccionario de Imágenes)
+const { data: dicDestinos } = await supabase
+    .from('diccionario_destinos')
+    .select('iata_code, imagenes_unsplash')
+    .not('imagenes_unsplash', 'is', null);
+
+const mapaImagenes = {};
+if (dicDestinos) {
+    dicDestinos.forEach(d => {
+        if(d.imagenes_unsplash && d.imagenes_unsplash.length > 0) {
+           mapaImagenes[d.iata_code] = d.imagenes_unsplash;
+        }
+    });
+}
+const diccionarioVisualJSON = JSON.stringify(mapaImagenes);
+
+// 3. ARMAMOS EL SCHEMA JSON-LD PARA LAS IAs
 let schemaJSON = null;
 if (ofertas && ofertas.length > 0) {
     const schemaOffers = ofertas.map((deal, index) => ({
@@ -45,6 +63,8 @@ if (ofertas && ofertas.length > 0) {
     description="Encuentra las mejores ofertas de vuelos y viajes desde México. Lumivia rastrea tarifas ocultas diariamente para que viajes más pagando menos."
     schemaAEO={schemaJSON}
 >
+    <script is:inline set:html={`window.diccionarioVisual = ${diccionarioVisualJSON};`}></script>
+
     <div class="bg-gray-50 text-lumiDark antialiased selection:bg-lumiCyan selection:text-white relative overflow-x-hidden">
         
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-58WFMR24" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -511,7 +531,22 @@ if (ofertas && ofertas.length > 0) {
                 const deal = window.ofertasGlobales.find(d => d.id == id);
                 if(!deal) return;
 
-                document.getElementById('modal-img').src = deal.url_imagen || "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80";
+                // LA FOTO DEL MODAL TAMBIÉN USA EL DICCIONARIO AHORA
+                const imagenesIconicas = window.diccionarioVisual || {};
+                let imgIdModal = '1436491865332-7a61a109cc05'; // Fallback
+                if (deal.url_imagen && deal.url_imagen.includes('unsplash.com/photo-')) {
+                    const match = deal.url_imagen.match(/photo-([a-zA-Z0-9-]+)/);
+                    if (match && match[1] !== imgIdModal) { imgIdModal = match[1]; }
+                }
+                if (!imgIdModal || imgIdModal === '1436491865332-7a61a109cc05') {
+                    if (imagenesIconicas[deal.destino]) {
+                        const listaFotos = imagenesIconicas[deal.destino];
+                        imgIdModal = listaFotos[0]; // Usar la primera foto para el modal
+                    }
+                }
+                
+                document.getElementById('modal-img').src = `https://images.unsplash.com/photo-${imgIdModal}?auto=format&fit=crop&w=800&q=80&fm=webp`;
+                
                 document.getElementById('modal-route').innerText = `${deal.origen || 'ORG'} → ${deal.destino || 'DST'}`;
                 document.getElementById('modal-title').innerText = deal.titulo_gancho || "Oferta Especial";
                 
@@ -577,7 +612,7 @@ if (ofertas && ofertas.length > 0) {
                 if (linkHotelFinal && linkHotelFinal !== 'Sin hotel sugerido') {
                     htmlExtras += `
                         <a href="${linkHotelFinal}" target="_blank" class="relative overflow-hidden rounded-2xl h-[72px] group block shadow-sm border border-gray-100">
-                            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80&fm=webp" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20"></div>
                             <div class="absolute bottom-3 left-3 right-3 flex justify-between items-end">
                                 <div>
@@ -594,7 +629,7 @@ if (ofertas && ofertas.length > 0) {
 
                 htmlExtras += `
                     <a href="${urlDestinoTour}" target="_blank" class="relative overflow-hidden rounded-2xl h-[72px] group block shadow-sm border border-gray-100">
-                        <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=400&q=80&fm=webp" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20"></div>
                         <div class="absolute bottom-3 left-3 right-3 flex justify-between items-end">
                             <div>
@@ -611,7 +646,7 @@ if (ofertas && ofertas.length > 0) {
                 if (esInternacional) {
                     htmlExtras += `
                         <a href="${urlDestinoAiralo}" target="_blank" class="relative overflow-hidden rounded-2xl h-[72px] group block shadow-sm border border-gray-100">
-                            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=400&q=80&fm=webp" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20"></div>
                             <div class="absolute bottom-3 left-3 right-3 flex justify-between items-end">
                                 <div>
@@ -624,7 +659,7 @@ if (ofertas && ofertas.length > 0) {
                             </div>
                         </a>
                         <a href="https://ektatraveling.tpo.li/5ArJqp2u" target="_blank" class="relative overflow-hidden rounded-2xl h-[72px] group block shadow-sm border border-gray-100">
-                            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=400&q=80&fm=webp" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20"></div>
                             <div class="absolute bottom-3 left-3 right-3 flex justify-between items-end">
                                 <div>
@@ -643,7 +678,7 @@ if (ofertas && ofertas.length > 0) {
 
                 let linkFinalReserva = deal.link_compra || 'https://vuelos.lumivia.app/';
                 document.getElementById('modal-link').href = linkFinalReserva;
-                document.getElementById('modal-price').innerText = `$${Number(deal.precio).toLocaleString('en-US')} ${(deal.moneda || monedaActual).toUpperCase()}`;
+                document.getElementById('modal-price').innerText = `$${Number(deal.precio).toLocaleString('en-US')} ${(deal.moneda || deal.currency || monedaActual).toUpperCase()}`;
                 document.getElementById('modal-dates').innerText = `${formatearFechaCorta(deal.fecha_salida)} - ${formatearFechaCorta(deal.fecha_regreso)}`;
 
                 const modal = document.getElementById('modal-paquete');
@@ -754,7 +789,7 @@ if (ofertas && ofertas.length > 0) {
                 }
             }
 
-            // *** ESTA ES LA FUNCIÓN LIMPIA, SIN EL CÓDIGO DE SCHEMA DUPLICADO ***
+            // *** FUNCIÓN RENDER HOOK DEALS (CONECTADA A SUPABASE) ***
             function renderHookDeals(deals) {
                 const container = document.getElementById('hook-deals');
                 if(!container) return;
@@ -762,7 +797,26 @@ if (ofertas && ofertas.length > 0) {
                 container.innerHTML = ''; 
 
                 deals.forEach(deal => {
-                    const img = deal.url_imagen || "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80";
+                    // LA MAGIA: LEER EL DICCIONARIO VIVO INYECTADO POR ASTRO
+                    const imagenesIconicas = window.diccionarioVisual || {};
+                    const idProhibido = '1436491865332-7a61a109cc05'; // Ala genérica
+                    let imgId = null;
+                    
+                    if (deal.url_imagen && deal.url_imagen.includes('unsplash.com/photo-')) {
+                        const match = deal.url_imagen.match(/photo-([a-zA-Z0-9-]+)/);
+                        if (match && match[1] !== idProhibido) { imgId = match[1]; }
+                    }
+
+                    if (!imgId && imagenesIconicas[deal.destino]) {
+                        const listaFotos = imagenesIconicas[deal.destino];
+                        const indiceAleatorio = Math.floor(Math.random() * listaFotos.length);
+                        imgId = listaFotos[indiceAleatorio];
+                    }
+
+                    if (!imgId) { imgId = '1436491865332-7a61a109cc05'; } 
+                    
+                    const img = `https://images.unsplash.com/photo-${imgId}?auto=format&fit=crop&w=600&q=70&fm=webp`;
+
                     const titulo = deal.titulo_gancho || "Oferta Especial";
                     const precio = deal.precio || "Consultar";
                     const tiempoTranscurrido = calcularTiempoTranscurrido(deal.created_at);
@@ -773,43 +827,24 @@ if (ofertas && ofertas.length > 0) {
                     
                     const esVip = deal.tipo_vuelo === 'directo';
                     const badgeVip = esVip 
-                        ? `
-                            <div class="absolute top-4 right-4 badge-vip-glass text-white text-[10px] font-black px-3 py-1.5 rounded-full z-10 flex items-center gap-1.5 uppercase tracking-widest shadow-lg">
+                        ? `<div class="absolute top-4 right-4 badge-vip-glass text-white text-[10px] font-black px-3 py-1.5 rounded-full z-10 flex items-center gap-1.5 uppercase tracking-widest shadow-lg">
                                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
                                Directo
-                           </div>
-                          ` 
-                        : '';
+                           </div>` : '';
 
                     const etiquetaHot = (deal.calidad_oferta >= 9)
-                        ? `
-                            <span class="text-red-500 font-extrabold flex items-center gap-1 text-[10px] uppercase tracking-wider">
-                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path></svg> 
-                                HOT
-                            </span>
-                          `
-                        : '';
+                        ? `<span class="text-red-500 font-extrabold flex items-center gap-1 text-[10px] uppercase tracking-wider">
+                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path></svg> HOT
+                            </span>` : '';
 
                     const monedaDeal = (deal.moneda || deal.currency || monedaActual).toUpperCase();
 
                     const amenidadesLinea = `
                         <div class="flex items-center flex-wrap gap-2 text-[10px] font-semibold text-gray-500 mb-6 uppercase tracking-widest">
-                            <span class="flex items-center gap-1">
-                                <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg> 
-                                Hospedaje
-                            </span>
+                            <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg> Hospedaje</span>
                             <span class="text-gray-300">•</span>
-                            <span class="flex items-center gap-1">
-                                <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.5 21a2.5 2.5 0 005-5V5a2 2 0 00-2-2h-3.5M10 21H5a2 2 0 01-2-2V5a2 2 0 012-2h5m4 18h-4"></path></svg> 
-                                Tours
-                            </span>
-                            ${esInternacional ? `
-                                <span class="text-gray-300">•</span>
-                                <span class="flex items-center gap-1">
-                                    <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 117.778 0M12 20h.01m-7.08-7.071a10 10 0 1114.142 0"></path></svg> 
-                                    eSIM
-                                </span>
-                            ` : ''}
+                            <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.5 21a2.5 2.5 0 005-5V5a2 2 0 00-2-2h-3.5M10 21H5a2 2 0 01-2-2V5a2 2 0 012-2h5m4 18h-4"></path></svg> Tours</span>
+                            ${esInternacional ? `<span class="text-gray-300">•</span><span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 117.778 0M12 20h.01m-7.08-7.071a10 10 0 1114.142 0"></path></svg> eSIM</span>` : ''}
                         </div>
                     `;
 
@@ -820,7 +855,7 @@ if (ofertas && ofertas.length > 0) {
                     
                     card.innerHTML = `
                         <div class="relative h-56 overflow-hidden bg-gray-100">
-                            <img src="${img}" alt="${titulo}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
+                            <img src="${img}" alt="${titulo}" loading="lazy" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
                             <div class="absolute inset-0 bg-gradient-to-t from-lumiDark/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <div class="absolute top-4 left-4 bg-white/95 backdrop-blur-md text-lumiDark text-[10px] font-bold px-3 py-1.5 rounded-full shadow-sm tracking-wide border border-white/50 uppercase flex items-center gap-1">
                                 ⏱️ ${tiempoTranscurrido}
@@ -830,7 +865,6 @@ if (ofertas && ofertas.length > 0) {
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-1 6-1-1H11.5l-1-1H5v10m0 0h4"></path></svg>
                             </button>
                         </div>
-                        
                         <div class="p-6 flex flex-col flex-grow bg-white relative">
                             <div class="flex items-center justify-between mb-3">
                                 <div class="flex items-center gap-2">
@@ -841,23 +875,18 @@ if (ofertas && ofertas.length > 0) {
                                     </div>
                                     ${etiquetaHot}
                                 </div>
-                                
                                 <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1">
                                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                     ${fechasCortas}
                                 </div>
                             </div>
-                            
                             <h3 class="text-xl font-bold mb-4 text-lumiDark group-hover:text-lumiCyan transition-colors leading-snug line-clamp-2">${titulo}</h3>
-                            
                             ${amenidadesLinea}
-
                             <div class="mt-auto pt-5 border-t border-gray-100 flex items-center justify-between">
                                 <div>
                                     <p class="text-[9px] text-gray-400 uppercase tracking-widest font-bold mb-0.5">Vuelo Id/Vt</p>
                                     <p class="text-2xl font-black text-lumiDark leading-none tracking-tight">$${Number(precio).toLocaleString('en-US')} <span class="text-xs font-semibold text-gray-400">${monedaDeal}</span></p>
                                 </div>
-                                
                                 <div class="flex items-center gap-3">
                                     <button onclick="copiarUrlUnica('${deal.id}')" title="Copiar enlace" class="bg-gray-50 hover:bg-gray-200 text-gray-500 p-2 rounded-lg transition-colors shadow-sm">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
@@ -875,11 +904,9 @@ if (ofertas && ofertas.length > 0) {
                 if (!window.carruselIniciado && deals.length > 0) {
                     window.carruselIniciado = true;
                     const scrollContainer = document.getElementById('hook-deals');
-                    
                     setInterval(() => {
                         if (!scrollContainer || scrollContainer.children.length === 0) return;
                         const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-                        
                         if (scrollContainer.scrollLeft >= maxScroll - 10) {
                             scrollContainer.scrollTo({ left: 0, behavior: 'smooth' });
                         } else {
@@ -890,6 +917,7 @@ if (ofertas && ofertas.length > 0) {
                 }
             }
 
+            // *** FUNCIÓN RENDER RADAR DEALS (CONECTADA A SUPABASE) ***
             function renderRadarDeals(deals) {
                 const container = document.getElementById('radar-deals');
                 if(!container) return;
@@ -902,8 +930,27 @@ if (ofertas && ofertas.length > 0) {
                 container.innerHTML = '';
 
                 deals.forEach(deal => {
+                    const imagenesIconicas = window.diccionarioVisual || {};
+                    const idProhibido = '1436491865332-7a61a109cc05'; // Ala genérica
+                    let imgId = null;
+                    
+                    if (deal.url_imagen && deal.url_imagen.includes('unsplash.com/photo-')) {
+                        const match = deal.url_imagen.match(/photo-([a-zA-Z0-9-]+)/);
+                        if (match && match[1] !== idProhibido) { imgId = match[1]; }
+                    }
+
+                    if (!imgId && imagenesIconicas[deal.destino]) {
+                        const listaFotos = imagenesIconicas[deal.destino];
+                        const indiceAleatorio = Math.floor(Math.random() * listaFotos.length);
+                        imgId = listaFotos[indiceAleatorio];
+                    }
+
+                    if (!imgId) { imgId = '1436491865332-7a61a109cc05'; } 
+                    
+                    // COMPRESIÓN PARA MINIATURAS: w=150
+                    const img = `https://images.unsplash.com/photo-${imgId}?auto=format&fit=crop&w=150&q=60&fm=webp`;
+
                     const titulo = deal.titulo_gancho || "Destino Sorpresa";
-                    const img = deal.url_imagen || "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=150&q=80";
                     const precio = deal.precio || "0";
                     const destino = deal.destino || "Mundo";
                     const origenHtml = deal.origen 
@@ -912,8 +959,7 @@ if (ofertas && ofertas.length > 0) {
                     
                     const monedaDeal = (deal.moneda || deal.currency || monedaActual).toUpperCase();
                     const hotBadge = (deal.calidad_oferta >= 9) 
-                        ? `<span class="text-red-500 font-bold ml-1" title="Alta Demanda">🔥</span>` 
-                        : '';
+                        ? `<span class="text-red-500 font-bold ml-1" title="Alta Demanda">🔥</span>` : '';
 
                     const li = document.createElement('li');
                     li.className = "p-3 sm:px-6 sm:py-4 hover:bg-gray-50/80 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer";
@@ -921,7 +967,7 @@ if (ofertas && ofertas.length > 0) {
                     
                     li.innerHTML = `
                         <div class="flex items-center gap-4">
-                            <img src="${img}" class="h-12 w-12 rounded-lg object-cover shadow-sm border border-gray-200 hidden sm:block">
+                            <img src="${img}" loading="lazy" class="h-12 w-12 rounded-lg object-cover shadow-sm border border-gray-200 hidden sm:block">
                             <div>
                                 <h4 class="font-bold text-lumiDark text-base flex items-center flex-wrap gap-1">
                                     ${titulo} ${hotBadge}
@@ -939,7 +985,6 @@ if (ofertas && ofertas.length > 0) {
                                 </div>
                             </div>
                         </div>
-                        
                         <div class="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto mt-2 sm:mt-0">
                             <div class="text-left sm:text-right mr-2">
                                 <p class="text-lg font-extrabold text-lumiDark">
@@ -947,7 +992,6 @@ if (ofertas && ofertas.length > 0) {
                                     <span class="text-xs font-normal text-gray-400">${monedaDeal}</span>
                                 </p>
                             </div>
-                            
                             <button onclick="copiarUrlUnica('${deal.id}')" title="Copiar enlace" class="bg-gray-50 hover:bg-gray-200 text-gray-500 p-2 rounded-lg transition-colors shadow-sm">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
                             </button>
