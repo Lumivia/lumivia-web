@@ -1,14 +1,24 @@
-# Lumivia Robots & AI Guidelines
+# Lumivia - Reglas para Motores de Búsqueda y Agentes de IA
 User-agent: *
 Allow: /
 
-# Declaración explícita para Crawlers de IA
+# OpenAI / ChatGPT
 User-agent: GPTBot
 Allow: /
 User-agent: ChatGPT-User
 Allow: /
+
+# Perplexity AI
 User-agent: PerplexityBot
 Allow: /
 
-# Mapas del sitio
+# Google Gemini (Google-Extended)
+User-agent: Google-Extended
+Allow: /
+
+# Anthropic Claude
+User-agent: ClaudeBot
+Allow: /
+
+# Enlace al mapa del sitio
 Sitemap: https://lumivia.app/sitemap.xml
