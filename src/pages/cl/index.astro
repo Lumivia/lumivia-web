@@ -43,6 +43,7 @@ if (ofertas && ofertas.length > 0) {
 <Layout 
     title="Vuelos Baratos desde Chile | Lumivia" 
     description="Encuentra las mejores ofertas de vuelos y viajes desde Chile. Lumivia rastrea tarifas ocultas diariamente para que viajes más pagando menos."
+    schemaAEO={schemaJSON}
 >
     <div class="bg-gray-50 text-lumiDark antialiased selection:bg-lumiCyan selection:text-white relative overflow-x-hidden">
         
@@ -134,7 +135,7 @@ if (ofertas && ofertas.length > 0) {
                 
                     <div class="relative inline-block text-left" id="custom-country-selector">
                         <button type="button" onclick="toggleDropdown()" id="btn-pais-actual" class="inline-flex items-center justify-center w-full rounded-full border border-gray-200 shadow-sm px-4 py-1.5 bg-white text-sm font-bold text-gray-600 hover:bg-gray-50 focus:outline-none focus:border-lumiCyan transition-colors gap-2 cursor-pointer">
-                            </button>
+                        </button>
                         
                         <div id="dropdown-paises" class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50 overflow-hidden border border-gray-100">
                             <div class="py-1">
@@ -156,7 +157,8 @@ if (ofertas && ofertas.length > 0) {
                 </div>
             </div>
         </header>
-<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
+
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
             
             <div class="text-center max-w-3xl mx-auto mb-10 relative z-10" id="hero-section">
                 <h1 class="text-4xl md:text-5xl font-black tracking-tighter mb-4 text-lumiDark leading-tight drop-shadow-sm mt-4">
@@ -208,8 +210,7 @@ if (ofertas && ofertas.length > 0) {
                     <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                 </a>
             </div>
-
-            <div class="bg-lumiDark text-white border border-gray-800 rounded-3xl px-8 py-8 shadow-2xl overflow-hidden relative flex flex-col md:flex-row items-center justify-between gap-8 mb-20 transform transition-all hover:scale-[1.01] duration-500 group">
+<div class="bg-lumiDark text-white border border-gray-800 rounded-3xl px-8 py-8 shadow-2xl overflow-hidden relative flex flex-col md:flex-row items-center justify-between gap-8 mb-20 transform transition-all hover:scale-[1.01] duration-500 group">
                 <div class="absolute inset-0 bg-gradient-to-r from-lumiCyan/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                 <div class="relative z-10 text-center md:text-left flex-grow">
                     <h3 class="text-2xl font-bold mb-2">¿Tienes un viaje específico en mente?</h3>
@@ -316,7 +317,6 @@ if (ofertas && ofertas.length > 0) {
             }
 
             function seleccionarPais(codigoPais, codigoMoneda, urlBandera) {
-                // Esta función se mantiene para inicializar la UI
                 paisActual = codigoPais;
                 monedaActual = codigoMoneda;
                 banderaActual = urlBandera;
@@ -476,12 +476,10 @@ if (ofertas && ofertas.length > 0) {
                 let radarDeals = [];
                 let combinacionesUsadas = new Set(); 
 
-                // Ordenamos estrictamente por fecha de creación (de más nuevas a más viejas)
                 const dataOrdenada = dataLimpia.sort((a, b) => {
                     return new Date(b.created_at) - new Date(a.created_at);
                 });
 
-                // LÍMITE DE 6 TARJETAS PRINCIPALES
                 for (let i = 0; i < dataOrdenada.length; i++) {
                     if (hookDeals.length >= 6) break;
                     const deal = dataOrdenada[i];
@@ -494,7 +492,6 @@ if (ofertas && ofertas.length > 0) {
                     }
                 }
 
-                // LÍMITE DE 8 EN LA LISTA INFERIOR
                 let conteoRadar = {};
                 for (let i = 0; i < dataOrdenada.length; i++) {
                     const deal = dataOrdenada[i];
@@ -644,17 +641,10 @@ if (ofertas && ofertas.length > 0) {
                 
                 extrasContainer.innerHTML = htmlExtras;
 
-                document.getElementById('modal-price').innerText = `$${Number(deal.precio).toLocaleString('en-US')} ${(deal.moneda || deal.currency || monedaActual).toUpperCase()}`;
-                document.getElementById('modal-dates').innerText = `${formatearFechaCorta(deal.fecha_salida)} - ${formatearFechaCorta(deal.fecha_regreso)}`;
-                
-                const urlBuscador = construirLinkVuelo(deal.origen, deal.destino, deal.fecha_salida, deal.fecha_regreso);
-                let linkFinalReserva = urlBuscador;
-                
-                if (deal.link_compra && deal.link_compra !== 'EMPTY' && !deal.link_compra.includes('vuelos.lumivia.app')) {
-                    linkFinalReserva = deal.link_compra;
-                }
-
+                let linkFinalReserva = deal.link_compra || 'https://vuelos.lumivia.app/';
                 document.getElementById('modal-link').href = linkFinalReserva;
+                document.getElementById('modal-price').innerText = `$${Number(deal.precio).toLocaleString('en-US')} ${(deal.moneda || monedaActual).toUpperCase()}`;
+                document.getElementById('modal-dates').innerText = `${formatearFechaCorta(deal.fecha_salida)} - ${formatearFechaCorta(deal.fecha_regreso)}`;
 
                 const modal = document.getElementById('modal-paquete');
                 const content = document.getElementById('modal-content');
@@ -689,8 +679,6 @@ if (ofertas && ofertas.length > 0) {
                     const urlParams = new URLSearchParams(window.location.search);
                     const vueloId = urlParams.get('vuelo');
                     
-                    // SE ELIMINÓ EL LÍMITE DE TIEMPO DE 96 HORAS (CANDADO DE TIEMPO)
-                    
                     let query = clienteSupabase
                         .from('publicaciones_lumivia')
                         .select('*')
@@ -700,7 +688,6 @@ if (ofertas && ofertas.length > 0) {
                     if (vueloId) {
                         query = query.eq('id', vueloId);
                     } else {
-                        // ORDENAMIENTO ESTRICTAMENTE CRONOLÓGICO (MÁS NUEVOS PRIMERO)
                         query = query.order('created_at', { ascending: false })
                                      .limit(40);
                     }
@@ -767,12 +754,12 @@ if (ofertas && ofertas.length > 0) {
                 }
             }
 
+            // *** ESTA ES LA FUNCIÓN LIMPIA, SIN EL CÓDIGO DE SCHEMA DUPLICADO ***
             function renderHookDeals(deals) {
                 const container = document.getElementById('hook-deals');
                 if(!container) return;
                 
                 container.innerHTML = ''; 
-                let schemaOffers = [];
 
                 deals.forEach(deal => {
                     const img = deal.url_imagen || "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80";
@@ -872,37 +859,18 @@ if (ofertas && ofertas.length > 0) {
                                 </div>
                                 
                                 <div class="flex items-center gap-3">
-                                    <button onclick="copiarUrlUnica('${deal.id}')" title="Copiar enlace" class="text-gray-400 hover:text-lumiCyan transition-colors">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                                    <button onclick="copiarUrlUnica('${deal.id}')" title="Copiar enlace" class="bg-gray-50 hover:bg-gray-200 text-gray-500 p-2 rounded-lg transition-colors shadow-sm">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
                                     </button>
-                                    <span class="text-lumiCyan hover:text-lumiDark font-bold text-sm transition-colors cursor-pointer">Ver Oferta</span>
+                                    <span class="text-lumiCyan hover:text-lumiCyanDark font-semibold text-sm flex items-center gap-1 transition-colors">
+                                        Explorar <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                    </span>
                                 </div>
                             </div>
                         </div>
                     `;
                     container.appendChild(card);
-
-                    schemaOffers.push({ 
-                        "@type": "Offer", 
-                        "name": `Vuelo barato a ${deal.destino || 'Mundo'}`, 
-                        "description": deal.titulo_gancho,
-                        "price": deal.precio, 
-                        "priceCurrency": monedaDeal, 
-                        "availability": "https://schema.org/InStock",
-                        "url": deal.link_compra || "https://lumivia.app/radar",
-                        "validFrom": deal.created_at
-                    });
                 });
-
-                const aeoTag = document.getElementById('aeo-schema');
-                if(aeoTag) {
-                    aeoTag.textContent = JSON.stringify({ 
-                        "@context": "https://schema.org", 
-                        "@type": "ItemList", 
-                        "itemListElement": schemaOffers,
-                        "name": "Mejores ofertas de vuelos detectadas hoy"
-                    });
-                }
 
                 if (!window.carruselIniciado && deals.length > 0) {
                     window.carruselIniciado = true;
