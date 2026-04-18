@@ -711,6 +711,26 @@ if (ofertas && ofertas.length > 0) {
 
             async function fetchDeals() {
                 try {
+                    // --- 1. NUEVO: DESCARGAR DICCIONARIO EN TIEMPO REAL ---
+                    const { data: dicData, error: dicError } = await clienteSupabase
+                        .from('diccionario_destinos')
+                        .select('iata_code, imagenes_unsplash')
+                        .not('imagenes_unsplash', 'is', null);
+
+                    if (dicData && dicData.length > 0) {
+                        const mapaImg = {};
+                        dicData.forEach(d => {
+                            if (d.imagenes_unsplash) {
+                                // Aseguramos que sea un array válido
+                                mapaImg[d.iata_code] = typeof d.imagenes_unsplash === 'string' 
+                                    ? JSON.parse(d.imagenes_unsplash) 
+                                    : d.imagenes_unsplash;
+                            }
+                        });
+                        window.diccionarioVisual = mapaImg; // Actualizamos el diccionario con datos frescos
+                    }
+
+                    // --- 2. DESCARGAR VUELOS ---
                     const urlParams = new URLSearchParams(window.location.search);
                     const vueloId = urlParams.get('vuelo');
                     
@@ -723,8 +743,7 @@ if (ofertas && ofertas.length > 0) {
                     if (vueloId) {
                         query = query.eq('id', vueloId);
                     } else {
-                        query = query.order('created_at', { ascending: false })
-                                     .limit(40);
+                        query = query.order('created_at', { ascending: false }).limit(40);
                     }
 
                     const { data, error } = await query;
