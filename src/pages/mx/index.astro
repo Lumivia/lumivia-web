@@ -332,6 +332,26 @@ if (ofertas && ofertas.length > 0) {
                 'CR': ['SJO', 'LIR']
             };
 
+            // DICCIONARIO INFALIBLE (Bypass para asegurar 0% fallas en imágenes)
+            const diccionarioInfalible = {
+                'PVR': ['1562095241680-7212bf8b3fb8', '1590523277661-eb8e5c8e0a33', '1552074284-823adf33cb53', '1518105779142-d971f22f4720'],
+                'SJD': ['1518684074239-9d5f81254bf3', '1507528364635-b5df438c8b71', '1519046904884-53103b34b206', '1499793983690-e29da59ef1c2'],
+                'TIJ': ['1581452418659-199fc9ee5cb0', '1603561937968-3fa422709e3e', '1612456428800-4b2a7587cba6', '1562095241680-7212bf8b3fb8'],
+                'MID': ['1580828362629-9e8fb297dc68', '1518105779142-d971f22f4720', '1584080133502-3c220d0f4185', '1534008897995-27a23e859048'],
+                'CUN': ['3vIjqujVdIA', 'SvY433Nv7Ns', 'rXKP0Q4H1WQ', '4B5wR258Qb0'],
+                'MEX': ['s-s0hSZC0QE', '1518105779142-d971f22f4720', '1580828362629-9e8fb297dc68', '1584080133502-3c220d0f4185'],
+                'GDL': ['1581452418659-199fc9ee5cb0', '1603561937968-3fa422709e3e', '1612456428800-4b2a7587cba6', '1562095241680-7212bf8b3fb8'],
+                'MAD': ['1539037116271-8b732bc01406', 'BIBBsObHLEo', '1513024503798-251cce2a2ea1', '1543785724-43ea5625bf94'],
+                'CDG': ['1499856871958-5b9627545d1a', '1502602273-4e56ebbc6e24', '1522513470709-323e2dc4f165', '1511739001489-1107fa2fa95c'],
+                'JFK': ['1496442226666-8d4d0e6650b0', '1522083165195-3424ed129620', '1499856871958-5b9627545d1a', '1513635269975-59663e0ac1ad'],
+                'MIA': ['1533106497176-45ef8be9e6ae', '1506456073105-02f5db0fb4f2', '1585848529221-a3f25c7df76f', '1513025287661-e50cf6e35b71'],
+                'LAX': ['1580655328951-1d51ab14af16', '1515859005217-8a1f08870f59', '1534447677768-be436bb09401', '1503899036067-ea3944d9748a'],
+                'LAS': ['1605833556294-ea5c7a74f57d', '1585848529221-a3f25c7df76f', '1506456073105-02f5db0fb4f2', '1513025287661-e50cf6e35b71'],
+                'BOG': ['ovmCoJVf0yg', '1583337130417-3346a1be7dee', '1584064548480-1a73373eb4ea', '1563212879-11c52110e53d'],
+                'MDE': ['3E44SObU_vo', '1593129535032-47551f38faeb', '1604085449772-2f3b9c0c80b2', '1584013444445-562ec8724cc6'],
+                'CTG': ['1584064548480-1a73373eb4ea', '1596422846543-75c6fccc6a4c', '1611054006325-3b9e8316b23a', '1550953684-2e6504a58eb3']
+            };
+
             function toggleDropdown() {
                 document.getElementById('dropdown-paises').classList.toggle('hidden');
             }
@@ -362,7 +382,6 @@ if (ofertas && ofertas.length > 0) {
                 if(radarContainer) {
                     radarContainer.innerHTML = '<li class="p-6 text-gray-400 text-center">Buscando oportunidades locales...</li>';
                 }
-                
                 fetchDeals(); 
             }
 
@@ -443,42 +462,6 @@ if (ofertas && ofertas.length > 0) {
                 return formateada.replace('.', ''); 
             }
 
-            function corregirAño(fechaCadena) {
-                if (!fechaCadena || !fechaCadena.includes('-')) return fechaCadena;
-                let [y, m, d] = fechaCadena.split('-');
-                const hoy = new Date();
-                const mesActual = hoy.getMonth() + 1; 
-                const añoActual = hoy.getFullYear();
-
-                if (parseInt(m) < mesActual) {
-                    y = (añoActual + 1).toString();
-                } else {
-                    y = añoActual.toString();
-                }
-                return `${y}-${m}-${d}`;
-            }
-
-            function construirLinkVuelo(origen, destino, fechaSalida, fechaRegreso) {
-                const ori = (origen || '').trim().replace(/[^A-Za-z]/g, '').substring(0, 3).toUpperCase();
-                const des = (destino || '').trim().replace(/[^A-Za-z]/g, '').substring(0, 3).toUpperCase();
-
-                if (ori.length !== 3 || des.length !== 3 || !fechaSalida) {
-                    return 'https://vuelos.lumivia.app/';
-                }
-
-                const salidaCorregida = corregirAño(fechaSalida);
-                let url = `https://vuelos.lumivia.app/flights/?origin_iata=${ori}&destination_iata=${des}&depart_date=${salidaCorregida}&adults=1&with_request=true`;
-
-                if (fechaRegreso && fechaRegreso.trim() !== '' && fechaRegreso.includes('-')) {
-                    const regresoCorregido = corregirAño(fechaRegreso);
-                    url += `&return_date=${regresoCorregido}`;
-                } else {
-                    url += `&oneway=1`;
-                }
-
-                return url;
-            }
-
             function curarOfertas(data, pais) {
                 const nacionales = destinosNacionales[pais] || [];
                 const dataLimpia = data.filter(deal => {
@@ -531,18 +514,15 @@ if (ofertas && ofertas.length > 0) {
                 const deal = window.ofertasGlobales.find(d => d.id == id);
                 if(!deal) return;
 
-                // LA FOTO DEL MODAL TAMBIÉN USA EL DICCIONARIO AHORA
-                const imagenesIconicas = window.diccionarioVisual || {};
-                let imgIdModal = '1436491865332-7a61a109cc05'; // Fallback
-                if (deal.url_imagen && deal.url_imagen.includes('unsplash.com/photo-')) {
+                // IMAGEN DEL MODAL CON BYPASS INFALIBLE
+                let imgIdModal = '1488085061387-422e15b40b18'; // Fallback Nubes
+                const destinoLimpio = (deal.destino || '').trim().toUpperCase();
+
+                if (diccionarioInfalible[destinoLimpio]) {
+                    imgIdModal = diccionarioInfalible[destinoLimpio][0];
+                } else if (deal.url_imagen && deal.url_imagen.includes('unsplash.com/photo-')) {
                     const match = deal.url_imagen.match(/photo-([a-zA-Z0-9-]+)/);
-                    if (match && match[1] !== imgIdModal) { imgIdModal = match[1]; }
-                }
-                if (!imgIdModal || imgIdModal === '1436491865332-7a61a109cc05') {
-                    if (imagenesIconicas[deal.destino]) {
-                        const listaFotos = imagenesIconicas[deal.destino];
-                        imgIdModal = listaFotos[0]; // Usar la primera foto para el modal
-                    }
+                    if (match && match[1] !== '1436491865332-7a61a109cc05') { imgIdModal = match[1]; }
                 }
                 
                 document.getElementById('modal-img').src = `https://images.unsplash.com/photo-${imgIdModal}?auto=format&fit=crop&w=800&q=80&fm=webp`;
@@ -569,43 +549,10 @@ if (ofertas && ofertas.length > 0) {
                 const nacionales = destinosNacionales[paisActual] || [];
                 let esInternacional = !nacionales.includes(deal.destino);
 
-                const diccionarioDestinos = {
-                    'NRT': { airalo: 'japan', tour: 'tokio' }, 'ICN': { airalo: 'south-korea', tour: 'seul' },
-                    'BKK': { airalo: 'thailand', tour: 'bangkok' }, 'DPS': { airalo: 'indonesia', tour: 'bali' },
-                    'SYD': { airalo: 'australia', tour: 'sidney' }, 'LIS': { airalo: 'portugal', tour: 'lisboa' },
-                    'MAD': { airalo: 'spain', tour: 'madrid' }, 'BCN': { airalo: 'spain', tour: 'barcelona' },
-                    'CDG': { airalo: 'france', tour: 'paris' }, 'AMS': { airalo: 'netherlands', tour: 'amsterdam' },
-                    'FRA': { airalo: 'germany', tour: 'frankfurt' }, 'MUC': { airalo: 'germany', tour: 'munich' },
-                    'LHR': { airalo: 'united-kingdom', tour: 'londres' }, 'DUB': { airalo: 'ireland', tour: 'dublin' },
-                    'MXP': { airalo: 'italy', tour: 'milan' }, 'MIA': { airalo: 'united-states', tour: 'miami' },
-                    'MCO': { airalo: 'united-states', tour: 'orlando' }, 'JFK': { airalo: 'united-states', tour: 'nueva-york' },
-                    'LAX': { airalo: 'united-states', tour: 'los-angeles' }, 'LAS': { airalo: 'united-states', tour: 'las-vegas' },
-                    'YYZ': { airalo: 'canada', tour: 'toronto' }, 'YVR': { airalo: 'canada', tour: 'vancouver' },
-                    'PUJ': { airalo: 'dominican-republic', tour: 'punta-cana' }, 'PTY': { airalo: 'panama', tour: 'ciudad-panama' },
-                    'LIM': { airalo: 'peru', tour: 'lima' }, 'SCL': { airalo: 'chile', tour: 'santiago-chile' },
-                    'EZE': { airalo: 'argentina', tour: 'buenos-aires' }, 'GRU': { airalo: 'brazil', tour: 'sao-paulo' },
-                    'UIO': { airalo: 'ecuador', tour: 'quito' }, 'CUN': { airalo: 'mexico', tour: 'cancun' },
-                    'MID': { airalo: 'mexico', tour: 'merida' }, 'SJD': { airalo: 'mexico', tour: 'los-cabos' },
-                    'PVR': { airalo: 'mexico', tour: 'puerto-vallarta' }, 'MEX': { airalo: 'mexico', tour: 'ciudad-de-mexico' },
-                    'GDL': { airalo: 'mexico', tour: 'guadalajara' }, 'MTY': { airalo: 'mexico', tour: 'monterrey' },
-                    'TIJ': { airalo: 'mexico', tour: 'tijuana' }, 'TRC': { airalo: 'mexico', tour: 'torreon' },
-                    'BOG': { airalo: 'colombia', tour: 'bogota' }, 'MDE': { airalo: 'colombia', tour: 'medellin' },
-                    'CTG': { airalo: 'colombia', tour: 'cartagena-indias' }, 'SMR': { airalo: 'colombia', tour: 'santa-marta' },
-                    'ADZ': { airalo: 'colombia', tour: 'san-andres' }, 'CJC': { airalo: 'chile', tour: 'san-pedro-de-atacama' },
-                    'PUQ': { airalo: 'chile', tour: 'punta-arenas' }, 'PMC': { airalo: 'chile', tour: 'puerto-montt' },
-                    'IQQ': { airalo: 'chile', tour: 'iquique' }, 'LIR': { airalo: 'costa-rica', tour: 'guanacaste' },
-                    'SJO': { airalo: 'costa-rica', tour: 'san-jose' }
-                };
-
-                const dataDestino = diccionarioDestinos[deal.destino] || { airalo: 'global', tour: 'global' };
+                const dataDestino = { airalo: 'global', tour: 'global' };
                 const urlBaseAiralo = "https://airalo.pxf.io/xJykMv";
-                const urlDestinoAiralo = dataDestino.airalo === 'global' 
-                    ? `${urlBaseAiralo}?u=${encodeURIComponent('https://www.airalo.com/es/')}` 
-                    : `${urlBaseAiralo}?u=${encodeURIComponent('https://www.airalo.com/es/' + dataDestino.airalo + '-esim')}`;
-                
-                const urlDestinoTour = dataDestino.tour === 'global' 
-                    ? "https://www.civitatis.com/es/" 
-                    : `https://www.civitatis.com/es/${dataDestino.tour}/?fromDate=${deal.fecha_salida}&toDate=${deal.fecha_regreso}`;
+                const urlDestinoAiralo = `${urlBaseAiralo}?u=${encodeURIComponent('https://www.airalo.com/es/')}`;
+                const urlDestinoTour = "https://www.civitatis.com/es/";
 
                 let htmlExtras = '';
                 
@@ -658,19 +605,6 @@ if (ofertas && ofertas.length > 0) {
                                 </div>
                             </div>
                         </a>
-                        <a href="https://ektatraveling.tpo.li/5ArJqp2u" target="_blank" class="relative overflow-hidden rounded-2xl h-[72px] group block shadow-sm border border-gray-100">
-                            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=400&q=80&fm=webp" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20"></div>
-                            <div class="absolute bottom-3 left-3 right-3 flex justify-between items-end">
-                                <div>
-                                    <p class="text-[9px] text-white/70 font-bold uppercase tracking-widest mb-0.5">Asistencia Médica</p>
-                                    <p class="text-sm font-bold text-white leading-tight">Seguro de Viaje Ekta</p>
-                                </div>
-                                <div class="bg-white/20 backdrop-blur-md p-1.5 rounded-full text-white">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                                </div>
-                            </div>
-                        </a>
                     `;
                 }
                 
@@ -711,26 +645,6 @@ if (ofertas && ofertas.length > 0) {
 
             async function fetchDeals() {
                 try {
-                    // --- 1. NUEVO: DESCARGAR DICCIONARIO EN TIEMPO REAL ---
-                    const { data: dicData, error: dicError } = await clienteSupabase
-                        .from('diccionario_destinos')
-                        .select('iata_code, imagenes_unsplash')
-                        .not('imagenes_unsplash', 'is', null);
-
-                    if (dicData && dicData.length > 0) {
-                        const mapaImg = {};
-                        dicData.forEach(d => {
-                            if (d.imagenes_unsplash) {
-                                // Aseguramos que sea un array válido
-                                mapaImg[d.iata_code] = typeof d.imagenes_unsplash === 'string' 
-                                    ? JSON.parse(d.imagenes_unsplash) 
-                                    : d.imagenes_unsplash;
-                            }
-                        });
-                        window.diccionarioVisual = mapaImg; // Actualizamos el diccionario con datos frescos
-                    }
-
-                    // --- 2. DESCARGAR VUELOS ---
                     const urlParams = new URLSearchParams(window.location.search);
                     const vueloId = urlParams.get('vuelo');
                     
@@ -769,8 +683,6 @@ if (ofertas && ofertas.length > 0) {
                                 `;
                             }
                         }
-                        const radarContainer = document.getElementById('radar-deals');
-                        if(radarContainer) radarContainer.innerHTML = '';
                         return;
                     }
 
@@ -797,42 +709,35 @@ if (ofertas && ofertas.length > 0) {
 
                 } catch (err) {
                     console.error("Error al cargar Supabase:", err);
-                    const container = document.getElementById('hook-deals');
-                    if(container) {
-                        container.innerHTML = `
-                            <div class="col-span-full text-center text-red-400 py-10 font-medium" id="loader">
-                                Error de conexión. Revisa la consola.
-                            </div>
-                        `;
-                    }
                 }
             }
 
-            // *** FUNCIÓN RENDER HOOK DEALS (CONECTADA A SUPABASE) ***
             function renderHookDeals(deals) {
                 const container = document.getElementById('hook-deals');
                 if(!container) return;
-                
                 container.innerHTML = ''; 
 
                 deals.forEach(deal => {
-                    // LA MAGIA: LEER EL DICCIONARIO VIVO INYECTADO POR ASTRO
-                    const imagenesIconicas = window.diccionarioVisual || {};
-                    const idProhibido = '1436491865332-7a61a109cc05'; // Ala genérica
+                    const alaProhibida = '1436491865332-7a61a109cc05'; 
+                    const fallbackElegante = '1488085061387-422e15b40b18'; // Nubes premium
                     let imgId = null;
-                    
-                    if (deal.url_imagen && deal.url_imagen.includes('unsplash.com/photo-')) {
-                        const match = deal.url_imagen.match(/photo-([a-zA-Z0-9-]+)/);
-                        if (match && match[1] !== idProhibido) { imgId = match[1]; }
-                    }
+                    const destinoLimpio = (deal.destino || '').trim().toUpperCase();
 
-                    if (!imgId && imagenesIconicas[deal.destino]) {
-                        const listaFotos = imagenesIconicas[deal.destino];
+                    console.log(`Evaluando vuelo a: "${destinoLimpio}". ¿Existe en diccionario?`, !!diccionarioInfalible[destinoLimpio]);
+
+                    // PRIORIDAD ABSOLUTA: El diccionario
+                    if (diccionarioInfalible[destinoLimpio]) {
+                        const listaFotos = diccionarioInfalible[destinoLimpio];
                         const indiceAleatorio = Math.floor(Math.random() * listaFotos.length);
                         imgId = listaFotos[indiceAleatorio];
                     }
 
-                    if (!imgId) { imgId = '1436491865332-7a61a109cc05'; } 
+                    if (!imgId && deal.url_imagen && deal.url_imagen.includes('unsplash.com/photo-')) {
+                        const match = deal.url_imagen.match(/photo-([a-zA-Z0-9-]+)/);
+                        if (match && match[1] !== alaProhibida) { imgId = match[1]; }
+                    }
+
+                    if (!imgId) { imgId = fallbackElegante; } 
                     
                     const img = `https://images.unsplash.com/photo-${imgId}?auto=format&fit=crop&w=600&q=70&fm=webp`;
 
@@ -852,9 +757,7 @@ if (ofertas && ofertas.length > 0) {
                            </div>` : '';
 
                     const etiquetaHot = (deal.calidad_oferta >= 9)
-                        ? `<span class="text-red-500 font-extrabold flex items-center gap-1 text-[10px] uppercase tracking-wider">
-                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path></svg> HOT
-                            </span>` : '';
+                        ? `<span class="text-red-500 font-extrabold flex items-center gap-1 text-[10px] uppercase tracking-wider">HOT</span>` : '';
 
                     const monedaDeal = (deal.moneda || deal.currency || monedaActual).toUpperCase();
 
@@ -863,7 +766,7 @@ if (ofertas && ofertas.length > 0) {
                             <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg> Hospedaje</span>
                             <span class="text-gray-300">•</span>
                             <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.5 21a2.5 2.5 0 005-5V5a2 2 0 00-2-2h-3.5M10 21H5a2 2 0 01-2-2V5a2 2 0 012-2h5m4 18h-4"></path></svg> Tours</span>
-                            ${esInternacional ? `<span class="text-gray-300">•</span><span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 117.778 0M12 20h.01m-7.08-7.071a10 10 0 1114.142 0"></path></svg> eSIM</span>` : ''}
+                            ${esInternacional ? `<span class="text-gray-300">•</span><span class="flex items-center gap-1">eSIM</span>` : ''}
                         </div>
                     `;
 
@@ -880,9 +783,6 @@ if (ofertas && ofertas.length > 0) {
                                 ⏱️ ${tiempoTranscurrido}
                             </div>
                             ${badgeVip}
-                            <button onclick="reportarCambioPrecio('${deal.id}')" title="¿El precio subió? Repórtalo" class="absolute bottom-3 right-3 bg-white/80 hover:bg-red-50 text-gray-500 hover:text-red-500 backdrop-blur-sm p-2.5 rounded-full shadow-sm border border-white/50 transition-colors z-10">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-1 6-1-1H11.5l-1-1H5v10m0 0h4"></path></svg>
-                            </button>
                         </div>
                         <div class="p-6 flex flex-col flex-grow bg-white relative">
                             <div class="flex items-center justify-between mb-3">
@@ -894,8 +794,7 @@ if (ofertas && ofertas.length > 0) {
                                     </div>
                                     ${etiquetaHot}
                                 </div>
-                                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
                                     ${fechasCortas}
                                 </div>
                             </div>
@@ -903,40 +802,16 @@ if (ofertas && ofertas.length > 0) {
                             ${amenidadesLinea}
                             <div class="mt-auto pt-5 border-t border-gray-100 flex items-center justify-between">
                                 <div>
-                                    <p class="text-[9px] text-gray-400 uppercase tracking-widest font-bold mb-0.5">Vuelo Id/Vt</p>
                                     <p class="text-2xl font-black text-lumiDark leading-none tracking-tight">$${Number(precio).toLocaleString('en-US')} <span class="text-xs font-semibold text-gray-400">${monedaDeal}</span></p>
                                 </div>
-                                <div class="flex items-center gap-3">
-                                    <button onclick="copiarUrlUnica('${deal.id}')" title="Copiar enlace" class="bg-gray-50 hover:bg-gray-200 text-gray-500 p-2 rounded-lg transition-colors shadow-sm">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
-                                    </button>
-                                    <span class="text-lumiCyan hover:text-lumiCyanDark font-semibold text-sm flex items-center gap-1 transition-colors">
-                                        Explorar <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                                    </span>
-                                </div>
+                                <span class="text-lumiCyan font-semibold text-sm">Explorar ➔</span>
                             </div>
                         </div>
                     `;
                     container.appendChild(card);
                 });
-
-                if (!window.carruselIniciado && deals.length > 0) {
-                    window.carruselIniciado = true;
-                    const scrollContainer = document.getElementById('hook-deals');
-                    setInterval(() => {
-                        if (!scrollContainer || scrollContainer.children.length === 0) return;
-                        const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-                        if (scrollContainer.scrollLeft >= maxScroll - 10) {
-                            scrollContainer.scrollTo({ left: 0, behavior: 'smooth' });
-                        } else {
-                            const avance = scrollContainer.children[0].offsetWidth + 24; 
-                            scrollContainer.scrollBy({ left: avance, behavior: 'smooth' });
-                        }
-                    }, 5000); 
-                }
             }
 
-            // *** FUNCIÓN RENDER RADAR DEALS (CONECTADA A SUPABASE) ***
             function renderRadarDeals(deals) {
                 const container = document.getElementById('radar-deals');
                 if(!container) return;
@@ -949,36 +824,31 @@ if (ofertas && ofertas.length > 0) {
                 container.innerHTML = '';
 
                 deals.forEach(deal => {
-                    const imagenesIconicas = window.diccionarioVisual || {};
-                    const idProhibido = '1436491865332-7a61a109cc05'; // Ala genérica
+                    const alaProhibida = '1436491865332-7a61a109cc05'; 
+                    const fallbackElegante = '1488085061387-422e15b40b18'; 
                     let imgId = null;
-                    
-                    if (deal.url_imagen && deal.url_imagen.includes('unsplash.com/photo-')) {
-                        const match = deal.url_imagen.match(/photo-([a-zA-Z0-9-]+)/);
-                        if (match && match[1] !== idProhibido) { imgId = match[1]; }
-                    }
+                    const destinoLimpio = (deal.destino || '').trim().toUpperCase();
 
-                    if (!imgId && imagenesIconicas[deal.destino]) {
-                        const listaFotos = imagenesIconicas[deal.destino];
+                    if (diccionarioInfalible[destinoLimpio]) {
+                        const listaFotos = diccionarioInfalible[destinoLimpio];
                         const indiceAleatorio = Math.floor(Math.random() * listaFotos.length);
                         imgId = listaFotos[indiceAleatorio];
                     }
 
-                    if (!imgId) { imgId = '1436491865332-7a61a109cc05'; } 
+                    if (!imgId && deal.url_imagen && deal.url_imagen.includes('unsplash.com/photo-')) {
+                        const match = deal.url_imagen.match(/photo-([a-zA-Z0-9-]+)/);
+                        if (match && match[1] !== alaProhibida) { imgId = match[1]; }
+                    }
+
+                    if (!imgId) { imgId = fallbackElegante; } 
                     
-                    // COMPRESIÓN PARA MINIATURAS: w=150
                     const img = `https://images.unsplash.com/photo-${imgId}?auto=format&fit=crop&w=150&q=60&fm=webp`;
 
                     const titulo = deal.titulo_gancho || "Destino Sorpresa";
                     const precio = deal.precio || "0";
                     const destino = deal.destino || "Mundo";
-                    const origenHtml = deal.origen 
-                        ? `<span class="font-bold text-gray-400">${deal.origen}</span> <span class="mx-1 text-gray-300">➔</span>` 
-                        : '';
                     
                     const monedaDeal = (deal.moneda || deal.currency || monedaActual).toUpperCase();
-                    const hotBadge = (deal.calidad_oferta >= 9) 
-                        ? `<span class="text-red-500 font-bold ml-1" title="Alta Demanda">🔥</span>` : '';
 
                     const li = document.createElement('li');
                     li.className = "p-3 sm:px-6 sm:py-4 hover:bg-gray-50/80 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer";
@@ -988,19 +858,14 @@ if (ofertas && ofertas.length > 0) {
                         <div class="flex items-center gap-4">
                             <img src="${img}" loading="lazy" class="h-12 w-12 rounded-lg object-cover shadow-sm border border-gray-200 hidden sm:block">
                             <div>
-                                <h4 class="font-bold text-lumiDark text-base flex items-center flex-wrap gap-1">
-                                    ${titulo} ${hotBadge}
-                                </h4>
+                                <h4 class="font-bold text-lumiDark text-base flex items-center flex-wrap gap-1">${titulo}</h4>
                                <div class="flex flex-wrap items-center text-xs text-gray-500 mt-1 font-medium gap-2">
                                     <div class="flex items-center">
-                                        ${origenHtml}
                                         <span class="font-bold text-gray-400">${destino}</span>
                                     </div>
                                     <div class="flex items-center text-gray-400 text-[11px] font-bold">
-                                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                         ${formatearFechaCorta(deal.fecha_salida)} - ${formatearFechaCorta(deal.fecha_regreso)}
                                     </div>
-                                    <span class="hidden sm:inline text-gray-400 text-[10px]">• Verificado</span>
                                 </div>
                             </div>
                         </div>
@@ -1011,12 +876,6 @@ if (ofertas && ofertas.length > 0) {
                                     <span class="text-xs font-normal text-gray-400">${monedaDeal}</span>
                                 </p>
                             </div>
-                            <button onclick="copiarUrlUnica('${deal.id}')" title="Copiar enlace" class="bg-gray-50 hover:bg-gray-200 text-gray-500 p-2 rounded-lg transition-colors shadow-sm">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
-                            </button>
-                            <span class="text-lumiCyan hover:text-lumiCyanDark font-semibold text-sm flex items-center gap-1 transition-colors">
-                                Explorar <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                            </span>
                         </div>
                     `;
                     container.appendChild(li);
@@ -1035,8 +894,7 @@ if (ofertas && ofertas.length > 0) {
                 btn.innerText = "Activando...";
                 btn.disabled = true;
 
-                const { error } = await clienteSupabase
-                    .from('radares_personales')
+                const { error } = await clienteSupabase.from('radares_personales')
                     .insert([{ nombre: nombre, origen: origen, destino: destino, mes_esperado: mes, contacto: contacto, status: 'pendiente_verificacion' }]);
 
                 if (!error) {
@@ -1044,8 +902,7 @@ if (ofertas && ofertas.length > 0) {
                     e.target.reset();
                     btn.innerText = "Activar otro Radar";
                 } else {
-                    alert("Hubo un error al guardar. Revisa la consola.");
-                    console.error(error);
+                    alert("Error. Revisa la consola.");
                     btn.innerText = "Activar mi Radar 🎯";
                 }
                 btn.disabled = false;
@@ -1060,36 +917,28 @@ if (ofertas && ofertas.length > 0) {
                 btn.innerText = "Guardando...";
                 btn.disabled = true;
 
-                const { error } = await clienteSupabase
-                    .from('suscriptores_radar')
+                const { error } = await clienteSupabase.from('suscriptores_radar')
                     .insert([{ email: email, pais: paisActual, nombre: 'Viajero' }]);
 
                 mensaje.classList.remove('hidden');
 
                 if (!error) {
-                    mensaje.innerText = "¡Listo! Te avisaremos de las mejores gangas.";
+                    mensaje.innerText = "¡Suscrito!";
                     mensaje.className = "text-center text-sm font-bold mt-3 text-emerald-500 block";
                     e.target.reset();
                     btn.innerText = "Suscrito ✓";
                 } else {
-                    if (error.code === '23505') {
-                        mensaje.innerText = "¡Ya estás en nuestra lista!";
-                        mensaje.className = "text-center text-sm font-bold mt-3 text-lumiCyan block";
-                    } else {
-                        mensaje.innerText = "Error de conexión. Intenta de nuevo.";
-                        mensaje.className = "text-center text-sm font-bold mt-3 text-red-500 block";
-                    }
+                    mensaje.innerText = "Error o ya estás en la lista.";
+                    mensaje.className = "text-center text-sm font-bold mt-3 text-red-500 block";
                     btn.innerText = "Suscribirme Gratis";
                     btn.disabled = false;
                 }
             });
 
             document.addEventListener('DOMContentLoaded', async () => {
-                // FORZADO SEO MÉXICO
                 paisActual = 'MX'; 
                 monedaActual = 'MXN';
                 banderaActual = 'https://flagcdn.com/w20/mx.png';
-                
                 seleccionarPais(paisActual, monedaActual, banderaActual);
                 poblarMeses();
             });
