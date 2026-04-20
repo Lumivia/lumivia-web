@@ -58,7 +58,8 @@ if (ofertas && ofertas.length > 0) {
                 <svg class="w-7 h-7 text-white relative z-10" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
             </a>
         </div>
-<div id="modal-paquete" class="fixed inset-0 z-[100] hidden items-center justify-center p-0 md:p-6 opacity-0 transition-opacity duration-300">
+
+        <div id="modal-paquete" class="fixed inset-0 z-[100] hidden items-center justify-center p-0 md:p-6 opacity-0 transition-opacity duration-300">
             <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="cerrarModalPaquete()"></div>
             
             <div class="relative w-full h-full md:h-auto md:max-h-[90vh] max-w-4xl bg-white md:rounded-3xl shadow-2xl flex flex-col md:flex-row transform scale-95 transition-transform duration-300 overflow-y-auto md:overflow-hidden" id="modal-content">
@@ -312,7 +313,6 @@ if (ofertas && ofertas.length > 0) {
                 'CR': ['SJO', 'LIR']
             };
 
-            // DICCIONARIO INFALIBLE PARA IMÁGENES
             const diccionarioInfalible = {
                 'PVR': ['1562095241680-7212bf8b3fb8', '1590523277661-eb8e5c8e0a33', '1552074284-823adf33cb53', '1518105779142-d971f22f4720'],
                 'SJD': ['1518684074239-9d5f81254bf3', '1507528364635-b5df438c8b71', '1519046904884-53103b34b206', '1499793983690-e29da59ef1c2'],
@@ -330,23 +330,6 @@ if (ofertas && ofertas.length > 0) {
                 'BOG': ['ovmCoJVf0yg', '1583337130417-3346a1be7dee', '1584064548480-1a73373eb4ea', '1563212879-11c52110e53d'],
                 'MDE': ['3E44SObU_vo', '1593129535032-47551f38faeb', '1604085449772-2f3b9c0c80b2', '1584013444445-562ec8724cc6'],
                 'CTG': ['1584064548480-1a73373eb4ea', '1596422846543-75c6fccc6a4c', '1611054006325-3b9e8316b23a', '1550953684-2e6504a58eb3']
-            };
-
-            // MAPEO DE NOMBRES REALES PARA EVITAR ALUCINACIÓN EN HOTELES STAY22
-            const nombresCiudades = {
-                'NRT': 'Tokyo, Japan', 'ICN': 'Seoul, South Korea', 'BKK': 'Bangkok, Thailand', 'DPS': 'Bali, Indonesia',
-                'SYD': 'Sydney, Australia', 'LIS': 'Lisbon, Portugal', 'MAD': 'Madrid, Spain', 'BCN': 'Barcelona, Spain',
-                'CDG': 'Paris, France', 'AMS': 'Amsterdam, Netherlands', 'FRA': 'Frankfurt, Germany', 'MUC': 'Munich, Germany',
-                'LHR': 'London, UK', 'DUB': 'Dublin, Ireland', 'MXP': 'Milan, Italy', 'MIA': 'Miami, USA',
-                'MCO': 'Orlando, USA', 'JFK': 'New York, USA', 'LAX': 'Los Angeles, USA', 'LAS': 'Las Vegas, USA',
-                'YYZ': 'Toronto, Canada', 'YVR': 'Vancouver, Canada', 'PUJ': 'Punta Cana, Dominican Republic', 'PTY': 'Panama City, Panama',
-                'LIM': 'Lima, Peru', 'SCL': 'Santiago, Chile', 'EZE': 'Buenos Aires, Argentina', 'GRU': 'Sao Paulo, Brazil',
-                'UIO': 'Quito, Ecuador', 'CUN': 'Cancun, Mexico', 'MID': 'Merida, Mexico', 'SJD': 'Los Cabos, Mexico',
-                'PVR': 'Puerto Vallarta, Mexico', 'MEX': 'Mexico City, Mexico', 'GDL': 'Guadalajara, Mexico', 'MTY': 'Monterrey, Mexico',
-                'TIJ': 'Tijuana, Mexico', 'TRC': 'Torreon, Mexico', 'BOG': 'Bogota, Colombia', 'MDE': 'Medellin, Colombia',
-                'CTG': 'Cartagena, Colombia', 'SMR': 'Santa Marta, Colombia', 'ADZ': 'San Andres, Colombia', 'CJC': 'Calama, Chile',
-                'PUQ': 'Punta Arenas, Chile', 'PMC': 'Puerto Montt, Chile', 'IQQ': 'Iquique, Chile', 'LIR': 'Liberia, Costa Rica',
-                'SJO': 'San Jose, Costa Rica'
             };
 
             function toggleDropdown() {
@@ -474,7 +457,6 @@ if (ofertas && ofertas.length > 0) {
                 return `${y}-${m}-${d}`;
             }
 
-            // BLINDAJE DE EXTRACCIÓN DE IATA
             function extraerIATA(texto) {
                 if (!texto) return '';
                 const match = texto.match(/\b[A-Z]{3}\b/);
@@ -482,7 +464,14 @@ if (ofertas && ofertas.length > 0) {
                 return texto.trim().replace(/[^A-Za-z]/g, '').substring(0, 3).toUpperCase();
             }
 
-            function construirLinkVuelo(origen, destino, fechaSalida, fechaRegreso) {
+            // BLINDAJE DE VUELO: Ahora solo entra en acción si el link del bot está mal
+            function construirLinkVuelo(urlCompra, origen, destino, fechaSalida, fechaRegreso) {
+                // Si Apify trajo un link bueno de compra, respétalo
+                if (urlCompra && urlCompra.includes('destination_iata')) {
+                    return urlCompra;
+                }
+
+                // Si no, construye la ruta matemáticamente
                 const ori = extraerIATA(origen);
                 const des = extraerIATA(destino);
 
@@ -554,12 +543,12 @@ function abrirModalPaquete(id) {
                 const deal = window.ofertasGlobales.find(d => d.id == id);
                 if(!deal) return;
 
-                // BLINDAJE DE IMÁGENES: Respeta el bot, solo pisa el ala de avión
+                // BLINDAJE DE IMÁGENES: Respeta al bot, pero no permite errores vacíos
                 const alaProhibida = '1436491865332-7a61a109cc05';
-                let imgIdModal = deal.url_imagen || `https://images.unsplash.com/photo-${alaProhibida}`; 
+                let imgIdModal = deal.url_imagen || ''; 
                 const destinoLimpio = (deal.destino || '').trim().toUpperCase();
 
-                if (imgIdModal.includes(alaProhibida) || imgIdModal.trim() === '') {
+                if (!imgIdModal || imgIdModal.trim() === '' || imgIdModal.includes(alaProhibida) || imgIdModal === 'null') {
                     if (diccionarioInfalible[destinoLimpio]) {
                         const listaFotos = diccionarioInfalible[destinoLimpio];
                         const fotoId = listaFotos[Math.floor(Math.random() * listaFotos.length)];
@@ -567,6 +556,9 @@ function abrirModalPaquete(id) {
                     } else {
                         imgIdModal = `https://images.unsplash.com/photo-1488085061387-422e15b40b18?auto=format&fit=crop&w=800&q=80&fm=webp`;
                     }
+                } else if (!imgIdModal.startsWith('http')) {
+                    // Si el bot solo mandó el string corto
+                    imgIdModal = `https://images.unsplash.com/photo-${imgIdModal}?auto=format&fit=crop&w=800&q=80&fm=webp`;
                 }
                 
                 document.getElementById('modal-img').src = imgIdModal;
@@ -582,13 +574,15 @@ function abrirModalPaquete(id) {
                 const extrasContainer = document.getElementById('modal-extras');
                 extrasContainer.innerHTML = '';
                 
-                // BLINDAJE DE HOTELES: Ciudad Real para Stay22
+                // BLINDAJE DEL HOTEL: Respeta al bot 100%
                 let linkHotelFinal = '';
-                if (deal.url_hotel && deal.url_hotel.toLowerCase().includes('sin hotel')) {
-                    linkHotelFinal = ''; 
-                } else {
-                    let ciudadBuscada = nombresCiudades[destinoLimpio] || destinoLimpio;
-                    linkHotelFinal = `https://www.stay22.com/allez/roam?aid=lumivia&address=${encodeURIComponent(ciudadBuscada)}&checkin=${deal.fecha_salida}&checkout=${deal.fecha_regreso}`;
+                if (deal.url_hotel && !deal.url_hotel.toLowerCase().includes('sin hotel') && deal.url_hotel.trim() !== '') {
+                    linkHotelFinal = deal.url_hotel.trim();
+                    // Si es Stay22 pero no trae fechas, se las ponemos
+                    if (linkHotelFinal.includes('stay22.com') && !linkHotelFinal.includes('checkin=')) {
+                        const separador = linkHotelFinal.includes('?') ? '&' : '?';
+                        linkHotelFinal += `${separador}checkin=${deal.fecha_salida}&checkout=${deal.fecha_regreso}`;
+                    }
                 }
 
                 const nacionales = destinosNacionales[paisActual] || [];
@@ -637,7 +631,7 @@ function abrirModalPaquete(id) {
                 if (linkHotelFinal !== '') {
                     htmlExtras += `
                         <a href="${linkHotelFinal}" target="_blank" class="relative overflow-hidden rounded-2xl h-[72px] group block shadow-sm border border-gray-100">
-                            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80&fm=webp" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20"></div>
                             <div class="absolute bottom-3 left-3 right-3 flex justify-between items-end">
                                 <div>
@@ -654,7 +648,7 @@ function abrirModalPaquete(id) {
 
                 htmlExtras += `
                     <a href="${urlDestinoTour}" target="_blank" class="relative overflow-hidden rounded-2xl h-[72px] group block shadow-sm border border-gray-100">
-                        <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=400&q=80&fm=webp" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20"></div>
                         <div class="absolute bottom-3 left-3 right-3 flex justify-between items-end">
                             <div>
@@ -668,11 +662,10 @@ function abrirModalPaquete(id) {
                     </a>
                 `;
 
-                // BLINDAJE EKTA: Restaurada si es internacional
                 if (esInternacional) {
                     htmlExtras += `
                         <a href="${urlDestinoAiralo}" target="_blank" class="relative overflow-hidden rounded-2xl h-[72px] group block shadow-sm border border-gray-100">
-                            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=400&q=80&fm=webp" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20"></div>
                             <div class="absolute bottom-3 left-3 right-3 flex justify-between items-end">
                                 <div>
@@ -685,7 +678,7 @@ function abrirModalPaquete(id) {
                             </div>
                         </a>
                         <a href="https://ektatraveling.tpo.li/5ArJqp2u" target="_blank" class="relative overflow-hidden rounded-2xl h-[72px] group block shadow-sm border border-gray-100">
-                            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=400&q=80&fm=webp" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20"></div>
                             <div class="absolute bottom-3 left-3 right-3 flex justify-between items-end">
                                 <div>
@@ -702,13 +695,9 @@ function abrirModalPaquete(id) {
                 
                 extrasContainer.innerHTML = htmlExtras;
 
-                // BLINDAJE VUELOS: Reconstruye si el bot mandó basura
-                let linkFinalReserva = deal.link_compra;
-                if (!linkFinalReserva || !linkFinalReserva.includes('destination_iata')) {
-                    linkFinalReserva = construirLinkVuelo(deal.origen, deal.destino, deal.fecha_salida, deal.fecha_regreso);
-                }
-
-                document.getElementById('modal-link').href = linkFinalReserva;
+                // BLINDAJE DEL VUELO: Reconstruye si es necesario
+                document.getElementById('modal-link').href = construirLinkVuelo(deal.link_compra, deal.origen, deal.destino, deal.fecha_salida, deal.fecha_regreso);
+                
                 document.getElementById('modal-price').innerText = `$${Number(deal.precio).toLocaleString('en-US')} ${(deal.moneda || deal.currency || monedaActual).toUpperCase()}`;
                 document.getElementById('modal-dates').innerText = `${formatearFechaCorta(deal.fecha_salida)} - ${formatearFechaCorta(deal.fecha_regreso)}`;
 
@@ -828,11 +817,11 @@ function abrirModalPaquete(id) {
 
                 deals.forEach(deal => {
                     const alaProhibida = '1436491865332-7a61a109cc05'; 
-                    let imgFinal = deal.url_imagen || `https://images.unsplash.com/photo-${alaProhibida}`;
+                    let imgFinal = deal.url_imagen || '';
                     const destinoLimpio = (deal.destino || '').trim().toUpperCase();
 
                     // BLINDAJE IMÁGENES CAROUSEL
-                    if (imgFinal.includes(alaProhibida) || imgFinal.trim() === '') {
+                    if (!imgFinal || imgFinal.trim() === '' || imgFinal.includes(alaProhibida) || imgFinal === 'null') {
                         if (diccionarioInfalible[destinoLimpio]) {
                             const listaFotos = diccionarioInfalible[destinoLimpio];
                             const fotoId = listaFotos[Math.floor(Math.random() * listaFotos.length)];
@@ -840,6 +829,8 @@ function abrirModalPaquete(id) {
                         } else {
                             imgFinal = `https://images.unsplash.com/photo-1488085061387-422e15b40b18?auto=format&fit=crop&w=600&q=70&fm=webp`;
                         }
+                    } else if (!imgFinal.startsWith('http')) {
+                        imgFinal = `https://images.unsplash.com/photo-${imgFinal}?auto=format&fit=crop&w=600&q=70&fm=webp`;
                     }
 
                     const titulo = deal.titulo_gancho || "Oferta Especial";
@@ -982,11 +973,11 @@ function abrirModalPaquete(id) {
 
                 deals.forEach(deal => {
                     const alaProhibida = '1436491865332-7a61a109cc05'; 
-                    let imgFinal = deal.url_imagen || `https://images.unsplash.com/photo-${alaProhibida}`;
+                    let imgFinal = deal.url_imagen || '';
                     const destinoLimpio = (deal.destino || '').trim().toUpperCase();
 
                     // BLINDAJE IMÁGENES RADAR
-                    if (imgFinal.includes(alaProhibida) || imgFinal.trim() === '') {
+                    if (!imgFinal || imgFinal.trim() === '' || imgFinal.includes(alaProhibida) || imgFinal === 'null') {
                         if (diccionarioInfalible[destinoLimpio]) {
                             const listaFotos = diccionarioInfalible[destinoLimpio];
                             const fotoId = listaFotos[Math.floor(Math.random() * listaFotos.length)];
@@ -994,6 +985,8 @@ function abrirModalPaquete(id) {
                         } else {
                             imgFinal = `https://images.unsplash.com/photo-1488085061387-422e15b40b18?auto=format&fit=crop&w=150&q=60&fm=webp`;
                         }
+                    } else if (!imgFinal.startsWith('http')) {
+                        imgFinal = `https://images.unsplash.com/photo-${imgFinal}?auto=format&fit=crop&w=150&q=60&fm=webp`;
                     }
 
                     const titulo = deal.titulo_gancho || "Destino Sorpresa";
