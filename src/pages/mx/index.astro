@@ -293,9 +293,9 @@ if (ofertas && ofertas.length > 0) {
             </div>
         </footer>
         <script is:inline>
+            // Usamos Fetch Nativo para asegurar compatibilidad total en el Front-End sin dependencias
             const SUPABASE_URL = 'https://khmkpkbhlzpvowesbkgu.supabase.co';
             const SUPABASE_KEY = 'sb_publishable_uyjRiobM7d6m7IdMPUQi9Q_-RPZuIvt';
-            const clienteSupabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             
             window.ofertasGlobales = [];
 
@@ -309,6 +309,26 @@ if (ofertas && ofertas.length > 0) {
                 'CO': ['CTG', 'SMR', 'ADZ', 'BGA', 'PEI', 'BOG', 'MDE', 'CLO'],
                 'CL': ['CJC', 'PUQ', 'PMC', 'IQQ', 'SCL', 'LSC', 'ZCO', 'BBA'],
                 'CR': ['SJO', 'LIR']
+            };
+
+            // DICCIONARIO INFALIBLE (Bypass estricto para las imágenes)
+            const diccionarioInfalible = {
+                'PVR': ['1562095241680-7212bf8b3fb8', '1590523277661-eb8e5c8e0a33', '1552074284-823adf33cb53', '1518105779142-d971f22f4720'],
+                'SJD': ['1518684074239-9d5f81254bf3', '1507528364635-b5df438c8b71', '1519046904884-53103b34b206', '1499793983690-e29da59ef1c2'],
+                'TIJ': ['1581452418659-199fc9ee5cb0', '1603561937968-3fa422709e3e', '1612456428800-4b2a7587cba6', '1562095241680-7212bf8b3fb8'],
+                'MID': ['1580828362629-9e8fb297dc68', '1518105779142-d971f22f4720', '1584080133502-3c220d0f4185', '1534008897995-27a23e859048'],
+                'CUN': ['3vIjqujVdIA', 'SvY433Nv7Ns', 'rXKP0Q4H1WQ', '4B5wR258Qb0'],
+                'MEX': ['s-s0hSZC0QE', '1518105779142-d971f22f4720', '1580828362629-9e8fb297dc68', '1584080133502-3c220d0f4185'],
+                'GDL': ['1581452418659-199fc9ee5cb0', '1603561937968-3fa422709e3e', '1612456428800-4b2a7587cba6', '1562095241680-7212bf8b3fb8'],
+                'MAD': ['1539037116271-8b732bc01406', 'BIBBsObHLEo', '1513024503798-251cce2a2ea1', '1543785724-43ea5625bf94'],
+                'CDG': ['1499856871958-5b9627545d1a', '1502602273-4e56ebbc6e24', '1522513470709-323e2dc4f165', '1511739001489-1107fa2fa95c'],
+                'JFK': ['1496442226666-8d4d0e6650b0', '1522083165195-3424ed129620', '1499856871958-5b9627545d1a', '1513635269975-59663e0ac1ad'],
+                'MIA': ['1533106497176-45ef8be9e6ae', '1506456073105-02f5db0fb4f2', '1585848529221-a3f25c7df76f', '1513025287661-e50cf6e35b71'],
+                'LAX': ['1580655328951-1d51ab14af16', '1515859005217-8a1f08870f59', '1534447677768-be436bb09401', '1503899036067-ea3944d9748a'],
+                'LAS': ['1605833556294-ea5c7a74f57d', '1585848529221-a3f25c7df76f', '1506456073105-02f5db0fb4f2', '1513025287661-e50cf6e35b71'],
+                'BOG': ['ovmCoJVf0yg', '1583337130417-3346a1be7dee', '1584064548480-1a73373eb4ea', '1563212879-11c52110e53d'],
+                'MDE': ['3E44SObU_vo', '1593129535032-47551f38faeb', '1604085449772-2f3b9c0c80b2', '1584013444445-562ec8724cc6'],
+                'CTG': ['1584064548480-1a73373eb4ea', '1596422846543-75c6fccc6a4c', '1611054006325-3b9e8316b23a', '1550953684-2e6504a58eb3']
             };
 
             function toggleDropdown() {
@@ -341,7 +361,6 @@ if (ofertas && ofertas.length > 0) {
                 if(radarContainer) {
                     radarContainer.innerHTML = '<li class="p-6 text-gray-400 text-center">Buscando oportunidades locales...</li>';
                 }
-                
                 fetchDeals(); 
             }
 
@@ -369,8 +388,17 @@ if (ofertas && ofertas.length > 0) {
                 const confirmar = confirm("¿El precio cambió? Gracias por avisar, lo verificaremos.");
                 if (!confirmar) return;
                 try {
-                    const { error } = await clienteSupabase.rpc('incrementar_reporte_vuelo', { vuelo_id_param: idVuelo });
-                    if (error) throw error;
+                    const respuesta = await fetch(`${SUPABASE_URL}/rest/v1/rpc/incrementar_reporte_vuelo`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'apikey': SUPABASE_KEY,
+                            'Authorization': `Bearer ${SUPABASE_KEY}`
+                        },
+                        body: JSON.stringify({ vuelo_id_param: idVuelo })
+                    });
+                    
+                    if (!respuesta.ok) throw new Error('Error al reportar');
                     alert("¡Reporte enviado! Gracias por ayudar a la comunidad.");
                     const cardHook = document.getElementById(`vuelo-hook-${idVuelo}`);
                     if(cardHook) cardHook.style.opacity = '0.3';
@@ -437,9 +465,18 @@ if (ofertas && ofertas.length > 0) {
                 return `${y}-${m}-${d}`;
             }
 
+            // BLINDAJE DE EXTRACCIÓN DE IATA: Extrae exactamente las 3 letras (ej: de "MEX - Ciudad" saca "MEX")
+            function extraerIATA(texto) {
+                if (!texto) return '';
+                const match = texto.match(/\b[A-Z]{3}\b/);
+                if (match) return match[0];
+                return texto.trim().replace(/[^A-Za-z]/g, '').substring(0, 3).toUpperCase();
+            }
+
+            // BLINDAJE NATIVO DE VUELOS: Armamos la URL matemáticamente
             function construirLinkVuelo(origen, destino, fechaSalida, fechaRegreso) {
-                const ori = (origen || '').trim().replace(/[^A-Za-z]/g, '').substring(0, 3).toUpperCase();
-                const des = (destino || '').trim().replace(/[^A-Za-z]/g, '').substring(0, 3).toUpperCase();
+                const ori = extraerIATA(origen);
+                const des = extraerIATA(destino);
 
                 if (ori.length !== 3 || des.length !== 3 || !fechaSalida) {
                     return 'https://vuelos.lumivia.app/';
@@ -510,7 +547,19 @@ if (ofertas && ofertas.length > 0) {
                 const deal = window.ofertasGlobales.find(d => d.id == id);
                 if(!deal) return;
 
-                document.getElementById('modal-img').src = deal.url_imagen || "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80";
+                // LÓGICA DE IMAGEN INFALIBLE
+                let imgIdModal = '1488085061387-422e15b40b18'; 
+                const destinoLimpio = (deal.destino || '').trim().toUpperCase();
+
+                if (diccionarioInfalible[destinoLimpio]) {
+                    imgIdModal = diccionarioInfalible[destinoLimpio][0];
+                } else if (deal.url_imagen && deal.url_imagen.includes('unsplash.com/photo-')) {
+                    const match = deal.url_imagen.match(/photo-([a-zA-Z0-9-]+)/);
+                    if (match && match[1] !== '1436491865332-7a61a109cc05') { imgIdModal = match[1]; }
+                }
+                
+                document.getElementById('modal-img').src = `https://images.unsplash.com/photo-${imgIdModal}?auto=format&fit=crop&w=800&q=80&fm=webp`;
+                
                 document.getElementById('modal-route').innerText = `${deal.origen || 'ORG'} → ${deal.destino || 'DST'}`;
                 document.getElementById('modal-title').innerText = deal.titulo_gancho || "Oferta Especial";
                 
@@ -523,11 +572,14 @@ if (ofertas && ofertas.length > 0) {
                 const extrasContainer = document.getElementById('modal-extras');
                 extrasContainer.innerHTML = '';
                 
-                let linkHotelFinal = deal.url_hotel;
-                if (linkHotelFinal && linkHotelFinal !== 'Sin hotel sugerido' && linkHotelFinal.includes('stay22.com')) {
-                    if (!linkHotelFinal.includes('checkin=')) {
-                        linkHotelFinal += `&checkin=${deal.fecha_salida}&checkout=${deal.fecha_regreso}`;
-                    }
+                // --- 1. BLINDAJE ANTI-ALUCINACIÓN HOTEL (STAY22) ---
+                // Ignoramos la URL alucinada (ej. La Llovizna) y obligamos a Stay22 a centrarse en el IATA/Destino.
+                let linkHotelFinal = '';
+                if (deal.url_hotel && deal.url_hotel.toLowerCase().includes('sin hotel')) {
+                    linkHotelFinal = ''; // Ocultamos el botón si de verdad no hay
+                } else {
+                    const destinoParaHotel = (deal.destino || '').trim();
+                    linkHotelFinal = `https://www.stay22.com/allez/roam?aid=lumivia&address=${encodeURIComponent(destinoParaHotel)}&checkin=${deal.fecha_salida}&checkout=${deal.fecha_regreso}`;
                 }
 
                 const nacionales = destinosNacionales[paisActual] || [];
@@ -573,10 +625,10 @@ if (ofertas && ofertas.length > 0) {
 
                 let htmlExtras = '';
                 
-                if (linkHotelFinal && linkHotelFinal !== 'Sin hotel sugerido') {
+                if (linkHotelFinal && linkHotelFinal !== '') {
                     htmlExtras += `
                         <a href="${linkHotelFinal}" target="_blank" class="relative overflow-hidden rounded-2xl h-[72px] group block shadow-sm border border-gray-100">
-                            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80&fm=webp" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20"></div>
                             <div class="absolute bottom-3 left-3 right-3 flex justify-between items-end">
                                 <div>
@@ -593,7 +645,7 @@ if (ofertas && ofertas.length > 0) {
 
                 htmlExtras += `
                     <a href="${urlDestinoTour}" target="_blank" class="relative overflow-hidden rounded-2xl h-[72px] group block shadow-sm border border-gray-100">
-                        <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=400&q=80&fm=webp" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20"></div>
                         <div class="absolute bottom-3 left-3 right-3 flex justify-between items-end">
                             <div>
@@ -610,7 +662,7 @@ if (ofertas && ofertas.length > 0) {
                 if (esInternacional) {
                     htmlExtras += `
                         <a href="${urlDestinoAiralo}" target="_blank" class="relative overflow-hidden rounded-2xl h-[72px] group block shadow-sm border border-gray-100">
-                            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=400&q=80&fm=webp" loading="lazy" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20"></div>
                             <div class="absolute bottom-3 left-3 right-3 flex justify-between items-end">
                                 <div>
@@ -622,27 +674,20 @@ if (ofertas && ofertas.length > 0) {
                                 </div>
                             </div>
                         </a>
-                        <a href="https://ektatraveling.tpo.li/5ArJqp2u" target="_blank" class="relative overflow-hidden rounded-2xl h-[72px] group block shadow-sm border border-gray-100">
-                            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20"></div>
-                            <div class="absolute bottom-3 left-3 right-3 flex justify-between items-end">
-                                <div>
-                                    <p class="text-[9px] text-white/70 font-bold uppercase tracking-widest mb-0.5">Asistencia Médica</p>
-                                    <p class="text-sm font-bold text-white leading-tight">Seguro de Viaje Ekta</p>
-                                </div>
-                                <div class="bg-white/20 backdrop-blur-md p-1.5 rounded-full text-white">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                                </div>
-                            </div>
-                        </a>
                     `;
                 }
                 
                 extrasContainer.innerHTML = htmlExtras;
 
-                let linkFinalReserva = deal.link_compra || 'https://vuelos.lumivia.app/';
+                // --- 2. BLINDAJE ANTI-ERROR VUELOS ---
+                // Si el backend mandó un link vacío o genérico sin el IATA, forzamos el cálculo perfecto aquí.
+                let linkFinalReserva = deal.link_compra;
+                if (!linkFinalReserva || !linkFinalReserva.includes('destination_iata')) {
+                    linkFinalReserva = construirLinkVuelo(deal.origen, deal.destino, deal.fecha_salida, deal.fecha_regreso);
+                }
+
                 document.getElementById('modal-link').href = linkFinalReserva;
-                document.getElementById('modal-price').innerText = `$${Number(deal.precio).toLocaleString('en-US')} ${(deal.moneda || monedaActual).toUpperCase()}`;
+                document.getElementById('modal-price').innerText = `$${Number(deal.precio).toLocaleString('en-US')} ${(deal.moneda || deal.currency || monedaActual).toUpperCase()}`;
                 document.getElementById('modal-dates').innerText = `${formatearFechaCorta(deal.fecha_salida)} - ${formatearFechaCorta(deal.fecha_regreso)}`;
 
                 const modal = document.getElementById('modal-paquete');
@@ -678,21 +723,23 @@ if (ofertas && ofertas.length > 0) {
                     const urlParams = new URLSearchParams(window.location.search);
                     const vueloId = urlParams.get('vuelo');
                     
-                    let query = clienteSupabase
-                        .from('publicaciones_lumivia')
-                        .select('*')
-                        .eq('activo', true)
-                        .eq('pais_mercado', paisActual);
-
+                    let urlFetch = `${SUPABASE_URL}/rest/v1/publicaciones_lumivia?activo=eq.true&pais_mercado=eq.${paisActual}`;
+                    
                     if (vueloId) {
-                        query = query.eq('id', vueloId);
+                        urlFetch += `&id=eq.${vueloId}`;
                     } else {
-                        query = query.order('created_at', { ascending: false })
-                                     .limit(40);
+                        urlFetch += `&order=created_at.desc.nullslast&limit=40`;
                     }
 
-                    const { data, error } = await query;
-                    if (error) throw error;
+                    const respuesta = await fetch(urlFetch, {
+                        headers: {
+                            'apikey': SUPABASE_KEY,
+                            'Authorization': `Bearer ${SUPABASE_KEY}`
+                        }
+                    });
+
+                    if (!respuesta.ok) throw new Error('Error al consultar datos');
+                    const data = await respuesta.json();
 
                     window.ofertasGlobales = data || []; 
 
@@ -714,8 +761,6 @@ if (ofertas && ofertas.length > 0) {
                                 `;
                             }
                         }
-                        const radarContainer = document.getElementById('radar-deals');
-                        if(radarContainer) radarContainer.innerHTML = '';
                         return;
                     }
 
@@ -741,27 +786,36 @@ if (ofertas && ofertas.length > 0) {
                     }
 
                 } catch (err) {
-                    console.error("Error al cargar Supabase:", err);
-                    const container = document.getElementById('hook-deals');
-                    if(container) {
-                        container.innerHTML = `
-                            <div class="col-span-full text-center text-red-400 py-10 font-medium" id="loader">
-                                Error de conexión. Revisa la consola.
-                            </div>
-                        `;
-                    }
+                    console.error("Error cargando el radar en el cliente:", err);
                 }
             }
 
-            // *** ESTA ES LA FUNCIÓN LIMPIA, SIN EL CÓDIGO DE SCHEMA DUPLICADO ***
             function renderHookDeals(deals) {
                 const container = document.getElementById('hook-deals');
                 if(!container) return;
-                
                 container.innerHTML = ''; 
 
                 deals.forEach(deal => {
-                    const img = deal.url_imagen || "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80";
+                    const alaProhibida = '1436491865332-7a61a109cc05'; 
+                    const fallbackElegante = '1488085061387-422e15b40b18'; 
+                    let imgId = null;
+                    const destinoLimpio = (deal.destino || '').trim().toUpperCase();
+
+                    if (diccionarioInfalible[destinoLimpio]) {
+                        const listaFotos = diccionarioInfalible[destinoLimpio];
+                        const indiceAleatorio = Math.floor(Math.random() * listaFotos.length);
+                        imgId = listaFotos[indiceAleatorio];
+                    }
+
+                    if (!imgId && deal.url_imagen && deal.url_imagen.includes('unsplash.com/photo-')) {
+                        const match = deal.url_imagen.match(/photo-([a-zA-Z0-9-]+)/);
+                        if (match && match[1] !== alaProhibida) { imgId = match[1]; }
+                    }
+
+                    if (!imgId) { imgId = fallbackElegante; } 
+                    
+                    const img = `https://images.unsplash.com/photo-${imgId}?auto=format&fit=crop&w=600&q=70&fm=webp`;
+
                     const titulo = deal.titulo_gancho || "Oferta Especial";
                     const precio = deal.precio || "Consultar";
                     const tiempoTranscurrido = calcularTiempoTranscurrido(deal.created_at);
@@ -772,43 +826,22 @@ if (ofertas && ofertas.length > 0) {
                     
                     const esVip = deal.tipo_vuelo === 'directo';
                     const badgeVip = esVip 
-                        ? `
-                            <div class="absolute top-4 right-4 badge-vip-glass text-white text-[10px] font-black px-3 py-1.5 rounded-full z-10 flex items-center gap-1.5 uppercase tracking-widest shadow-lg">
+                        ? `<div class="absolute top-4 right-4 badge-vip-glass text-white text-[10px] font-black px-3 py-1.5 rounded-full z-10 flex items-center gap-1.5 uppercase tracking-widest shadow-lg">
                                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
                                Directo
-                           </div>
-                          ` 
-                        : '';
+                           </div>` : '';
 
                     const etiquetaHot = (deal.calidad_oferta >= 9)
-                        ? `
-                            <span class="text-red-500 font-extrabold flex items-center gap-1 text-[10px] uppercase tracking-wider">
-                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path></svg> 
-                                HOT
-                            </span>
-                          `
-                        : '';
+                        ? `<span class="text-red-500 font-extrabold flex items-center gap-1 text-[10px] uppercase tracking-wider">HOT</span>` : '';
 
                     const monedaDeal = (deal.moneda || deal.currency || monedaActual).toUpperCase();
 
                     const amenidadesLinea = `
                         <div class="flex items-center flex-wrap gap-2 text-[10px] font-semibold text-gray-500 mb-6 uppercase tracking-widest">
-                            <span class="flex items-center gap-1">
-                                <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg> 
-                                Hospedaje
-                            </span>
+                            <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg> Hospedaje</span>
                             <span class="text-gray-300">•</span>
-                            <span class="flex items-center gap-1">
-                                <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.5 21a2.5 2.5 0 005-5V5a2 2 0 00-2-2h-3.5M10 21H5a2 2 0 01-2-2V5a2 2 0 012-2h5m4 18h-4"></path></svg> 
-                                Tours
-                            </span>
-                            ${esInternacional ? `
-                                <span class="text-gray-300">•</span>
-                                <span class="flex items-center gap-1">
-                                    <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 117.778 0M12 20h.01m-7.08-7.071a10 10 0 1114.142 0"></path></svg> 
-                                    eSIM
-                                </span>
-                            ` : ''}
+                            <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.5 21a2.5 2.5 0 005-5V5a2 2 0 00-2-2h-3.5M10 21H5a2 2 0 01-2-2V5a2 2 0 012-2h5m4 18h-4"></path></svg> Tours</span>
+                            ${esInternacional ? `<span class="text-gray-300">•</span><span class="flex items-center gap-1">eSIM</span>` : ''}
                         </div>
                     `;
 
@@ -819,14 +852,14 @@ if (ofertas && ofertas.length > 0) {
                     
                     card.innerHTML = `
                         <div class="relative h-56 overflow-hidden bg-gray-100">
-                            <img src="${img}" alt="${titulo}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
+                            <img src="${img}" alt="${titulo}" loading="lazy" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
                             <div class="absolute inset-0 bg-gradient-to-t from-lumiDark/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <div class="absolute top-4 left-4 bg-white/95 backdrop-blur-md text-lumiDark text-[10px] font-bold px-3 py-1.5 rounded-full shadow-sm tracking-wide border border-white/50 uppercase flex items-center gap-1">
                                 ⏱️ ${tiempoTranscurrido}
                             </div>
                             ${badgeVip}
                             <button onclick="reportarCambioPrecio('${deal.id}')" title="¿El precio subió? Repórtalo" class="absolute bottom-3 right-3 bg-white/80 hover:bg-red-50 text-gray-500 hover:text-red-500 backdrop-blur-sm p-2.5 rounded-full shadow-sm border border-white/50 transition-colors z-10">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-1 6-1-1H11.5l-1-1H5v10m0 0h4"></path></svg> 
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-1 6-1-1H11.5l-1-1H5v10m0 0h4"></path></svg>
                             </button>
                         </div>
                         
@@ -840,9 +873,7 @@ if (ofertas && ofertas.length > 0) {
                                     </div>
                                     ${etiquetaHot}
                                 </div>
-                                
-                                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
                                     ${fechasCortas}
                                 </div>
                             </div>
@@ -901,8 +932,27 @@ if (ofertas && ofertas.length > 0) {
                 container.innerHTML = '';
 
                 deals.forEach(deal => {
+                    const alaProhibida = '1436491865332-7a61a109cc05'; 
+                    const fallbackElegante = '1488085061387-422e15b40b18'; 
+                    let imgId = null;
+                    const destinoLimpio = (deal.destino || '').trim().toUpperCase();
+
+                    if (diccionarioInfalible[destinoLimpio]) {
+                        const listaFotos = diccionarioInfalible[destinoLimpio];
+                        const indiceAleatorio = Math.floor(Math.random() * listaFotos.length);
+                        imgId = listaFotos[indiceAleatorio];
+                    }
+
+                    if (!imgId && deal.url_imagen && deal.url_imagen.includes('unsplash.com/photo-')) {
+                        const match = deal.url_imagen.match(/photo-([a-zA-Z0-9-]+)/);
+                        if (match && match[1] !== alaProhibida) { imgId = match[1]; }
+                    }
+
+                    if (!imgId) { imgId = fallbackElegante; } 
+                    
+                    const img = `https://images.unsplash.com/photo-${imgId}?auto=format&fit=crop&w=150&q=60&fm=webp`;
+
                     const titulo = deal.titulo_gancho || "Destino Sorpresa";
-                    const img = deal.url_imagen || "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=150&q=80";
                     const precio = deal.precio || "0";
                     const destino = deal.destino || "Mundo";
                     const origenHtml = deal.origen 
@@ -920,7 +970,7 @@ if (ofertas && ofertas.length > 0) {
                     
                     li.innerHTML = `
                         <div class="flex items-center gap-4">
-                            <img src="${img}" class="h-12 w-12 rounded-lg object-cover shadow-sm border border-gray-200 hidden sm:block">
+                            <img src="${img}" loading="lazy" class="h-12 w-12 rounded-lg object-cover shadow-sm border border-gray-200 hidden sm:block">
                             <div>
                                 <h4 class="font-bold text-lumiDark text-base flex items-center flex-wrap gap-1">
                                     ${titulo} ${hotBadge}
@@ -971,17 +1021,23 @@ if (ofertas && ofertas.length > 0) {
                 btn.innerText = "Activando...";
                 btn.disabled = true;
 
-                const { error } = await clienteSupabase
-                    .from('radares_personales')
-                    .insert([{ nombre: nombre, origen: origen, destino: destino, mes_esperado: mes, contacto: contacto, status: 'pendiente_verificacion' }]);
-
-                if (!error) {
+                try {
+                    const respuesta = await fetch(`${SUPABASE_URL}/rest/v1/radares_personales`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'apikey': SUPABASE_KEY,
+                            'Authorization': `Bearer ${SUPABASE_KEY}`
+                        },
+                        body: JSON.stringify({ nombre: nombre, origen: origen, destino: destino, mes_esperado: mes, contacto: contacto, status: 'pendiente_verificacion' })
+                    });
+                    
+                    if (!respuesta.ok) throw new Error('Error al guardar');
                     document.getElementById('form-exito').classList.remove('hidden');
                     e.target.reset();
                     btn.innerText = "Activar otro Radar";
-                } else {
-                    alert("Hubo un error al guardar. Revisa la consola.");
-                    console.error(error);
+                } catch(error) {
+                    alert("Error. Revisa la consola.");
                     btn.innerText = "Activar mi Radar 🎯";
                 }
                 btn.disabled = false;
@@ -996,25 +1052,35 @@ if (ofertas && ofertas.length > 0) {
                 btn.innerText = "Guardando...";
                 btn.disabled = true;
 
-                const { error } = await clienteSupabase
-                    .from('suscriptores_radar')
-                    .insert([{ email: email, pais: paisActual, nombre: 'Viajero' }]);
+                try {
+                    const respuesta = await fetch(`${SUPABASE_URL}/rest/v1/suscriptores_radar`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'apikey': SUPABASE_KEY,
+                            'Authorization': `Bearer ${SUPABASE_KEY}`
+                        },
+                        body: JSON.stringify({ email: email, pais: paisActual, nombre: 'Viajero' })
+                    });
+                    
+                    mensaje.classList.remove('hidden');
 
-                mensaje.classList.remove('hidden');
-
-                if (!error) {
-                    mensaje.innerText = "¡Listo! Te avisaremos de las mejores gangas.";
-                    mensaje.className = "text-center text-sm font-bold mt-3 text-emerald-500 block";
-                    e.target.reset();
-                    btn.innerText = "Suscrito ✓";
-                } else {
-                    if (error.code === '23505') {
+                    if (respuesta.ok) {
+                        mensaje.innerText = "¡Suscrito!";
+                        mensaje.className = "text-center text-sm font-bold mt-3 text-emerald-500 block";
+                        e.target.reset();
+                        btn.innerText = "Suscrito ✓";
+                    } else if (respuesta.status === 409) {
                         mensaje.innerText = "¡Ya estás en nuestra lista!";
                         mensaje.className = "text-center text-sm font-bold mt-3 text-lumiCyan block";
+                        btn.innerText = "Suscribirme Gratis";
+                        btn.disabled = false;
                     } else {
-                        mensaje.innerText = "Error de conexión. Intenta de nuevo.";
-                        mensaje.className = "text-center text-sm font-bold mt-3 text-red-500 block";
+                        throw new Error('Error guardando email');
                     }
+                } catch(error) {
+                    mensaje.innerText = "Error de conexión. Intenta de nuevo.";
+                    mensaje.className = "text-center text-sm font-bold mt-3 text-red-500 block";
                     btn.innerText = "Suscribirme Gratis";
                     btn.disabled = false;
                 }
