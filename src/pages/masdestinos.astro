@@ -1,10 +1,68 @@
 ---
-import Layout from '../layouts/Layout.astro';
----
+// 1. EL ESCUDO CACHÉ EDGE
+Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=300, stale-while-revalidate=60');
 
+import Layout from '../layouts/Layout.astro';
+import { createClient } from '@supabase/supabase-js';
+
+const SUPABASE_URL = 'https://khmkpkbhlzpvowesbkgu.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_uyjRiobM7d6m7IdMPUQi9Q_-RPZuIvt';
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// 2. CONSULTA GLOBAL PARA LA IA (SSR)
+// Obtenemos las últimas 20 ofertas activas de forma global para alimentar a los bots (Perplexity/Google)
+const { data: ofertasGlobales } = await supabase
+    .from('publicaciones_lumivia')
+    .select('*')
+    .eq('activo', true)
+    .order('created_at', { ascending: false })
+    .limit(20);
+
+// 3. CEREBRO SEAO DINÁMICO (Lado del Servidor)
+let schemaJSON = null;
+if (ofertasGlobales && ofertasGlobales.length > 0) {
+    const schemaOffers = ofertasGlobales.map((deal, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "item": {
+            "@type": "Offer",
+            "name": `Vuelo a ${deal.destino} desde ${deal.origen}`,
+            "description": deal.titulo_gancho,
+            "price": deal.precio,
+            "priceCurrency": deal.moneda || deal.currency || "USD",
+            "availability": "https://schema.org/InStock",
+            "url": `https://www.lumivia.app/masdestinos?vuelo=${deal.id}`,
+            "itemOffered": {
+                "@type": "Flight",
+                "departureAirport": {
+                    "@type": "Airport",
+                    "iataCode": deal.origen
+                },
+                "arrivalAirport": {
+                    "@type": "Airport",
+                    "iataCode": deal.destino
+                }
+            }
+        }
+    }));
+
+    schemaJSON = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Catálogo Global de Oportunidades - Lumivia",
+        "description": "Explora todos los destinos y tarifas ocultas globales rastreadas por Lumivia en tiempo real.",
+        "mainEntity": {
+            "@type": "OfferCatalog",
+            "name": "Radar Global Lumivia",
+            "itemListElement": schemaOffers
+        }
+    });
+}
+---
 <Layout 
     title="Lumivia | Catálogo de Oportunidades" 
     description="Descubre oportunidades únicas de vuelos baratos. Catálogo completo de tarifas ocultas."
+    schemaAEO={schemaJSON}
 >
     <div class="bg-gray-50 text-lumiDark antialiased selection:bg-lumiCyan selection:text-white relative overflow-x-hidden">
 
@@ -128,7 +186,6 @@ import Layout from '../layouts/Layout.astro';
         </header>
 
         <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-12">
-            
             <div class="mb-12 text-center relative z-10">
                 <h1 class="text-3xl md:text-4xl font-black tracking-tight text-lumiDark mb-6">Catálogo de Oportunidades</h1>
                 
@@ -209,7 +266,8 @@ import Layout from '../layouts/Layout.astro';
                 </div>
             </div>
         </main>
-<footer class="bg-white border-t border-gray-200 py-10">
+
+        <footer class="bg-white border-t border-gray-200 py-10">
             <div class="max-w-7xl mx-auto px-4 text-center">
                 <p class="font-extrabold text-lumiDark mb-2 text-base">Lumivia</p>
                 <div class="flex flex-wrap justify-center gap-4 sm:gap-8 text-[10px] font-extrabold uppercase tracking-widest text-gray-400 mb-6">
@@ -222,8 +280,7 @@ import Layout from '../layouts/Layout.astro';
                 </p>
             </div>
         </footer>
-
-        <script is:inline>
+<script is:inline>
             // REGRESO INTELIGENTE AL PAÍS DE ORIGEN
             function volverAlPais() {
                 let paisGuardado = localStorage.getItem('lumivia_pais');
@@ -341,7 +398,6 @@ import Layout from '../layouts/Layout.astro';
 
             function copiarUrlUnica(id) {
                 event.stopPropagation();
-                // Redirige al catálogo con el ID
                 const urlCompleta = `${window.location.origin}/masdestinos?vuelo=${id}`;
                 navigator.clipboard.writeText(urlCompleta).then(() => {
                     alert("¡Enlace copiado! Ya puedes compartir esta oferta.");
@@ -370,7 +426,42 @@ import Layout from '../layouts/Layout.astro';
                 const deal = window.ofertasGlobales.find(d => d.id == id);
                 if(!deal) return;
 
-                document.getElementById('modal-img').src = deal.url_imagen || "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80";
+                const alaProhibida = '1436491865332-7a61a109cc05';
+                let imgIdModal = deal.url_imagen || ''; 
+                const destinoLimpio = (deal.destino || '').trim().toUpperCase();
+
+                const diccionarioInfalible = {
+                    'PVR': ['1562095241680-7212bf8b3fb8', '1590523277661-eb8e5c8e0a33', '1552074284-823adf33cb53', '1518105779142-d971f22f4720'],
+                    'SJD': ['1518684074239-9d5f81254bf3', '1507528364635-b5df438c8b71', '1519046904884-53103b34b206', '1499793983690-e29da59ef1c2'],
+                    'TIJ': ['1581452418659-199fc9ee5cb0', '1603561937968-3fa422709e3e', '1612456428800-4b2a7587cba6', '1562095241680-7212bf8b3fb8'],
+                    'MID': ['1580828362629-9e8fb297dc68', '1518105779142-d971f22f4720', '1584080133502-3c220d0f4185', '1534008897995-27a23e859048'],
+                    'CUN': ['3vIjqujVdIA', 'SvY433Nv7Ns', 'rXKP0Q4H1WQ', '4B5wR258Qb0'],
+                    'MEX': ['s-s0hSZC0QE', '1518105779142-d971f22f4720', '1580828362629-9e8fb297dc68', '1584080133502-3c220d0f4185'],
+                    'GDL': ['1581452418659-199fc9ee5cb0', '1603561937968-3fa422709e3e', '1612456428800-4b2a7587cba6', '1562095241680-7212bf8b3fb8'],
+                    'MAD': ['1539037116271-8b732bc01406', 'BIBBsObHLEo', '1513024503798-251cce2a2ea1', '1543785724-43ea5625bf94'],
+                    'CDG': ['1499856871958-5b9627545d1a', '1502602273-4e56ebbc6e24', '1522513470709-323e2dc4f165', '1511739001489-1107fa2fa95c'],
+                    'JFK': ['1496442226666-8d4d0e6650b0', '1522083165195-3424ed129620', '1499856871958-5b9627545d1a', '1513635269975-59663e0ac1ad'],
+                    'MIA': ['1533106497176-45ef8be9e6ae', '1506456073105-02f5db0fb4f2', '1585848529221-a3f25c7df76f', '1513025287661-e50cf6e35b71'],
+                    'LAX': ['1580655328951-1d51ab14af16', '1515859005217-8a1f08870f59', '1534447677768-be436bb09401', '1503899036067-ea3944d9748a'],
+                    'LAS': ['1605833556294-ea5c7a74f57d', '1585848529221-a3f25c7df76f', '1506456073105-02f5db0fb4f2', '1513025287661-e50cf6e35b71'],
+                    'BOG': ['ovmCoJVf0yg', '1583337130417-3346a1be7dee', '1584064548480-1a73373eb4ea', '1563212879-11c52110e53d'],
+                    'MDE': ['3E44SObU_vo', '1593129535032-47551f38faeb', '1604085449772-2f3b9c0c80b2', '1584013444445-562ec8724cc6'],
+                    'CTG': ['1584064548480-1a73373eb4ea', '1596422846543-75c6fccc6a4c', '1611054006325-3b9e8316b23a', '1550953684-2e6504a58eb3']
+                };
+
+                if (!imgIdModal || imgIdModal.trim() === '' || imgIdModal.includes(alaProhibida) || imgIdModal === 'null') {
+                    if (diccionarioInfalible[destinoLimpio]) {
+                        const listaFotos = diccionarioInfalible[destinoLimpio];
+                        const fotoId = listaFotos[Math.floor(Math.random() * listaFotos.length)];
+                        imgIdModal = `https://images.unsplash.com/photo-${fotoId}?auto=format&fit=crop&w=800&q=80&fm=webp`;
+                    } else {
+                        imgIdModal = `https://images.unsplash.com/photo-1488085061387-422e15b40b18?auto=format&fit=crop&w=800&q=80&fm=webp`;
+                    }
+                } else if (!imgIdModal.startsWith('http')) {
+                    imgIdModal = `https://images.unsplash.com/photo-${imgIdModal}?auto=format&fit=crop&w=800&q=80&fm=webp`;
+                }
+                
+                document.getElementById('modal-img').src = imgIdModal;
                 document.getElementById('modal-route').innerText = `${deal.origen || 'ORG'} → ${deal.destino || 'DST'}`;
                 document.getElementById('modal-title').innerText = deal.titulo_gancho || "Oferta Especial";
                 
@@ -386,7 +477,8 @@ import Layout from '../layouts/Layout.astro';
                 let linkHotelFinal = deal.url_hotel;
                 if (linkHotelFinal && linkHotelFinal !== 'Sin hotel sugerido' && linkHotelFinal.includes('stay22.com')) {
                     if (!linkHotelFinal.includes('checkin=')) {
-                        linkHotelFinal += `&checkin=${deal.fecha_salida}&checkout=${deal.fecha_regreso}`;
+                        const separador = linkHotelFinal.includes('?') ? '&' : '?';
+                        linkHotelFinal += `${separador}checkin=${deal.fecha_salida}&checkout=${deal.fecha_regreso}`;
                     }
                 }
 
@@ -584,11 +676,43 @@ import Layout from '../layouts/Layout.astro';
                 const container = document.getElementById('hook-deals');
                 if(!container) return;
                 container.innerHTML = ''; 
-                
-                let schemaOffers = [];
+
+                const alaProhibida = '1436491865332-7a61a109cc05';
+                const diccionarioInfalible = {
+                    'PVR': ['1562095241680-7212bf8b3fb8', '1590523277661-eb8e5c8e0a33', '1552074284-823adf33cb53', '1518105779142-d971f22f4720'],
+                    'SJD': ['1518684074239-9d5f81254bf3', '1507528364635-b5df438c8b71', '1519046904884-53103b34b206', '1499793983690-e29da59ef1c2'],
+                    'TIJ': ['1581452418659-199fc9ee5cb0', '1603561937968-3fa422709e3e', '1612456428800-4b2a7587cba6', '1562095241680-7212bf8b3fb8'],
+                    'MID': ['1580828362629-9e8fb297dc68', '1518105779142-d971f22f4720', '1584080133502-3c220d0f4185', '1534008897995-27a23e859048'],
+                    'CUN': ['3vIjqujVdIA', 'SvY433Nv7Ns', 'rXKP0Q4H1WQ', '4B5wR258Qb0'],
+                    'MEX': ['s-s0hSZC0QE', '1518105779142-d971f22f4720', '1580828362629-9e8fb297dc68', '1584080133502-3c220d0f4185'],
+                    'GDL': ['1581452418659-199fc9ee5cb0', '1603561937968-3fa422709e3e', '1612456428800-4b2a7587cba6', '1562095241680-7212bf8b3fb8'],
+                    'MAD': ['1539037116271-8b732bc01406', 'BIBBsObHLEo', '1513024503798-251cce2a2ea1', '1543785724-43ea5625bf94'],
+                    'CDG': ['1499856871958-5b9627545d1a', '1502602273-4e56ebbc6e24', '1522513470709-323e2dc4f165', '1511739001489-1107fa2fa95c'],
+                    'JFK': ['1496442226666-8d4d0e6650b0', '1522083165195-3424ed129620', '1499856871958-5b9627545d1a', '1513635269975-59663e0ac1ad'],
+                    'MIA': ['1533106497176-45ef8be9e6ae', '1506456073105-02f5db0fb4f2', '1585848529221-a3f25c7df76f', '1513025287661-e50cf6e35b71'],
+                    'LAX': ['1580655328951-1d51ab14af16', '1515859005217-8a1f08870f59', '1534447677768-be436bb09401', '1503899036067-ea3944d9748a'],
+                    'LAS': ['1605833556294-ea5c7a74f57d', '1585848529221-a3f25c7df76f', '1506456073105-02f5db0fb4f2', '1513025287661-e50cf6e35b71'],
+                    'BOG': ['ovmCoJVf0yg', '1583337130417-3346a1be7dee', '1584064548480-1a73373eb4ea', '1563212879-11c52110e53d'],
+                    'MDE': ['3E44SObU_vo', '1593129535032-47551f38faeb', '1604085449772-2f3b9c0c80b2', '1584013444445-562ec8724cc6'],
+                    'CTG': ['1584064548480-1a73373eb4ea', '1596422846543-75c6fccc6a4c', '1611054006325-3b9e8316b23a', '1550953684-2e6504a58eb3']
+                };
 
                 deals.forEach(deal => {
-                    const img = deal.url_imagen || "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80";
+                    let imgFinal = deal.url_imagen || '';
+                    const destinoLimpio = (deal.destino || '').trim().toUpperCase();
+
+                    if (!imgFinal || imgFinal.trim() === '' || imgFinal.includes(alaProhibida) || imgFinal === 'null') {
+                        if (diccionarioInfalible[destinoLimpio]) {
+                            const listaFotos = diccionarioInfalible[destinoLimpio];
+                            const fotoId = listaFotos[Math.floor(Math.random() * listaFotos.length)];
+                            imgFinal = `https://images.unsplash.com/photo-${fotoId}?auto=format&fit=crop&w=600&q=70&fm=webp`;
+                        } else {
+                            imgFinal = `https://images.unsplash.com/photo-1488085061387-422e15b40b18?auto=format&fit=crop&w=600&q=70&fm=webp`;
+                        }
+                    } else if (!imgFinal.startsWith('http')) {
+                        imgFinal = `https://images.unsplash.com/photo-${imgFinal}?auto=format&fit=crop&w=600&q=70&fm=webp`;
+                    }
+
                     const titulo = deal.titulo_gancho || "Oferta Especial";
                     const precio = deal.precio || "Consultar";
                     const tiempoTranscurrido = calcularTiempoTranscurrido(deal.created_at);
@@ -627,7 +751,7 @@ import Layout from '../layouts/Layout.astro';
                     
                     card.innerHTML = `
                         <div class="relative h-56 overflow-hidden bg-gray-100 flex-shrink-0">
-                            <img src="${img}" alt="${titulo}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
+                            <img src="${imgFinal}" alt="${titulo}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
                             <div class="absolute inset-0 bg-gradient-to-t from-lumiDark/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <div class="absolute top-4 left-4 bg-white/95 backdrop-blur-md text-lumiDark text-[10px] font-bold px-3 py-1.5 rounded-full shadow-sm tracking-wide border border-white/50 uppercase flex items-center gap-1">
                                 ⏱️ ${tiempoTranscurrido}
@@ -675,28 +799,7 @@ import Layout from '../layouts/Layout.astro';
                         </div>
                     `;
                     container.appendChild(card);
-
-                    schemaOffers.push({ 
-                        "@type": "Offer", 
-                        "name": `Vuelo barato a ${deal.destino || 'Mundo'}`, 
-                        "description": deal.titulo_gancho,
-                        "price": deal.precio, 
-                        "priceCurrency": monedaDeal, 
-                        "availability": "https://schema.org/InStock",
-                        "url": deal.link_compra || "https://lumivia.app/masdestinos",
-                        "validFrom": deal.created_at
-                    });
                 });
-
-                const aeoTag = document.getElementById('aeo-schema');
-                if(aeoTag) {
-                    aeoTag.textContent = JSON.stringify({ 
-                        "@context": "https://schema.org", 
-                        "@type": "ItemList", 
-                        "itemListElement": schemaOffers,
-                        "name": "Mejores ofertas de vuelos detectadas hoy"
-                    });
-                }
             }
 
             document.getElementById('radar-form')?.addEventListener('submit', async (e) => {
