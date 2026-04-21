@@ -3,24 +3,27 @@ interface Props {
   title: string;
   description?: string;
   canonicalURL?: string;
-  schemaAEO?: string; // Aquí inyectaremos la respuesta para ChatGPT/Perplexity por país
+  schemaAEO?: string; 
 }
 
-// 1. Obtenemos la ruta actual dinámica desde Astro para un Canonical perfecto
 const currentPath = Astro.url.pathname;
 const baseDomain = "https://www.lumivia.app";
 
-// Aseguramos que la ruta siempre termine en barra (/) para evitar el error 308
+// Forzamos la barra final para evitar el 308 Double Hop
 let cleanPath = currentPath;
 if (!cleanPath.endsWith('/')) {
     cleanPath += '/';
 }
 
+// 🛡️ LÓGICA DE HREFLANG: Solo activamos el escudo si estamos en las portadas
+const countryPaths = ['/mx/', '/co/', '/cl/', '/cr/'];
+const isCountryPage = countryPaths.includes(cleanPath);
+
 // Valores por defecto por si alguna página no los manda
 const {
   title,
   description = "Descubre oportunidades únicas de vuelos baratos. Lumivia rastrea miles de tarifas ocultas diariamente para que viajes más pagando menos.",
-  canonicalURL = `${baseDomain}${cleanPath}`, // 👈 Canonical automático y perfecto
+  canonicalURL = `${baseDomain}${cleanPath}`,
   schemaAEO
 } = Astro.props;
 ---
@@ -45,12 +48,17 @@ const {
     <meta name="robots" content="index, follow" />
 
     <link rel="canonical" href={canonicalURL} />
-    <link rel="alternate" hreflang="es-MX" href="https://www.lumivia.app/mx/" />
-    <link rel="alternate" hreflang="es-CO" href="https://www.lumivia.app/co/" />
-    <link rel="alternate" hreflang="es-CL" href="https://www.lumivia.app/cl/" />
-    <link rel="alternate" hreflang="es-CR" href="https://www.lumivia.app/cr/" />
-    <link rel="alternate" hreflang="es" href="https://www.lumivia.app/" />
-    <link rel="alternate" hreflang="x-default" href="https://www.lumivia.app/" />
+
+    {isCountryPage && (
+      <>
+        <link rel="alternate" hreflang="es-MX" href="https://www.lumivia.app/mx/" />
+        <link rel="alternate" hreflang="es-CO" href="https://www.lumivia.app/co/" />
+        <link rel="alternate" hreflang="es-CL" href="https://www.lumivia.app/cl/" />
+        <link rel="alternate" hreflang="es-CR" href="https://www.lumivia.app/cr/" />
+        <link rel="alternate" hreflang="es" href="https://www.lumivia.app/" />
+        <link rel="alternate" hreflang="x-default" href="https://www.lumivia.app/" />
+      </>
+    )}
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
