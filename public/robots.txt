@@ -1,24 +1,30 @@
-# Lumivia - Reglas para Motores de Búsqueda y Agentes de IA
-User-agent: *
+# ==========================================
+# LUMIVIA - BOTS & AI ENGINE OPTIMIZATION 
+# ==========================================
+
+User-agent: Googlebot
 Allow: /
 
-# OpenAI / ChatGPT
+User-agent: Bingbot
+Allow: /
+
+# Agentes IA
 User-agent: GPTBot
 Allow: /
 User-agent: ChatGPT-User
 Allow: /
-
-# Perplexity AI
 User-agent: PerplexityBot
 Allow: /
-
-# Google Gemini (Google-Extended)
 User-agent: Google-Extended
 Allow: /
-
-# Anthropic Claude
 User-agent: ClaudeBot
 Allow: /
+User-agent: anthropic-ai
+Allow: /
 
-# Enlace al mapa del sitio
-Sitemap: https://lumivia.app/sitemap.xml
+# Regla Global
+User-agent: *
+Allow: /
+
+# EL SITEMAP CORRECTO (Con WWW y tu nombre de archivo exacto)
+Sitemap: https://www.lumivia.app/sitemap.xml
