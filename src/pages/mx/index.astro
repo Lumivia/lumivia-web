@@ -27,16 +27,31 @@ if (ofertas && ofertas.length > 0) {
             "price": deal.precio,
             "priceCurrency": "MXN",
             "availability": "https://schema.org/InStock",
-            "url": `https://lumivia.app/mx?vuelo=${deal.id}`
+            "url": `https://www.lumivia.app/mx?vuelo=${deal.id}`,
+            "itemOffered": {
+                "@type": "Flight",
+                "departureAirport": {
+                    "@type": "Airport",
+                    "iataCode": deal.origen
+                },
+                "arrivalAirport": {
+                    "@type": "Airport",
+                    "iataCode": deal.destino
+                }
+            }
         }
     }));
 
     schemaJSON = JSON.stringify({
         "@context": "https://schema.org",
-        "@type": "ItemList",
-        "name": "Catálogo de Vuelos Lumivia - México",
-        "description": "Las mejores ofertas de vuelos detectadas por nuestro algoritmo en tiempo real.",
-        "itemListElement": schemaOffers
+        "@type": "CollectionPage",
+        "name": "Catálogo en vivo de Vuelos Baratos desde México - Lumivia",
+        "description": "Las mejores tarifas aéreas detectadas en tiempo real desde México. Datos estructurados para motores de búsqueda e Inteligencia Artificial.",
+        "mainEntity": {
+            "@type": "OfferCatalog",
+            "name": "Radar de Vuelos Lumivia MX",
+            "itemListElement": schemaOffers
+        }
     });
 }
 ---
@@ -158,8 +173,7 @@ if (ofertas && ofertas.length > 0) {
                 </div>
             </div>
         </header>
-
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
             
             <div class="text-center max-w-3xl mx-auto mb-10 relative z-10" id="hero-section">
                 <h1 class="text-4xl md:text-5xl font-black tracking-tighter mb-4 text-lumiDark leading-tight drop-shadow-sm mt-4">
@@ -281,8 +295,7 @@ if (ofertas && ofertas.length > 0) {
                 </div>
             </div>
         </main>
-
-        <footer class="bg-white border-t border-gray-200 py-10">
+<footer class="bg-white border-t border-gray-200 py-10">
             <div class="max-w-7xl mx-auto px-4 text-center">
                 <p class="font-extrabold text-lumiDark mb-2 text-base">Lumivia</p>
                 <div class="flex flex-wrap justify-center gap-4 sm:gap-8 text-[10px] font-extrabold uppercase tracking-widest text-gray-400 mb-6">
@@ -464,8 +477,7 @@ if (ofertas && ofertas.length > 0) {
                 if (match) return match[0];
                 return texto.trim().replace(/[^A-Za-z]/g, '').substring(0, 3).toUpperCase();
             }
-
-            // BLINDAJE DE VUELO: Ahora solo entra en acción si el link del bot está mal
+// BLINDAJE DE VUELO: Ahora solo entra en acción si el link del bot está mal
             function construirLinkVuelo(urlCompra, origen, destino, fechaSalida, fechaRegreso) {
                 // Si Apify trajo un link bueno de compra, respétalo
                 if (urlCompra && urlCompra.includes('destination_iata')) {
