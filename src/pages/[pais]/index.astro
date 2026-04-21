@@ -8,10 +8,9 @@ const mercadosPermitidos = {
 };
 
 const { pais } = Astro.params;
-// Limpiamos cualquier diagonal, número o basura que Cloudflare le pegue a la URL
-const codigoPais = (pais || '').replace(/[^a-zA-Z]/g, '').toLowerCase();
+// Extraemos estrictamente los primeros 2 caracteres. Así ignoramos parámetros como ?fbclid=123 o ?cache=kill
+const codigoPais = (pais || '').substring(0, 2).toLowerCase();
 
-// Si intentan entrar a un país que no existe...
 if (!mercadosPermitidos[codigoPais]) {
     return new Response(null, { status: 404, statusText: 'Not Found' });
 }
