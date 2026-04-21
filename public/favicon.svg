@@ -2,7 +2,7 @@
   <rect width="512" height="512" rx="112" fill="#0F172A" />
   
   <defs>
-    <linearGradient id="lumiViaGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+    <linearGradient id="flightPath" x1="0%" y1="100%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#00D2FF" />
       <stop offset="100%" stop-color="#E9B872" />
     </linearGradient>
@@ -13,27 +13,16 @@
     </filter>
   </defs>
 
-  <g transform="translate(10, 10) scale(0.96)" opacity="0.8">
+  <g transform="translate(10, 10) scale(0.96)">
     <path d="M 150 352 Q 256 352 362 160" 
           fill="none" 
-          stroke="url(#lumiViaGrad)" 
-          stroke-width="36" 
+          stroke="url(#flightPath)" 
+          stroke-width="44" 
           stroke-linecap="round" />
     
-    <circle cx="150" cy="352" r="24" fill="#0F172A" stroke="#00D2FF" stroke-width="10" />
+    <circle cx="150" cy="352" r="28" fill="#0F172A" stroke="#00D2FF" stroke-width="12" />
     
-    <circle cx="362" cy="160" r="28" fill="#E9B872" filter="url(#glow)" />
-    <circle cx="362" cy="160" r="12" fill="#FFFFFF" />
+    <circle cx="362" cy="160" r="32" fill="#E9B872" filter="url(#glow)" />
+    <circle cx="362" cy="160" r="14" fill="#FFFFFF" />
   </g>
-
-  <text x="256" y="290" 
-        font-family="Cambo, 'Bodoni MT', Didot, 'Times New Roman', serif" 
-        font-size="160" 
-        font-weight="bold" 
-        fill="url(#lumiViaGrad)" 
-        text-anchor="middle" 
-        letter-spacing="-10"
-        filter="url(#glow)">
-    LV
-  </text>
 </svg>
