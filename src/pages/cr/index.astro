@@ -53,13 +53,12 @@ if (ofertas && ofertas.length > 0) {
             <div class="bg-white/90 backdrop-blur-xl border border-gray-200/50 shadow-2xl rounded-2xl p-4 text-xs font-medium text-gray-600 opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 w-max max-w-[260px] text-right origin-bottom-right">
                 <p class="text-lumiDark font-extrabold mb-1 text-sm leading-tight">Únete a nuestro canal de Lumivia Costa Rica de WhatsApp</p>
             </div>
-            <a href="https://whatsapp.com/channel/0029Vb7tSlb7dmefEZ6MN52v" target="_blank" class="flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-emerald-400 to-emerald-500 rounded-full shadow-[0_8px_30px_rgba(16,185,129,0.3)] hover:shadow-[0_8px_30px_rgba(16,185,129,0.5)] hover:scale-105 transition-all duration-300 relative focus:outline-none">
+            <a href="https://whatsapp.com/channel/0029VbCPJ4i8V0tiCieX9s01" target="_blank" class="flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-emerald-400 to-emerald-500 rounded-full shadow-[0_8px_30px_rgba(16,185,129,0.3)] hover:shadow-[0_8px_30px_rgba(16,185,129,0.5)] hover:scale-105 transition-all duration-300 relative focus:outline-none">
                 <div class="absolute inset-0 rounded-full border border-white/60 animate-ping opacity-75 duration-1000"></div>
                 <svg class="w-7 h-7 text-white relative z-10" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
             </a>
         </div>
-
-        <div id="modal-paquete" class="fixed inset-0 z-[100] hidden items-center justify-center p-0 md:p-6 opacity-0 transition-opacity duration-300">
+<div id="modal-paquete" class="fixed inset-0 z-[100] hidden items-center justify-center p-0 md:p-6 opacity-0 transition-opacity duration-300">
             <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="cerrarModalPaquete()"></div>
             
             <div class="relative w-full h-full md:h-auto md:max-h-[90vh] max-w-4xl bg-white md:rounded-3xl shadow-2xl flex flex-col md:flex-row transform scale-95 transition-transform duration-300 overflow-y-auto md:overflow-hidden" id="modal-content">
@@ -210,7 +209,8 @@ if (ofertas && ofertas.length > 0) {
                     <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                 </a>
             </div>
-<div class="bg-lumiDark text-white border border-gray-800 rounded-3xl px-8 py-8 shadow-2xl overflow-hidden relative flex flex-col md:flex-row items-center justify-between gap-8 mb-20 transform transition-all hover:scale-[1.01] duration-500 group">
+
+            <div class="bg-lumiDark text-white border border-gray-800 rounded-3xl px-8 py-8 shadow-2xl overflow-hidden relative flex flex-col md:flex-row items-center justify-between gap-8 mb-20 transform transition-all hover:scale-[1.01] duration-500 group">
                 <div class="absolute inset-0 bg-gradient-to-r from-lumiCyan/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                 <div class="relative z-10 text-center md:text-left flex-grow">
                     <h3 class="text-2xl font-bold mb-2">¿Tienes un viaje específico en mente?</h3>
@@ -249,7 +249,7 @@ if (ofertas && ofertas.length > 0) {
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-semibold text-gray-400 mb-1">Origen</label>
-                                <input type="text" id="lead-origen" placeholder="Ej. San José" required class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-lumiCyan transition">
+                                <input type="text" id="lead-origen" placeholder="Ej. SJO" required class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-lumiCyan transition">
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-gray-400 mb-1">Destino</label>
@@ -312,6 +312,25 @@ if (ofertas && ofertas.length > 0) {
                 'CR': ['SJO', 'LIR']
             };
 
+            const diccionarioInfalible = {
+                'PVR': ['1562095241680-7212bf8b3fb8', '1590523277661-eb8e5c8e0a33', '1552074284-823adf33cb53', '1518105779142-d971f22f4720'],
+                'SJD': ['1518684074239-9d5f81254bf3', '1507528364635-b5df438c8b71', '1519046904884-53103b34b206', '1499793983690-e29da59ef1c2'],
+                'TIJ': ['1581452418659-199fc9ee5cb0', '1603561937968-3fa422709e3e', '1612456428800-4b2a7587cba6', '1562095241680-7212bf8b3fb8'],
+                'MID': ['1580828362629-9e8fb297dc68', '1518105779142-d971f22f4720', '1584080133502-3c220d0f4185', '1534008897995-27a23e859048'],
+                'CUN': ['3vIjqujVdIA', 'SvY433Nv7Ns', 'rXKP0Q4H1WQ', '4B5wR258Qb0'],
+                'MEX': ['s-s0hSZC0QE', '1518105779142-d971f22f4720', '1580828362629-9e8fb297dc68', '1584080133502-3c220d0f4185'],
+                'GDL': ['1581452418659-199fc9ee5cb0', '1603561937968-3fa422709e3e', '1612456428800-4b2a7587cba6', '1562095241680-7212bf8b3fb8'],
+                'MAD': ['1539037116271-8b732bc01406', 'BIBBsObHLEo', '1513024503798-251cce2a2ea1', '1543785724-43ea5625bf94'],
+                'CDG': ['1499856871958-5b9627545d1a', '1502602273-4e56ebbc6e24', '1522513470709-323e2dc4f165', '1511739001489-1107fa2fa95c'],
+                'JFK': ['1496442226666-8d4d0e6650b0', '1522083165195-3424ed129620', '1499856871958-5b9627545d1a', '1513635269975-59663e0ac1ad'],
+                'MIA': ['1533106497176-45ef8be9e6ae', '1506456073105-02f5db0fb4f2', '1585848529221-a3f25c7df76f', '1513025287661-e50cf6e35b71'],
+                'LAX': ['1580655328951-1d51ab14af16', '1515859005217-8a1f08870f59', '1534447677768-be436bb09401', '1503899036067-ea3944d9748a'],
+                'LAS': ['1605833556294-ea5c7a74f57d', '1585848529221-a3f25c7df76f', '1506456073105-02f5db0fb4f2', '1513025287661-e50cf6e35b71'],
+                'BOG': ['ovmCoJVf0yg', '1583337130417-3346a1be7dee', '1584064548480-1a73373eb4ea', '1563212879-11c52110e53d'],
+                'MDE': ['3E44SObU_vo', '1593129535032-47551f38faeb', '1604085449772-2f3b9c0c80b2', '1584013444445-562ec8724cc6'],
+                'CTG': ['1584064548480-1a73373eb4ea', '1596422846543-75c6fccc6a4c', '1611054006325-3b9e8316b23a', '1550953684-2e6504a58eb3']
+            };
+
             function toggleDropdown() {
                 document.getElementById('dropdown-paises').classList.toggle('hidden');
             }
@@ -342,7 +361,6 @@ if (ofertas && ofertas.length > 0) {
                 if(radarContainer) {
                     radarContainer.innerHTML = '<li class="p-6 text-gray-400 text-center">Buscando oportunidades locales...</li>';
                 }
-                
                 fetchDeals(); 
             }
 
@@ -438,9 +456,23 @@ if (ofertas && ofertas.length > 0) {
                 return `${y}-${m}-${d}`;
             }
 
-            function construirLinkVuelo(origen, destino, fechaSalida, fechaRegreso) {
-                const ori = (origen || '').trim().replace(/[^A-Za-z]/g, '').substring(0, 3).toUpperCase();
-                const des = (destino || '').trim().replace(/[^A-Za-z]/g, '').substring(0, 3).toUpperCase();
+            function extraerIATA(texto) {
+                if (!texto) return '';
+                const match = texto.match(/\b[A-Z]{3}\b/);
+                if (match) return match[0];
+                return texto.trim().replace(/[^A-Za-z]/g, '').substring(0, 3).toUpperCase();
+            }
+
+            // BLINDAJE DE VUELO: Ahora solo entra en acción si el link del bot está mal
+            function construirLinkVuelo(urlCompra, origen, destino, fechaSalida, fechaRegreso) {
+                // Si Apify trajo un link bueno de compra, respétalo
+                if (urlCompra && urlCompra.includes('destination_iata')) {
+                    return urlCompra;
+                }
+
+                // Si no, construye la ruta matemáticamente
+                const ori = extraerIATA(origen);
+                const des = extraerIATA(destino);
 
                 if (ori.length !== 3 || des.length !== 3 || !fechaSalida) {
                     return 'https://vuelos.lumivia.app/';
@@ -506,12 +538,29 @@ if (ofertas && ofertas.length > 0) {
 
                 return { hookDeals: hookDeals, radarDeals: radarDeals.slice(0, 8) };
             }
-
-            function abrirModalPaquete(id) {
+function abrirModalPaquete(id) {
                 const deal = window.ofertasGlobales.find(d => d.id == id);
                 if(!deal) return;
 
-                document.getElementById('modal-img').src = deal.url_imagen || "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80";
+                // BLINDAJE DE IMÁGENES: Respeta al bot, pero no permite errores vacíos
+                const alaProhibida = '1436491865332-7a61a109cc05';
+                let imgIdModal = deal.url_imagen || ''; 
+                const destinoLimpio = (deal.destino || '').trim().toUpperCase();
+
+                if (!imgIdModal || imgIdModal.trim() === '' || imgIdModal.includes(alaProhibida) || imgIdModal === 'null') {
+                    if (diccionarioInfalible[destinoLimpio]) {
+                        const listaFotos = diccionarioInfalible[destinoLimpio];
+                        const fotoId = listaFotos[Math.floor(Math.random() * listaFotos.length)];
+                        imgIdModal = `https://images.unsplash.com/photo-${fotoId}?auto=format&fit=crop&w=800&q=80&fm=webp`;
+                    } else {
+                        imgIdModal = `https://images.unsplash.com/photo-1488085061387-422e15b40b18?auto=format&fit=crop&w=800&q=80&fm=webp`;
+                    }
+                } else if (!imgIdModal.startsWith('http')) {
+                    // Si el bot solo mandó el string corto
+                    imgIdModal = `https://images.unsplash.com/photo-${imgIdModal}?auto=format&fit=crop&w=800&q=80&fm=webp`;
+                }
+                
+                document.getElementById('modal-img').src = imgIdModal;
                 document.getElementById('modal-route').innerText = `${deal.origen || 'ORG'} → ${deal.destino || 'DST'}`;
                 document.getElementById('modal-title').innerText = deal.titulo_gancho || "Oferta Especial";
                 
@@ -524,10 +573,14 @@ if (ofertas && ofertas.length > 0) {
                 const extrasContainer = document.getElementById('modal-extras');
                 extrasContainer.innerHTML = '';
                 
-                let linkHotelFinal = deal.url_hotel;
-                if (linkHotelFinal && linkHotelFinal !== 'Sin hotel sugerido' && linkHotelFinal.includes('stay22.com')) {
-                    if (!linkHotelFinal.includes('checkin=')) {
-                        linkHotelFinal += `&checkin=${deal.fecha_salida}&checkout=${deal.fecha_regreso}`;
+                // BLINDAJE DEL HOTEL: Respeta al bot 100%
+                let linkHotelFinal = '';
+                if (deal.url_hotel && !deal.url_hotel.toLowerCase().includes('sin hotel') && deal.url_hotel.trim() !== '') {
+                    linkHotelFinal = deal.url_hotel.trim();
+                    // Si es Stay22 pero no trae fechas, se las ponemos
+                    if (linkHotelFinal.includes('stay22.com') && !linkHotelFinal.includes('checkin=')) {
+                        const separador = linkHotelFinal.includes('?') ? '&' : '?';
+                        linkHotelFinal += `${separador}checkin=${deal.fecha_salida}&checkout=${deal.fecha_regreso}`;
                     }
                 }
 
@@ -574,7 +627,7 @@ if (ofertas && ofertas.length > 0) {
 
                 let htmlExtras = '';
                 
-                if (linkHotelFinal && linkHotelFinal !== 'Sin hotel sugerido') {
+                if (linkHotelFinal !== '') {
                     htmlExtras += `
                         <a href="${linkHotelFinal}" target="_blank" class="relative overflow-hidden rounded-2xl h-[72px] group block shadow-sm border border-gray-100">
                             <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
@@ -641,9 +694,10 @@ if (ofertas && ofertas.length > 0) {
                 
                 extrasContainer.innerHTML = htmlExtras;
 
-                let linkFinalReserva = deal.link_compra || 'https://vuelos.lumivia.app/';
-                document.getElementById('modal-link').href = linkFinalReserva;
-                document.getElementById('modal-price').innerText = `$${Number(deal.precio).toLocaleString('en-US')} ${(deal.moneda || monedaActual).toUpperCase()}`;
+                // BLINDAJE DEL VUELO: Reconstruye si es necesario
+                document.getElementById('modal-link').href = construirLinkVuelo(deal.link_compra, deal.origen, deal.destino, deal.fecha_salida, deal.fecha_regreso);
+                
+                document.getElementById('modal-price').innerText = `$${Number(deal.precio).toLocaleString('en-US')} ${(deal.moneda || deal.currency || monedaActual).toUpperCase()}`;
                 document.getElementById('modal-dates').innerText = `${formatearFechaCorta(deal.fecha_salida)} - ${formatearFechaCorta(deal.fecha_regreso)}`;
 
                 const modal = document.getElementById('modal-paquete');
@@ -754,7 +808,6 @@ if (ofertas && ofertas.length > 0) {
                 }
             }
 
-         // *** FUNCIÓN RENDER HOOK DEALS CON DICCIONARIO VISUAL Y COMPRESIÓN WEBP ***
             function renderHookDeals(deals) {
                 const container = document.getElementById('hook-deals');
                 if(!container) return;
@@ -762,32 +815,22 @@ if (ofertas && ofertas.length > 0) {
                 container.innerHTML = ''; 
 
                 deals.forEach(deal => {
-                    // --- 1. DICCIONARIO VISUAL ICÓNICO POR IATA ---
-                    const imagenesIconicas = {
-                        'MAD': '1539037116271-8b732bc01406', 'CDG': '1499856871958-5b9627545d1a',
-                        'NRT': '1536098561623-439ce1e604f8', 'MIA': '1533106497176-45ef8be9e6ae',
-                        'CUN': '1552074284-823adf33cb53', 'BOG': '1583337130417-3346a1be7dee',
-                        'SCL': '1535094595-654db4018f67', 'SJO': '1540201886-070857cbbfb4',
-                        'JFK': '1496442226666-8d4d0e6650b0', 'LHR': '1513635269975-59663e0ac1ad',
-                        'EZE': '1589988582736-261ec81eb9f1', 'GRU': '1483729558449-99ef09a8c325',
-                        'LIM': '1526369527958-96bb05527a85', 'FCO': '1515542622106-78b28afb2d51',
-                        'AMS': '1513622470522-26c311512bf6', 'YYZ': '1503899036067-ea3944d9748a',
-                        'LAX': '1580655328951-1d51ab14af16', 'PUJ': '1522008314173-61115c3ee260',
-                        'PTY': '1576402506450-45952d7ee8f1', 'UIO': '1585614917539-715bd16dfc09'
-                    };
+                    const alaProhibida = '1436491865332-7a61a109cc05'; 
+                    let imgFinal = deal.url_imagen || '';
+                    const destinoLimpio = (deal.destino || '').trim().toUpperCase();
 
-                    let imgId = '1436491865332-7a61a109cc05'; // Fallback clásico (Ala de avión)
-                    
-                    // Extraer ID de la foto si viene de Unsplash, o usar el diccionario
-                    if (deal.url_imagen && deal.url_imagen.includes('unsplash.com/photo-')) {
-                        const match = deal.url_imagen.match(/photo-([a-zA-Z0-9-]+)/);
-                        if (match) imgId = match[1];
-                    } else if (imagenesIconicas[deal.destino]) {
-                        imgId = imagenesIconicas[deal.destino];
+                    // BLINDAJE IMÁGENES CAROUSEL
+                    if (!imgFinal || imgFinal.trim() === '' || imgFinal.includes(alaProhibida) || imgFinal === 'null') {
+                        if (diccionarioInfalible[destinoLimpio]) {
+                            const listaFotos = diccionarioInfalible[destinoLimpio];
+                            const fotoId = listaFotos[Math.floor(Math.random() * listaFotos.length)];
+                            imgFinal = `https://images.unsplash.com/photo-${fotoId}?auto=format&fit=crop&w=600&q=70&fm=webp`;
+                        } else {
+                            imgFinal = `https://images.unsplash.com/photo-1488085061387-422e15b40b18?auto=format&fit=crop&w=600&q=70&fm=webp`;
+                        }
+                    } else if (!imgFinal.startsWith('http')) {
+                        imgFinal = `https://images.unsplash.com/photo-${imgFinal}?auto=format&fit=crop&w=600&q=70&fm=webp`;
                     }
-                    
-                    // --- 2. MAGIA DE COMPRESIÓN: fm=webp, w=600, q=70 ---
-                    const img = `https://images.unsplash.com/photo-${imgId}?auto=format&fit=crop&w=600&q=70&fm=webp`;
 
                     const titulo = deal.titulo_gancho || "Oferta Especial";
                     const precio = deal.precio || "Consultar";
@@ -799,24 +842,43 @@ if (ofertas && ofertas.length > 0) {
                     
                     const esVip = deal.tipo_vuelo === 'directo';
                     const badgeVip = esVip 
-                        ? `<div class="absolute top-4 right-4 badge-vip-glass text-white text-[10px] font-black px-3 py-1.5 rounded-full z-10 flex items-center gap-1.5 uppercase tracking-widest shadow-lg">
+                        ? `
+                            <div class="absolute top-4 right-4 badge-vip-glass text-white text-[10px] font-black px-3 py-1.5 rounded-full z-10 flex items-center gap-1.5 uppercase tracking-widest shadow-lg">
                                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
                                Directo
-                           </div>` : '';
+                           </div>
+                          ` 
+                        : '';
 
                     const etiquetaHot = (deal.calidad_oferta >= 9)
-                        ? `<span class="text-red-500 font-extrabold flex items-center gap-1 text-[10px] uppercase tracking-wider">
-                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path></svg> HOT
-                            </span>` : '';
+                        ? `
+                            <span class="text-red-500 font-extrabold flex items-center gap-1 text-[10px] uppercase tracking-wider">
+                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path></svg> 
+                                HOT
+                            </span>
+                          `
+                        : '';
 
                     const monedaDeal = (deal.moneda || deal.currency || monedaActual).toUpperCase();
 
                     const amenidadesLinea = `
                         <div class="flex items-center flex-wrap gap-2 text-[10px] font-semibold text-gray-500 mb-6 uppercase tracking-widest">
-                            <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg> Hospedaje</span>
+                            <span class="flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg> 
+                                Hospedaje
+                            </span>
                             <span class="text-gray-300">•</span>
-                            <span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.5 21a2.5 2.5 0 005-5V5a2 2 0 00-2-2h-3.5M10 21H5a2 2 0 01-2-2V5a2 2 0 012-2h5m4 18h-4"></path></svg> Tours</span>
-                            ${esInternacional ? `<span class="text-gray-300">•</span><span class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 117.778 0M12 20h.01m-7.08-7.071a10 10 0 1114.142 0"></path></svg> eSIM</span>` : ''}
+                            <span class="flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.5 21a2.5 2.5 0 005-5V5a2 2 0 00-2-2h-3.5M10 21H5a2 2 0 01-2-2V5a2 2 0 012-2h5m4 18h-4"></path></svg> 
+                                Tours
+                            </span>
+                            ${esInternacional ? `
+                                <span class="text-gray-300">•</span>
+                                <span class="flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 117.778 0M12 20h.01m-7.08-7.071a10 10 0 1114.142 0"></path></svg> 
+                                    eSIM
+                                </span>
+                            ` : ''}
                         </div>
                     `;
 
@@ -825,19 +887,19 @@ if (ofertas && ofertas.length > 0) {
                     card.className = "card-minimal flex-none w-[85vw] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-center flex flex-col group cursor-pointer hover:shadow-xl transition-shadow duration-300";
                     card.onclick = () => abrirModalPaquete(deal.id); 
                     
-                    // --- 3. ATRIBUTO loading="lazy" AÑADIDO A LA IMAGEN ---
                     card.innerHTML = `
                         <div class="relative h-56 overflow-hidden bg-gray-100">
-                            <img src="${img}" alt="${titulo}" loading="lazy" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
+                            <img src="${imgFinal}" alt="${titulo}" loading="lazy" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
                             <div class="absolute inset-0 bg-gradient-to-t from-lumiDark/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <div class="absolute top-4 left-4 bg-white/95 backdrop-blur-md text-lumiDark text-[10px] font-bold px-3 py-1.5 rounded-full shadow-sm tracking-wide border border-white/50 uppercase flex items-center gap-1">
                                 ⏱️ ${tiempoTranscurrido}
                             </div>
                             ${badgeVip}
                             <button onclick="reportarCambioPrecio('${deal.id}')" title="¿El precio subió? Repórtalo" class="absolute bottom-3 right-3 bg-white/80 hover:bg-red-50 text-gray-500 hover:text-red-500 backdrop-blur-sm p-2.5 rounded-full shadow-sm border border-white/50 transition-colors z-10">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-1 6-1-1H11.5l-1-1H5v10m0 0h4"></path></svg>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-1 6-1-1H11.5l-1-1H5v10m0 0h4"></path></svg> 
                             </button>
                         </div>
+                        
                         <div class="p-6 flex flex-col flex-grow bg-white relative">
                             <div class="flex items-center justify-between mb-3">
                                 <div class="flex items-center gap-2">
@@ -848,18 +910,23 @@ if (ofertas && ofertas.length > 0) {
                                     </div>
                                     ${etiquetaHot}
                                 </div>
+                                
                                 <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1">
                                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                     ${fechasCortas}
                                 </div>
                             </div>
+                            
                             <h3 class="text-xl font-bold mb-4 text-lumiDark group-hover:text-lumiCyan transition-colors leading-snug line-clamp-2">${titulo}</h3>
+                            
                             ${amenidadesLinea}
+
                             <div class="mt-auto pt-5 border-t border-gray-100 flex items-center justify-between">
                                 <div>
                                     <p class="text-[9px] text-gray-400 uppercase tracking-widest font-bold mb-0.5">Vuelo Id/Vt</p>
                                     <p class="text-2xl font-black text-lumiDark leading-none tracking-tight">$${Number(precio).toLocaleString('en-US')} <span class="text-xs font-semibold text-gray-400">${monedaDeal}</span></p>
                                 </div>
+                                
                                 <div class="flex items-center gap-3">
                                     <button onclick="copiarUrlUnica('${deal.id}')" title="Copiar enlace" class="bg-gray-50 hover:bg-gray-200 text-gray-500 p-2 rounded-lg transition-colors shadow-sm">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
@@ -877,9 +944,11 @@ if (ofertas && ofertas.length > 0) {
                 if (!window.carruselIniciado && deals.length > 0) {
                     window.carruselIniciado = true;
                     const scrollContainer = document.getElementById('hook-deals');
+                    
                     setInterval(() => {
                         if (!scrollContainer || scrollContainer.children.length === 0) return;
                         const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+                        
                         if (scrollContainer.scrollLeft >= maxScroll - 10) {
                             scrollContainer.scrollTo({ left: 0, behavior: 'smooth' });
                         } else {
@@ -890,7 +959,6 @@ if (ofertas && ofertas.length > 0) {
                 }
             }
 
-            // *** FUNCIÓN RENDER RADAR DEALS COMPRIMIDA AL MÁXIMO ***
             function renderRadarDeals(deals) {
                 const container = document.getElementById('radar-deals');
                 if(!container) return;
@@ -903,29 +971,22 @@ if (ofertas && ofertas.length > 0) {
                 container.innerHTML = '';
 
                 deals.forEach(deal => {
-                    const imagenesIconicas = {
-                        'MAD': '1539037116271-8b732bc01406', 'CDG': '1499856871958-5b9627545d1a',
-                        'NRT': '1536098561623-439ce1e604f8', 'MIA': '1533106497176-45ef8be9e6ae',
-                        'CUN': '1552074284-823adf33cb53', 'BOG': '1583337130417-3346a1be7dee',
-                        'SCL': '1535094595-654db4018f67', 'SJO': '1540201886-070857cbbfb4',
-                        'JFK': '1496442226666-8d4d0e6650b0', 'LHR': '1513635269975-59663e0ac1ad',
-                        'EZE': '1589988582736-261ec81eb9f1', 'GRU': '1483729558449-99ef09a8c325',
-                        'LIM': '1526369527958-96bb05527a85', 'FCO': '1515542622106-78b28afb2d51',
-                        'AMS': '1513622470522-26c311512bf6', 'YYZ': '1503899036067-ea3944d9748a',
-                        'LAX': '1580655328951-1d51ab14af16', 'PUJ': '1522008314173-61115c3ee260',
-                        'PTY': '1576402506450-45952d7ee8f1', 'UIO': '1585614917539-715bd16dfc09'
-                    };
+                    const alaProhibida = '1436491865332-7a61a109cc05'; 
+                    let imgFinal = deal.url_imagen || '';
+                    const destinoLimpio = (deal.destino || '').trim().toUpperCase();
 
-                    let imgId = '1436491865332-7a61a109cc05';
-                    if (deal.url_imagen && deal.url_imagen.includes('unsplash.com/photo-')) {
-                        const match = deal.url_imagen.match(/photo-([a-zA-Z0-9-]+)/);
-                        if (match) imgId = match[1];
-                    } else if (imagenesIconicas[deal.destino]) {
-                        imgId = imagenesIconicas[deal.destino];
+                    // BLINDAJE IMÁGENES RADAR
+                    if (!imgFinal || imgFinal.trim() === '' || imgFinal.includes(alaProhibida) || imgFinal === 'null') {
+                        if (diccionarioInfalible[destinoLimpio]) {
+                            const listaFotos = diccionarioInfalible[destinoLimpio];
+                            const fotoId = listaFotos[Math.floor(Math.random() * listaFotos.length)];
+                            imgFinal = `https://images.unsplash.com/photo-${fotoId}?auto=format&fit=crop&w=150&q=60&fm=webp`;
+                        } else {
+                            imgFinal = `https://images.unsplash.com/photo-1488085061387-422e15b40b18?auto=format&fit=crop&w=150&q=60&fm=webp`;
+                        }
+                    } else if (!imgFinal.startsWith('http')) {
+                        imgFinal = `https://images.unsplash.com/photo-${imgFinal}?auto=format&fit=crop&w=150&q=60&fm=webp`;
                     }
-                    
-                    // --- MAGIA DE COMPRESIÓN EXTREMA PARA MINIATURAS: w=150, q=60, fm=webp ---
-                    const img = `https://images.unsplash.com/photo-${imgId}?auto=format&fit=crop&w=150&q=60&fm=webp`;
 
                     const titulo = deal.titulo_gancho || "Destino Sorpresa";
                     const precio = deal.precio || "0";
@@ -936,16 +997,16 @@ if (ofertas && ofertas.length > 0) {
                     
                     const monedaDeal = (deal.moneda || deal.currency || monedaActual).toUpperCase();
                     const hotBadge = (deal.calidad_oferta >= 9) 
-                        ? `<span class="text-red-500 font-bold ml-1" title="Alta Demanda">🔥</span>` : '';
+                        ? `<span class="text-red-500 font-bold ml-1" title="Alta Demanda">🔥</span>` 
+                        : '';
 
                     const li = document.createElement('li');
                     li.className = "p-3 sm:px-6 sm:py-4 hover:bg-gray-50/80 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer";
                     li.onclick = () => abrirModalPaquete(deal.id); 
                     
-                    // --- LAZY LOADING AÑADIDO ---
                     li.innerHTML = `
                         <div class="flex items-center gap-4">
-                            <img src="${img}" loading="lazy" class="h-12 w-12 rounded-lg object-cover shadow-sm border border-gray-200 hidden sm:block">
+                            <img src="${imgFinal}" loading="lazy" class="h-12 w-12 rounded-lg object-cover shadow-sm border border-gray-200 hidden sm:block">
                             <div>
                                 <h4 class="font-bold text-lumiDark text-base flex items-center flex-wrap gap-1">
                                     ${titulo} ${hotBadge}
@@ -963,6 +1024,7 @@ if (ofertas && ofertas.length > 0) {
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto mt-2 sm:mt-0">
                             <div class="text-left sm:text-right mr-2">
                                 <p class="text-lg font-extrabold text-lumiDark">
@@ -970,6 +1032,7 @@ if (ofertas && ofertas.length > 0) {
                                     <span class="text-xs font-normal text-gray-400">${monedaDeal}</span>
                                 </p>
                             </div>
+                            
                             <button onclick="copiarUrlUnica('${deal.id}')" title="Copiar enlace" class="bg-gray-50 hover:bg-gray-200 text-gray-500 p-2 rounded-lg transition-colors shadow-sm">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
                             </button>
