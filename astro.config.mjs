@@ -6,10 +6,4 @@ export default defineConfig({
   output: 'server',
   adapter: cloudflare(),
   trailingSlash: 'ignore', // Evita bucles globales con Cloudflare
-  redirects: {
-    '/mx': '/mx/',
-    '/co': '/co/',
-    '/cl': '/cl/',
-    '/cr': '/cr/'
-  }
 });
