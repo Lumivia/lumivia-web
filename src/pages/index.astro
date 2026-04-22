@@ -55,21 +55,20 @@ export const prerender = true; // Lo hacemos estático para que cargue instantá
     </div>
 
     <script is:inline>
-        // Función autoejecutable para que corra inmediatamente
         (function() {
-            // 1. Revisar si el usuario ya tiene un país guardado en su memoria
+            // 1. Revisar si ya conocemos al usuario
             const paisGuardado = localStorage.getItem('lumivia_pais');
             
             if (paisGuardado) {
-                // REDIRECCIÓN SEGURA: Lo mandamos a la nueva arquitectura /viajes/pais/
-                window.location.replace('/viajes/' + paisGuardado.toLowerCase() + '/');
+                // REDIRECCIÓN A RAÍZ: Ej. /mx/
+                window.location.replace('/' + paisGuardado.toLowerCase() + '/');
                 return;
             } 
             
-            // 2. Si es usuario nuevo, adivinamos su país por la Zona Horaria
+            // 2. Si es nuevo, detectamos país por Zona Horaria
             try {
                 const zonaHoraria = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                let codigoPais = 'mx'; // Default/Fallback global
+                let codigoPais = 'mx'; // Default
 
                 if (zonaHoraria.includes('Bogota') || zonaHoraria.includes('Colombia')) {
                     codigoPais = 'co';
@@ -77,20 +76,18 @@ export const prerender = true; // Lo hacemos estático para que cargue instantá
                     codigoPais = 'cl';
                 } else if (zonaHoraria.includes('Costa_Rica')) {
                     codigoPais = 'cr';
-                } else if (zonaHoraria.includes('Mexico') || zonaHoraria.includes('Cancun') || zonaHoraria.includes('Monterrey') || zonaHoraria.includes('Tijuana') || zonaHoraria.includes('Hermosillo') || zonaHoraria.includes('Mazatlan') || zonaHoraria.includes('Chihuahua') || zonaHoraria.includes('Ojinaga') || zonaHoraria.includes('Matamoros') || zonaHoraria.includes('Merida') || zonaHoraria.includes('Bahia_Banderas')) {
+                } else if (zonaHoraria.includes('Mexico') || zonaHoraria.includes('Cancun') || zonaHoraria.includes('Monterrey') || zonaHoraria.includes('Tijuana')) {
                     codigoPais = 'mx';
                 }
 
-                // Guardamos SOLO el código del país en mayúsculas (MX, CO, CL, CR)
                 localStorage.setItem('lumivia_pais', codigoPais.toUpperCase());
                 
-                // Redirección hacia la nueva ruta blindada
-                window.location.replace('/viajes/' + codigoPais + '/');
+                // Redirección directa a la carpeta del país
+                window.location.replace('/' + codigoPais + '/');
 
             } catch (e) {
-                // Si su navegador bloquea la lectura, lo mandamos al default (México)
                 localStorage.setItem('lumivia_pais', 'MX');
-                window.location.replace('/viajes/mx/');
+                window.location.replace('/mx/');
             }
         })();
     </script>
