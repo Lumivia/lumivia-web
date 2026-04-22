@@ -1,26 +1,19 @@
 ---
 const { pais } = Astro.params;
-const codigoPais = pais.toLowerCase();
+const codigoPais = pais?.toLowerCase();
 
-// 1. EL ESCUDO ESTRUCTURAL (Cero Hardcodeo)
-// Todos tus países tienen exactamente 2 letras. 
-// Si Astro manda aquí algo más largo (ej. 'masdestinos' o 'terminos'), 
-// es porque le faltaba la diagonal final. Se la ponemos y hacemos Redirección 301 (SEO Perfecto).
-if (codigoPais.length !== 2) {
-    return Astro.redirect(`/${codigoPais}/`, 301);
-}
-
-// 2. EL CADENERO DE PAÍSES (A partir de aquí, solo llegan textos de 2 letras)
+// LISTA DE PAÍSES (Tu única fuente de verdad)
 const mercadosPermitidos = {
-    'mx': { nombre: 'México', moneda: 'MXN', bandera: 'https://flagcdn.com/w20/mx.png' },
-    'co': { nombre: 'Colombia', moneda: 'COP', bandera: 'https://flagcdn.com/w20/co.png' },
-    'cl': { nombre: 'Chile', moneda: 'CLP', bandera: 'https://flagcdn.com/w20/cl.png' },
-    'cr': { nombre: 'Costa Rica', moneda: 'USD', bandera: 'https://flagcdn.com/w20/cr.png' }
+    'mx': { nombre: 'México' },
+    'co': { nombre: 'Colombia' },
+    'cl': { nombre: 'Chile' },
+    'cr': { nombre: 'Costa Rica' }
 };
 
-// Si tiene 2 letras, pero no está en la lista (ej. /xx/), entonces SÍ es un error 404 real.
+// SI NO ES UN PAÍS DE LA LISTA, NO PROCESES NADA.
+// Esto permite que Astro siga buscando otros archivos como 'masdestinos.astro'
 if (!mercadosPermitidos[codigoPais]) {
-    return new Response(null, { status: 404, statusText: 'Not Found' });
+    return new Response(null, { status: 404 });
 }
 
 const mercado = mercadosPermitidos[codigoPais];
@@ -28,7 +21,7 @@ const paisUpper = codigoPais.toUpperCase();
 
 Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=300, stale-while-revalidate=60');
 
-import Layout from '../../layouts/Layout.astro';
+import Layout from '../layouts/Layout.astro';
 import { createClient } from '@supabase/supabase-js';
 
 const SUPABASE_URL = 'https://khmkpkbhlzpvowesbkgu.supabase.co';
