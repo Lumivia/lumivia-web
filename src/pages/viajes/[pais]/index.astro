@@ -22,7 +22,7 @@ const paisUpper = codigoPais.toUpperCase();
 Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=300, stale-while-revalidate=60');
 
 // OJO: Asegúrate de que los '../' correspondan a dónde guardaste este archivo
-import Layout from '../../layouts/Layout.astro';
+import Layout from '../../../layouts/Layout.astro';
 import { createClient } from '@supabase/supabase-js';
 
 const SUPABASE_URL = 'https://khmkpkbhlzpvowesbkgu.supabase.co';
@@ -51,7 +51,7 @@ if (ofertas && ofertas.length > 0) {
             "price": deal.price || deal.precio, // Previne un posible undefined si la columna es 'price' o 'precio'
             "priceCurrency": mercado.moneda,
             "availability": "https://schema.org/InStock",
-            "url": `https://www.lumivia.app/${codigoPais}?vuelo=${deal.id}`,
+            "url": `https://www.lumivia.app/viajes/${codigoPais}?vuelo=${deal.id}`,
             "itemOffered": {
                 "@type": "Flight",
                 "departureAirport": {
