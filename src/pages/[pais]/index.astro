@@ -2,19 +2,15 @@
 const { pais } = Astro.params;
 const codigoPais = pais.toLowerCase();
 
-// 1. ESCANEO AUTOMÁTICO (Vite lee tus carpetas reales y se protege solo)
-const rutas = import.meta.glob('/src/pages/*/index.astro');
-const paginasReales = Object.keys(rutas).map(ruta => {
-    const partes = ruta.split('/');
-    return partes[partes.length - 2]; 
-});
-
-// 2. EL INTERCEPTOR: Si alguien entra sin barra a una página real, lo salva del 404
-if (paginasReales.includes(codigoPais) && codigoPais !== '[pais]') {
+// 1. EL ESCUDO ESTRUCTURAL (Cero Hardcodeo)
+// Todos tus países tienen exactamente 2 letras. 
+// Si Astro manda aquí algo más largo (ej. 'masdestinos' o 'terminos'), 
+// es porque le faltaba la diagonal final. Se la ponemos y hacemos Redirección 301 (SEO Perfecto).
+if (codigoPais.length !== 2) {
     return Astro.redirect(`/${codigoPais}/`, 301);
 }
 
-// 3. EL CADENERO: Solo países oficiales
+// 2. EL CADENERO DE PAÍSES (A partir de aquí, solo llegan textos de 2 letras)
 const mercadosPermitidos = {
     'mx': { nombre: 'México', moneda: 'MXN', bandera: 'https://flagcdn.com/w20/mx.png' },
     'co': { nombre: 'Colombia', moneda: 'COP', bandera: 'https://flagcdn.com/w20/co.png' },
@@ -22,6 +18,7 @@ const mercadosPermitidos = {
     'cr': { nombre: 'Costa Rica', moneda: 'USD', bandera: 'https://flagcdn.com/w20/cr.png' }
 };
 
+// Si tiene 2 letras, pero no está en la lista (ej. /xx/), entonces SÍ es un error 404 real.
 if (!mercadosPermitidos[codigoPais]) {
     return new Response(null, { status: 404, statusText: 'Not Found' });
 }
