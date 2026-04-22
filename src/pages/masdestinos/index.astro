@@ -1,4 +1,5 @@
 ---
+export const prerender = true;
 // 1. EL ESCUDO CACHÉ EDGE
 Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=300, stale-while-revalidate=60');
 
