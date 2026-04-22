@@ -1,17 +1,20 @@
 ---
+// 1. DECLARACIÓN EXPLÍCITA DE SSR (El Muro de Contención)
+export const prerender = false;
+
 const { pais } = Astro.params;
 const codigoPais = pais?.toLowerCase();
 
-// LISTA DE PAÍSES (Tu única fuente de verdad)
+// 2. LISTA DE PAÍSES (Tu única fuente de verdad)
 const mercadosPermitidos = {
-    'mx': { nombre: 'México' },
-    'co': { nombre: 'Colombia' },
-    'cl': { nombre: 'Chile' },
-    'cr': { nombre: 'Costa Rica' }
+    'mx': { nombre: 'México', moneda: 'MXN' },
+    'co': { nombre: 'Colombia', moneda: 'COP' },
+    'cl': { nombre: 'Chile', moneda: 'CLP' },
+    'cr': { nombre: 'Costa Rica', moneda: 'USD' }
 };
 
-// SI NO ES UN PAÍS DE LA LISTA, NO PROCESES NADA.
-// Esto permite que Astro siga buscando otros archivos como 'masdestinos.astro'
+// 3. EL KILL SWITCH DEL 404
+// SI NO ES UN PAÍS DE LA LISTA, MATA LA EJECUCIÓN INMEDIATAMENTE.
 if (!mercadosPermitidos[codigoPais]) {
     return new Response(null, { status: 404 });
 }
@@ -21,6 +24,7 @@ const paisUpper = codigoPais.toUpperCase();
 
 Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=300, stale-while-revalidate=60');
 
+// OJO: Asegúrate de que los '../' correspondan a dónde guardaste este archivo
 import Layout from '../../layouts/Layout.astro';
 import { createClient } from '@supabase/supabase-js';
 
@@ -28,7 +32,7 @@ const SUPABASE_URL = 'https://khmkpkbhlzpvowesbkgu.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_uyjRiobM7d6m7IdMPUQi9Q_-RPZuIvt';
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// 3. CONSULTA DINÁMICA A SUPABASE
+// 4. CONSULTA DINÁMICA A SUPABASE
 const { data: ofertas } = await supabase
     .from('publicaciones_lumivia')
     .select('*')
@@ -37,7 +41,7 @@ const { data: ofertas } = await supabase
     .order('created_at', { ascending: false })
     .limit(10);
 
-// 4. CEREBRO SEAO DINÁMICO
+// 5. CEREBRO SEO DINÁMICO
 let schemaJSON = null;
 if (ofertas && ofertas.length > 0) {
     const schemaOffers = ofertas.map((deal, index) => ({
@@ -47,7 +51,7 @@ if (ofertas && ofertas.length > 0) {
             "@type": "Offer",
             "name": `Vuelo a ${deal.destino} desde ${deal.origen}`,
             "description": deal.titulo_gancho,
-            "price": deal.precio,
+            "price": deal.price || deal.precio, // Previne un posible undefined si la columna es 'price' o 'precio'
             "priceCurrency": mercado.moneda,
             "availability": "https://schema.org/InStock",
             "url": `https://www.lumivia.app/${codigoPais}?vuelo=${deal.id}`,
@@ -77,6 +81,7 @@ if (ofertas && ofertas.length > 0) {
         }
     });
 }
+---
 ---
 <Layout 
     title={`Vuelos Baratos desde ${mercado.nombre} | Lumivia`} 
