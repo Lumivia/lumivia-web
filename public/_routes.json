@@ -13,6 +13,6 @@
     "/afiliacion/",
     "/afiliacion/*",
     "/_astro/*",
-    "/favicon.ico"
+    "/favicon.svg"
   ]
 }
