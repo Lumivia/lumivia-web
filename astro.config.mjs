@@ -5,5 +5,5 @@ export default defineConfig({
   site: 'https://www.lumivia.app',
   output: 'server',
   adapter: cloudflare(),
-  trailingSlash: 'always' // <- ESTO CAMBIA TODO
+  trailingSlash: 'ignore' // Obligatorio para evitar el bucle infinito con la carpeta
 });
