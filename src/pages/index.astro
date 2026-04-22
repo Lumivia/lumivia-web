@@ -61,23 +61,23 @@ export const prerender = true; // Lo hacemos estático para que cargue instantá
             
             if (paisGuardado) {
                 // EL FIX: Agregamos la '/' al final para burlar el glitch de Cloudflare
-                window.location.replace('/' + paisGuardado.toLowerCase() + '/');
+                window.location.replace('/' + paisGuardado.toLowerCase());
                 return;
             } 
             
             // 2. Si es usuario nuevo, adivinamos su país
             try {
                 const zonaHoraria = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                let rutaDestino = '/mx/'; // EL FIX: Slash al final
+                let rutaDestino = '/mx'; // EL FIX: Slash al final
                 
                 if (zonaHoraria.includes('Bogota') || zonaHoraria.includes('Colombia')) {
-                    rutaDestino = '/co/';
+                    rutaDestino = '/co';
                 } else if (zonaHoraria.includes('Santiago') || zonaHoraria.includes('Chile') || zonaHoraria.includes('Punta_Arenas') || zonaHoraria.includes('Easter')) {
-                    rutaDestino = '/cl/';
+                    rutaDestino = '/cl';
                 } else if (zonaHoraria.includes('Costa_Rica')) {
-                    rutaDestino = '/cr/';
+                    rutaDestino = '/cr';
                 } else if (zonaHoraria.includes('Mexico') || zonaHoraria.includes('Cancun') || zonaHoraria.includes('Monterrey') || zonaHoraria.includes('Tijuana') || zonaHoraria.includes('Hermosillo') || zonaHoraria.includes('Mazatlan') || zonaHoraria.includes('Chihuahua') || zonaHoraria.includes('Ojinaga') || zonaHoraria.includes('Matamoros') || zonaHoraria.includes('Merida') || zonaHoraria.includes('Bahia_Banderas')) {
-                    rutaDestino = '/mx/';
+                    rutaDestino = '/mx';
                 }
                 
                 localStorage.setItem('lumivia_pais', rutaDestino.replace(/\//g, '').toUpperCase());
@@ -86,7 +86,7 @@ export const prerender = true; // Lo hacemos estático para que cargue instantá
                 window.location.replace(rutaDestino);
             } catch (e) {
                 localStorage.setItem('lumivia_pais', 'MX');
-                window.location.replace('/mx/'); // EL FIX: Slash al final
+                window.location.replace('/mx'); // EL FIX: Slash al final
             }
         })();
     </script>
