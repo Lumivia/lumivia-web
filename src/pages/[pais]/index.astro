@@ -1,22 +1,19 @@
 ---
-// 1. DECLARACIÓN EXPLÍCITA DE SSR (El Muro de Contención)
-export const prerender = false;
+export const prerender = false; // Solo para asegurar SSR
 
 const { pais } = Astro.params;
-const codigoPais = pais?.toLowerCase();
+const codigoPais = pais.toLowerCase();
 
-// 2. LISTA DE PAÍSES (Tu única fuente de verdad)
+// EL CADENERO: Solo países oficiales
 const mercadosPermitidos = {
-    'mx': { nombre: 'México', moneda: 'MXN' },
-    'co': { nombre: 'Colombia', moneda: 'COP' },
-    'cl': { nombre: 'Chile', moneda: 'CLP' },
-    'cr': { nombre: 'Costa Rica', moneda: 'USD' }
+    'mx': { nombre: 'México', moneda: 'MXN', bandera: 'https://flagcdn.com/w20/mx.png' },
+    'co': { nombre: 'Colombia', moneda: 'COP', bandera: 'https://flagcdn.com/w20/co.png' },
+    'cl': { nombre: 'Chile', moneda: 'CLP', bandera: 'https://flagcdn.com/w20/cl.png' },
+    'cr': { nombre: 'Costa Rica', moneda: 'USD', bandera: 'https://flagcdn.com/w20/cr.png' }
 };
 
-// 3. EL KILL SWITCH DEL 404
-// SI NO ES UN PAÍS DE LA LISTA, MATA LA EJECUCIÓN INMEDIATAMENTE.
 if (!mercadosPermitidos[codigoPais]) {
-    return new Response(null, { status: 404 });
+    return new Response(null, { status: 404, statusText: 'Not Found' });
 }
 
 const mercado = mercadosPermitidos[codigoPais];
