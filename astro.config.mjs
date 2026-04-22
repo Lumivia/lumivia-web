@@ -3,7 +3,7 @@ import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
   site: 'https://www.lumivia.app',
-  trailingSlash: 'always',
+  trailingSlash: 'ignore',
   output: 'server',
   adapter: cloudflare()
 });
