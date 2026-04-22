@@ -55,39 +55,38 @@ export const prerender = true; // Lo hacemos estático para que cargue instantá
     </div>
 
     <script is:inline>
-        (function() {
-            // 1. Revisar si ya conocemos al usuario
+    (function() {
+            // 1. Revisar si el usuario ya tiene un país guardado en su memoria
             const paisGuardado = localStorage.getItem('lumivia_pais');
             
             if (paisGuardado) {
-                // REDIRECCIÓN A RAÍZ: Ej. /mx/
+                // EL FIX: Agregamos la '/' al final para burlar el glitch de Cloudflare
                 window.location.replace('/' + paisGuardado.toLowerCase() + '/');
                 return;
             } 
             
-            // 2. Si es nuevo, detectamos país por Zona Horaria
+            // 2. Si es usuario nuevo, adivinamos su país
             try {
                 const zonaHoraria = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                let codigoPais = 'mx'; // Default
-
-                if (zonaHoraria.includes('Bogota') || zonaHoraria.includes('Colombia')) {
-                    codigoPais = 'co';
-                } else if (zonaHoraria.includes('Santiago') || zonaHoraria.includes('Chile') || zonaHoraria.includes('Punta_Arenas') || zonaHoraria.includes('Easter')) {
-                    codigoPais = 'cl';
-                } else if (zonaHoraria.includes('Costa_Rica')) {
-                    codigoPais = 'cr';
-                } else if (zonaHoraria.includes('Mexico') || zonaHoraria.includes('Cancun') || zonaHoraria.includes('Monterrey') || zonaHoraria.includes('Tijuana')) {
-                    codigoPais = 'mx';
-                }
-
-                localStorage.setItem('lumivia_pais', codigoPais.toUpperCase());
+                let rutaDestino = '/mx/'; // EL FIX: Slash al final
                 
-                // Redirección directa a la carpeta del país
-                window.location.replace('/' + codigoPais + '/');
-
+                if (zonaHoraria.includes('Bogota') || zonaHoraria.includes('Colombia')) {
+                    rutaDestino = '/co/';
+                } else if (zonaHoraria.includes('Santiago') || zonaHoraria.includes('Chile') || zonaHoraria.includes('Punta_Arenas') || zonaHoraria.includes('Easter')) {
+                    rutaDestino = '/cl/';
+                } else if (zonaHoraria.includes('Costa_Rica')) {
+                    rutaDestino = '/cr/';
+                } else if (zonaHoraria.includes('Mexico') || zonaHoraria.includes('Cancun') || zonaHoraria.includes('Monterrey') || zonaHoraria.includes('Tijuana') || zonaHoraria.includes('Hermosillo') || zonaHoraria.includes('Mazatlan') || zonaHoraria.includes('Chihuahua') || zonaHoraria.includes('Ojinaga') || zonaHoraria.includes('Matamoros') || zonaHoraria.includes('Merida') || zonaHoraria.includes('Bahia_Banderas')) {
+                    rutaDestino = '/mx/';
+                }
+                
+                localStorage.setItem('lumivia_pais', rutaDestino.replace(/\//g, '').toUpperCase());
+                
+                // Redirección blindada
+                window.location.replace(rutaDestino);
             } catch (e) {
                 localStorage.setItem('lumivia_pais', 'MX');
-                window.location.replace('/mx/');
+                window.location.replace('/mx/'); // EL FIX: Slash al final
             }
         })();
     </script>
