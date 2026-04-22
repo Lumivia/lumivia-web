@@ -1,4 +1,43 @@
 ---
+const { pais } = Astro.params;
+const codigoPais = pais.toLowerCase();
+
+// 1. REFLEXIÓN DE SISTEMA (Cero Hardcodeo)
+// Vite escanea la carpeta pages y crea un mapa de todas tus rutas reales en tiempo de compilación.
+const rutas = import.meta.glob('/src/pages/*/index.astro');
+
+const paginasReales = Object.keys(rutas).map(ruta => {
+    const partes = ruta.split('/');
+    return partes[partes.length - 2]; // Extrae automáticamente 'masdestinos', 'privacidad', etc.
+});
+
+// 2. EL INTERCEPTOR INTELIGENTE
+// Si la URL es una carpeta real, inyecta la diagonal y redirige (salvando el SEO y el 404).
+if (paginasReales.includes(codigoPais) && codigoPais !== '[pais]') {
+    return Astro.redirect(`/${codigoPais}/`, 301);
+}
+
+// 3. EL CADENERO DE MERCADOS
+const mercadosPermitidos = {
+    'mx': { nombre: 'México', moneda: 'MXN', bandera: 'https://flagcdn.com/w20/mx.png' },
+    'co': { nombre: 'Colombia', moneda: 'COP', bandera: 'https://flagcdn.com/w20/co.png' },
+    'cl': { nombre: 'Chile', moneda: 'CLP', bandera: 'https://flagcdn.com/w20/cl.png' },
+    'cr': { nombre: 'Costa Rica', moneda: 'USD', bandera: 'https://flagcdn.com/w20/cr.png' }
+};
+
+// Si llega hasta aquí, no es una página tuya ni un país. Ahora sí, portazo.
+if (!mercadosPermitidos[codigoPais]) {
+    return new Response(null, { status: 404, statusText: 'Not Found' });
+}
+
+const mercado = mercadosPermitidos[codigoPais];
+const paisUpper = codigoPais.toUpperCase();
+
+Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=300, stale-while-revalidate=60');
+
+import Layout from '../../layouts/Layout.astro';
+import { createClient } from '@supabase/supabase-js';
+
 const SUPABASE_URL = 'https://khmkpkbhlzpvowesbkgu.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_uyjRiobM7d6m7IdMPUQi9Q_-RPZuIvt';
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
