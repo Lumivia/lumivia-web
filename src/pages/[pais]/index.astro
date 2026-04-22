@@ -21,7 +21,7 @@ const paisUpper = codigoPais.toUpperCase();
 
 Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=300, stale-while-revalidate=60');
 
-import Layout from '../layouts/Layout.astro';
+import Layout from '../../layouts/Layout.astro';
 import { createClient } from '@supabase/supabase-js';
 
 const SUPABASE_URL = 'https://khmkpkbhlzpvowesbkgu.supabase.co';
