@@ -1,6 +1,7 @@
 ---
 // src/pages/index.astro
 // ESTE ES EL ENRUTADOR INTELIGENTE (TRAFFIC COP)
+export const prerender = true; // Lo hacemos estático para que cargue instantáneamente
 ---
 <!DOCTYPE html>
 <html lang="es">
@@ -60,35 +61,36 @@
             const paisGuardado = localStorage.getItem('lumivia_pais');
             
             if (paisGuardado) {
-                window.location.replace('/' + paisGuardado.toLowerCase());
+                // REDIRECCIÓN SEGURA: Lo mandamos a la nueva arquitectura /viajes/pais/
+                window.location.replace('/viajes/' + paisGuardado.toLowerCase() + '/');
                 return;
             } 
             
-            // 2. Si es usuario nuevo, adivinamos su país por la Zona Horaria de su dispositivo
+            // 2. Si es usuario nuevo, adivinamos su país por la Zona Horaria
             try {
                 const zonaHoraria = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                let rutaDestino = '/mx'; // Default/Fallback global
+                let codigoPais = 'mx'; // Default/Fallback global
 
                 if (zonaHoraria.includes('Bogota') || zonaHoraria.includes('Colombia')) {
-                    rutaDestino = '/co';
+                    codigoPais = 'co';
                 } else if (zonaHoraria.includes('Santiago') || zonaHoraria.includes('Chile') || zonaHoraria.includes('Punta_Arenas') || zonaHoraria.includes('Easter')) {
-                    rutaDestino = '/cl';
+                    codigoPais = 'cl';
                 } else if (zonaHoraria.includes('Costa_Rica')) {
-                    rutaDestino = '/cr';
+                    codigoPais = 'cr';
                 } else if (zonaHoraria.includes('Mexico') || zonaHoraria.includes('Cancun') || zonaHoraria.includes('Monterrey') || zonaHoraria.includes('Tijuana') || zonaHoraria.includes('Hermosillo') || zonaHoraria.includes('Mazatlan') || zonaHoraria.includes('Chihuahua') || zonaHoraria.includes('Ojinaga') || zonaHoraria.includes('Matamoros') || zonaHoraria.includes('Merida') || zonaHoraria.includes('Bahia_Banderas')) {
-                    rutaDestino = '/mx';
+                    codigoPais = 'mx';
                 }
 
-                // Guardamos la decisión inicial en LocalStorage para futuros ingresos
-                localStorage.setItem('lumivia_pais', rutaDestino.replace('/', '').toUpperCase());
+                // Guardamos SOLO el código del país en mayúsculas (MX, CO, CL, CR)
+                localStorage.setItem('lumivia_pais', codigoPais.toUpperCase());
                 
-                // Hacemos la redirección sin dejar rastro en el historial (replace)
-                window.location.replace(rutaDestino);
+                // Redirección hacia la nueva ruta blindada
+                window.location.replace('/viajes/' + codigoPais + '/');
 
             } catch (e) {
                 // Si su navegador bloquea la lectura, lo mandamos al default (México)
                 localStorage.setItem('lumivia_pais', 'MX');
-                window.location.replace('/mx');
+                window.location.replace('/viajes/mx/');
             }
         })();
     </script>
