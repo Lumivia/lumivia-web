@@ -1,29 +1,4 @@
 ---
-// 1. EL CADENERO: Solo dejamos pasar a los mercados oficiales
-const mercadosPermitidos = {
-    'mx': { nombre: 'México', moneda: 'MXN', bandera: 'https://flagcdn.com/w20/mx.png' },
-    'co': { nombre: 'Colombia', moneda: 'COP', bandera: 'https://flagcdn.com/w20/co.png' },
-    'cl': { nombre: 'Chile', moneda: 'CLP', bandera: 'https://flagcdn.com/w20/cl.png' },
-    'cr': { nombre: 'Costa Rica', moneda: 'USD', bandera: 'https://flagcdn.com/w20/cr.png' }
-};
-
-const { pais } = Astro.params;
-// Extraemos estrictamente los primeros 2 caracteres. Así ignoramos parámetros como ?fbclid=123 o ?cache=kill
-const codigoPais = (pais || '').substring(0, 2).toLowerCase();
-
-if (!mercadosPermitidos[codigoPais]) {
-    return new Response(null, { status: 404, statusText: 'Not Found' });
-}
-
-const mercado = mercadosPermitidos[codigoPais];
-const paisUpper = codigoPais.toUpperCase();
-
-// 2. EL ESCUDO CACHÉ EDGE
-Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=300, stale-while-revalidate=60');
-
-import Layout from '../../layouts/Layout.astro';
-import { createClient } from '@supabase/supabase-js';
-
 const SUPABASE_URL = 'https://khmkpkbhlzpvowesbkgu.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_uyjRiobM7d6m7IdMPUQi9Q_-RPZuIvt';
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
