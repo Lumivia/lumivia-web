@@ -5,5 +5,5 @@ export default defineConfig({
   site: 'https://www.lumivia.app',
   output: 'server',
   adapter: cloudflare(),
-  trailingSlash: 'always' //
+  trailingSlash: 'always' // EL SALVAVIDAS
 });
