@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "include": [
+    "/*"
+  ],
+  "exclude": [
+    "/masdestinos/",
+    "/masdestinos/*",
+    "/privacidad/",
+    "/privacidad/*",
+    "/terminos/",
+    "/terminos/*",
+    "/afiliacion/",
+    "/afiliacion/*",
+    "/_astro/*",
+    "/favicon.ico"
+  ]
+}
