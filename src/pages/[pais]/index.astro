@@ -2,22 +2,19 @@
 const { pais } = Astro.params;
 const codigoPais = pais.toLowerCase();
 
-// 1. REFLEXIÓN DE SISTEMA (Cero Hardcodeo)
-// Vite escanea la carpeta pages y crea un mapa de todas tus rutas reales en tiempo de compilación.
+// 1. ESCANEO AUTOMÁTICO (Vite lee tus carpetas reales y se protege solo)
 const rutas = import.meta.glob('/src/pages/*/index.astro');
-
 const paginasReales = Object.keys(rutas).map(ruta => {
     const partes = ruta.split('/');
-    return partes[partes.length - 2]; // Extrae automáticamente 'masdestinos', 'privacidad', etc.
+    return partes[partes.length - 2]; 
 });
 
-// 2. EL INTERCEPTOR INTELIGENTE
-// Si la URL es una carpeta real, inyecta la diagonal y redirige (salvando el SEO y el 404).
+// 2. EL INTERCEPTOR: Si alguien entra sin barra a una página real, lo salva del 404
 if (paginasReales.includes(codigoPais) && codigoPais !== '[pais]') {
     return Astro.redirect(`/${codigoPais}/`, 301);
 }
 
-// 3. EL CADENERO DE MERCADOS
+// 3. EL CADENERO: Solo países oficiales
 const mercadosPermitidos = {
     'mx': { nombre: 'México', moneda: 'MXN', bandera: 'https://flagcdn.com/w20/mx.png' },
     'co': { nombre: 'Colombia', moneda: 'COP', bandera: 'https://flagcdn.com/w20/co.png' },
@@ -25,7 +22,6 @@ const mercadosPermitidos = {
     'cr': { nombre: 'Costa Rica', moneda: 'USD', bandera: 'https://flagcdn.com/w20/cr.png' }
 };
 
-// Si llega hasta aquí, no es una página tuya ni un país. Ahora sí, portazo.
 if (!mercadosPermitidos[codigoPais]) {
     return new Response(null, { status: 404, statusText: 'Not Found' });
 }
