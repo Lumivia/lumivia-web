@@ -1,6 +1,4 @@
 ---
-// src/pages/index.astro
-// Motor dinámico gestionado 100% por el Worker de Cloudflare
 ---
 <!DOCTYPE html>
 <html lang="es">
@@ -27,35 +25,43 @@
 
     <script is:inline>
     (function() {
-            const paisGuardado = localStorage.getItem('lumivia_pais');
-            
-            if (paisGuardado) {
-                // REDIRECCIÓN CON DIAGONAL ESTRICTA PARA EVITAR 404 DEL WORKER
-                window.location.replace('/' + paisGuardado.toLowerCase() + '/');
-                return;
-            } 
-            
-            try {
-                const zonaHoraria = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                let rutaDestino = '/mx/'; // DIAGONAL OBLIGATORIA
-                
-                if (zonaHoraria.includes('Bogota') || zonaHoraria.includes('Colombia')) {
-                    rutaDestino = '/co/';
-                } else if (zonaHoraria.includes('Santiago') || zonaHoraria.includes('Chile') || zonaHoraria.includes('Punta_Arenas') || zonaHoraria.includes('Easter')) {
-                    rutaDestino = '/cl/';
-                } else if (zonaHoraria.includes('Costa_Rica')) {
-                    rutaDestino = '/cr/';
-                } else if (zonaHoraria.includes('Mexico') || zonaHoraria.includes('Cancun') || zonaHoraria.includes('Monterrey') || zonaHoraria.includes('Tijuana') || zonaHoraria.includes('Hermosillo') || zonaHoraria.includes('Mazatlan') || zonaHoraria.includes('Chihuahua') || zonaHoraria.includes('Ojinaga') || zonaHoraria.includes('Matamoros') || zonaHoraria.includes('Merida') || zonaHoraria.includes('Bahia_Banderas')) {
-                    rutaDestino = '/mx/';
-                }
-                
-                localStorage.setItem('lumivia_pais', rutaDestino.replace(/\//g, '').toUpperCase());
-                window.location.replace(rutaDestino);
-            } catch (e) {
-                localStorage.setItem('lumivia_pais', 'MX');
-                window.location.replace('/mx/');
+        const paisGuardado = localStorage.getItem('lumivia_pais');
+        
+        if (paisGuardado) {
+            // 🔥 NUEVA RUTA CORRECTA
+            window.location.replace('/paises/' + paisGuardado.toLowerCase() + '/');
+            return;
+        } 
+        
+        try {
+            const zonaHoraria = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            let pais = 'mx'; // default
+
+            if (zonaHoraria.includes('Bogota') || zonaHoraria.includes('Colombia')) {
+                pais = 'co';
+            } else if (zonaHoraria.includes('Santiago') || zonaHoraria.includes('Chile') || zonaHoraria.includes('Punta_Arenas') || zonaHoraria.includes('Easter')) {
+                pais = 'cl';
+            } else if (zonaHoraria.includes('Costa_Rica')) {
+                pais = 'cr';
+            } else if (
+                zonaHoraria.includes('Mexico') || zonaHoraria.includes('Cancun') || zonaHoraria.includes('Monterrey') ||
+                zonaHoraria.includes('Tijuana') || zonaHoraria.includes('Hermosillo') || zonaHoraria.includes('Mazatlan') ||
+                zonaHoraria.includes('Chihuahua') || zonaHoraria.includes('Ojinaga') || zonaHoraria.includes('Matamoros') ||
+                zonaHoraria.includes('Merida') || zonaHoraria.includes('Bahia_Banderas')
+            ) {
+                pais = 'mx';
             }
-        })();
+
+            localStorage.setItem('lumivia_pais', pais.toUpperCase());
+
+            // 🔥 NUEVA RUTA CORRECTA
+            window.location.replace('/paises/' + pais + '/');
+
+        } catch (e) {
+            localStorage.setItem('lumivia_pais', 'MX');
+            window.location.replace('/paises/mx/');
+        }
+    })();
     </script>
 </body>
 </html>
