@@ -4,5 +4,7 @@ import cloudflare from '@astrojs/cloudflare';
 export default defineConfig({
   site: 'https://lumivia.app',
   output: 'server',
-  adapter: cloudflare()
+  adapter: cloudflare({
+    platform: "pages"
+  })
 });
