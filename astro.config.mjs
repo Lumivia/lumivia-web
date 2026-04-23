@@ -9,5 +9,8 @@ export default defineConfig({
     routes: {
       include: ["/*"]
     }
-  })
+  }),
+  build: {
+    serverEntry: '_worker.js'
+  }
 });
