@@ -2,8 +2,7 @@ import { defineConfig } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
-  site: 'https://www.lumivia.app',
+  site: 'https://lumivia.app',
   output: 'server',
-  adapter: cloudflare(),
-  trailingSlash: 'ignore', // Evita bucles globales con Cloudflare
+  adapter: cloudflare()
 });
