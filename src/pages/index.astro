@@ -1,6 +1,6 @@
 ---
 // src/pages/index.astro
-// ESTE ES EL ENRUTADOR INTELIGENTE (TRAFFIC COP)
+// Motor dinámico gestionado 100% por el Worker de Cloudflare
 ---
 <!DOCTYPE html>
 <html lang="es">
@@ -11,43 +11,15 @@
     <meta name="robots" content="noindex, follow"> 
     
     <style>
-        body { 
-            background-color: #f9fafb; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            margin: 0; 
-            font-family: 'Inter', sans-serif; 
-        }
-        .loader-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-        }
-        .loader { 
-            border: 4px solid rgba(0, 210, 255, 0.1); 
-            border-top: 4px solid #00d2ff; 
-            border-radius: 50%; 
-            width: 48px; 
-            height: 48px; 
-            animation: spin 1s linear infinite; 
-        }
-        .text-lumi {
-            color: #111827;
-            font-weight: 800;
-            font-size: 14px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            animation: pulse 1.5s ease-in-out infinite;
-        }
+        body { background-color: #f9fafb; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: 'Inter', sans-serif; }
+        .loader-container { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+        .loader { border: 4px solid rgba(0, 210, 255, 0.1); border-top: 4px solid #00d2ff; border-radius: 50%; width: 48px; height: 48px; animation: spin 1s linear infinite; }
+        .text-lumi { color: #111827; font-weight: 800; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; animation: pulse 1.5s ease-in-out infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
     </style>
 </head>
 <body>
-    
     <div class="loader-container">
         <div class="loader"></div>
         <div class="text-lumi">Lumivia</div>
@@ -55,19 +27,17 @@
 
     <script is:inline>
     (function() {
-            // 1. Revisar si el usuario ya tiene un país guardado en su memoria
             const paisGuardado = localStorage.getItem('lumivia_pais');
             
             if (paisGuardado) {
-                // EL FIX: Agregamos la '/' al final para burlar el glitch de Cloudflare
+                // REDIRECCIÓN CON DIAGONAL ESTRICTA PARA EVITAR 404 DEL WORKER
                 window.location.replace('/' + paisGuardado.toLowerCase() + '/');
                 return;
             } 
             
-            // 2. Si es usuario nuevo, adivinamos su país
             try {
                 const zonaHoraria = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                let rutaDestino = '/mx/'; // EL FIX: Slash al final
+                let rutaDestino = '/mx/'; // DIAGONAL OBLIGATORIA
                 
                 if (zonaHoraria.includes('Bogota') || zonaHoraria.includes('Colombia')) {
                     rutaDestino = '/co/';
@@ -80,12 +50,10 @@
                 }
                 
                 localStorage.setItem('lumivia_pais', rutaDestino.replace(/\//g, '').toUpperCase());
-                
-                // Redirección blindada
                 window.location.replace(rutaDestino);
             } catch (e) {
                 localStorage.setItem('lumivia_pais', 'MX');
-                window.location.replace('/mx/'); // EL FIX: Slash al final
+                window.location.replace('/mx/');
             }
         })();
     </script>
