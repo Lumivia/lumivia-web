@@ -5,6 +5,9 @@ export default defineConfig({
   site: 'https://lumivia.app',
   output: 'server',
   adapter: cloudflare({
-    platform: "pages"
+    platform: "pages",
+    routes: {
+      include: ["/*"]
+    }
   })
 });
